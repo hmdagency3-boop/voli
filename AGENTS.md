@@ -30,3 +30,5 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Use AppScreen for application pages so viewport sizing, internal scrolling, and stationary navigation remain consistent across routes.
+- Keep starter external database SQL in sql/ and verify account identity and RLS with PGlite; never expose the private internal UID schema to clients.
+- AccountForm shares login and signup validation; authentication remains unavailable until the external integration generates its client, avoiding fake sessions or invented connection settings.

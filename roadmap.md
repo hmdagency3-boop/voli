@@ -13,3 +13,9 @@
 - [x] Use a shared screen-sized layout across all pages.
 - [x] Scroll long content inside the screen with stationary bottom navigation.
 - [x] Verify page dimensions and scrolling on phone and desktop.
+
+# External account setup
+- [x] Prepare starter SQL with profiles, private sequential UIDs, random seven-digit public IDs, follows, streams, and direct messages.
+- [x] Prepare sign-in and signup forms with display name and email, without a username field.
+- [x] Verify form validation and SQL account rules.
+- [ ] Connect and verify real signup, sign-in, and sign-out (blocked until the user connects their external project).
