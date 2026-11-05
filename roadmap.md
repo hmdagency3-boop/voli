@@ -19,4 +19,9 @@
 - [x] Prepare sign-in and signup forms with display name and email, without a username field.
 - [x] Verify form validation and SQL account rules.
 - [x] Wire signup, sign-in, and sign-out to the user's external project.
-- [ ] Apply sql/voli-starter.sql in the project's SQL Editor (needs the user; tables are missing).
+- [ ] Apply sql/voli-starter.sql in the project's SQL Editor (needs the user).
+
+# Re-runnable starter SQL
+- [x] Make sql/voli-starter.sql safe to run repeatedly; add bio and updated_at to existing profiles.
+- [x] Move account_uids to public (fully closed to clients) and use public.handle_new_user trigger.
+- [x] Refresh follows, streams, messages policies; verify with PGlite tests (fresh, rerun, older schema).

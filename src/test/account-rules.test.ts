@@ -3,52 +3,136 @@ import { readFileSync } from 'node:fs';
 import { PGlite } from '@electric-sql/pglite';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 import { accountSchema } from '@/lib/account-validation';
-const db = new PGlite();
+
+const starter = readFileSync('sql/voli-starter.sql', 'utf8');
+const firstVersion = readFileSync('src/test/fixtures/voli-starter-v1.sql', 'utf8');
 const first = '00000000-0000-4000-8000-000000000001';
 const second = '00000000-0000-4000-8000-000000000002';
-beforeAll(async () => {
+const third = '00000000-0000-4000-8000-000000000003';
+
+/** Minimal Supabase stand-in, including its default grants of every new public table to app roles. */
+async function supabaseLike() {
+  const db = new PGlite();
   await db.exec(`create role anon; create role authenticated; create role service_role bypassrls; create schema auth;
-    create table auth.users(id uuid primary key, raw_user_meta_data jsonb);
+    create table auth.users(id uuid primary key, raw_user_meta_data jsonb, created_at timestamptz not null default clock_timestamp());
     create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid$$;
-    grant usage on schema auth to authenticated; grant execute on function auth.uid() to authenticated;`);
-  await db.exec(readFileSync('sql/voli-starter.sql', 'utf8'));
-  await db.query(`insert into auth.users values ($1, '{"display_name":"الأول"}'), ($2, '{"display_name":"الثاني"}')`, [first, second]);
-}, 30000);
-afterAll(async () => { await db.close(); });
-describe('Account identity rules', () => {
+    grant usage on schema auth to authenticated; grant execute on function auth.uid() to authenticated;
+    alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
+    alter default privileges in schema public grant all on functions to anon, authenticated, service_role;`);
+  return db;
+}
+const addUser = (db: PGlite, id: string, name: string) =>
+  db.query(`insert into auth.users(id, raw_user_meta_data) values ($1, jsonb_build_object('display_name', $2::text))`, [id, name]);
+async function asUser<T>(db: PGlite, id: string, run: () => Promise<T>) {
+  await db.exec(`set role authenticated; set request.jwt.claim.sub = '${id}'`);
+  try { return await run(); } finally { await db.exec('reset role'); }
+}
+
+describe('Account identity rules (fresh project)', () => {
+  let db: PGlite;
+  beforeAll(async () => {
+    db = await supabaseLike();
+    await db.exec(starter);
+    await addUser(db, first, 'الأول');
+    await addUser(db, second, 'الثاني');
+  }, 30000);
+  afterAll(async () => { await db.close(); });
+
   it('generates unique random seven-digit public IDs', async () => {
-    const { rows } = await db.query<{public_id: number}>('select public_id from public.profiles');
+    const { rows } = await db.query<{ public_id: number }>('select public_id from public.profiles');
     expect(rows).toHaveLength(2);
     for (const row of rows) expect(String(row.public_id)).toMatch(/^\d{7}$/);
     expect(new Set(rows.map(r => r.public_id)).size).toBe(2);
     await expect(db.query('update public.profiles set public_id = 999999 where auth_id = $1', [first])).rejects.toThrow();
   });
-  it('assigns sequential internal UIDs separately from public profiles', async () => {
-    const {rows} = await db.query<{uid: number}>('select uid::integer from private.account_uids order by uid');
-    expect(rows.map(r=>r.uid)).toEqual([1,2]);
-    const columns = await db.query<{column_name:string}>("select column_name from information_schema.columns where table_schema='public' and table_name='profiles'");
-    expect(columns.rows.map(r=>r.column_name)).not.toContain('uid');
+  it('assigns sequential internal UIDs starting at 20000, separately from public profiles', async () => {
+    const { rows } = await db.query<{ uid: number }>('select uid::integer from public.account_uids order by uid');
+    expect(rows.map(r => r.uid)).toEqual([20000, 20001]);
+    const columns = await db.query<{ column_name: string }>("select column_name from information_schema.columns where table_schema='public' and table_name='profiles'");
+    expect(columns.rows.map(r => r.column_name)).not.toContain('uid');
   });
-  it('denies user access to hidden internal UIDs', async () => {
-    await db.exec('set role authenticated');
-    try { await expect(db.query('select uid from private.account_uids')).rejects.toThrow(); }
+  it('denies app users and visitors any access to internal UIDs', async () => {
+    await asUser(db, first, async () => {
+      await expect(db.query('select uid from public.account_uids')).rejects.toThrow();
+      await expect(db.query('delete from public.account_uids')).rejects.toThrow();
+    });
+    await db.exec('set role anon');
+    try { await expect(db.query('select uid from public.account_uids')).rejects.toThrow(); }
     finally { await db.exec('reset role'); }
+  });
+  it('does not let app users call the account creation functions', async () => {
+    await asUser(db, first, async () => {
+      await expect(db.query(`select public.ensure_account($1, '{}'::jsonb)`, [third])).rejects.toThrow();
+    });
   });
   it('requires only a display name, not a username handle', () => {
-    expect(accountSchema.safeParse({displayName:'أحمد',email:'a@example.com',password:'validpass'}).success).toBe(true);
-    expect(accountSchema.safeParse({email:'a@example.com',password:'validpass'}).success).toBe(false);
+    expect(accountSchema.safeParse({ displayName: 'أحمد', email: 'a@example.com', password: 'validpass' }).success).toBe(true);
+    expect(accountSchema.safeParse({ email: 'a@example.com', password: 'validpass' }).success).toBe(false);
   });
-  it('prevents clients changing a public ID', async () => {
-    await db.exec(`set role authenticated; set request.jwt.claim.sub = '${first}'`);
-    try { await expect(db.query('update public.profiles set public_id = 7777777 where auth_id = $1', [first])).rejects.toThrow(); }
-    finally { await db.exec('reset role'); }
+  it('prevents clients changing a public ID, even with default table grants', async () => {
+    await asUser(db, first, async () => {
+      await expect(db.query('update public.profiles set public_id = 7777777 where auth_id = $1', [first])).rejects.toThrow();
+    });
+  });
+  it('lets users edit their own bio and refreshes updated_at', async () => {
+    const before = (await db.query<{ updated_at: Date }>('select updated_at from public.profiles where auth_id = $1', [first])).rows[0]!.updated_at;
+    await asUser(db, first, () => db.query(`update public.profiles set bio = 'مرحبا' where auth_id = $1`, [first]));
+    const after = (await db.query<{ bio: string; updated_at: Date }>('select bio, updated_at from public.profiles where auth_id = $1', [first])).rows[0]!;
+    expect(after.bio).toBe('مرحبا');
+    expect(after.updated_at.getTime()).toBeGreaterThan(before.getTime());
+  });
+  it("blocks editing someone else's profile", async () => {
+    const result = await asUser(db, first, () => db.query(`update public.profiles set bio = 'x' where auth_id = $1`, [second]));
+    expect(result.affectedRows ?? 0).toBe(0);
   });
   it('keeps messages private to participants', async () => {
-    const third = '00000000-0000-4000-8000-000000000003';
-    await db.query(`insert into auth.users values ($1, '{"display_name":"ثالث"}')`, [third]);
-    await db.query('insert into public.messages(sender_id,recipient_id,body) values ($1,$2,$3)',[first,second,'رسالة']);
-    await db.exec(`set role authenticated; set request.jwt.claim.sub = '${third}'`);
-    try { expect((await db.query('select * from public.messages')).rows).toHaveLength(0); }
-    finally { await db.exec('reset role'); }
+    await addUser(db, third, 'ثالث');
+    await db.query('insert into public.messages(sender_id,recipient_id,body) values ($1,$2,$3)', [first, second, 'رسالة']);
+    const rows = await asUser(db, third, async () => (await db.query('select * from public.messages')).rows);
+    expect(rows).toHaveLength(0);
   });
+});
+
+describe('Running the setup file again', () => {
+  it('succeeds twice and keeps existing accounts unchanged', async () => {
+    const db = await supabaseLike();
+    try {
+      await db.exec(starter);
+      await addUser(db, first, 'الأول');
+      const before = (await db.query('select auth_id, public_id from public.profiles')).rows;
+      await db.exec(starter);
+      expect((await db.query('select auth_id, public_id from public.profiles')).rows).toEqual(before);
+      await addUser(db, second, 'الثاني');
+      const uids = await db.query<{ uid: number }>('select uid::integer from public.account_uids order by uid');
+      expect(uids.rows.map(r => r.uid)).toEqual([20000, 20001]);
+    } finally { await db.close(); }
+  }, 30000);
+});
+
+describe('Upgrading a project set up with the first version', () => {
+  it('adds bio and updated_at, moves old internal UIDs to 20000+ in order, and creates missing accounts', async () => {
+    const db = await supabaseLike();
+    try {
+      await db.exec(firstVersion);
+      await addUser(db, first, 'الأول');
+      const oldPublicId = (await db.query<{ public_id: number }>('select public_id from public.profiles')).rows[0]!.public_id;
+      // A user who signed up while the signup trigger was missing.
+      await db.exec('drop trigger on_auth_user_created on auth.users');
+      await addUser(db, second, 'الثاني');
+
+      await db.exec(starter);
+
+      const cols = (await db.query<{ column_name: string }>("select column_name from information_schema.columns where table_schema='public' and table_name='profiles'")).rows.map(r => r.column_name);
+      expect(cols).toEqual(expect.arrayContaining(['bio', 'updated_at']));
+      const uids = await db.query<{ auth_id: string; uid: number }>('select auth_id, uid::integer from public.account_uids order by uid');
+      expect(uids.rows).toEqual([{ auth_id: first, uid: 20000 }, { auth_id: second, uid: 20001 }]);
+      expect(await db.query('select to_regclass($1) as t', ['private.account_uids'])).toMatchObject({ rows: [{ t: null }] });
+      const profiles = await db.query<{ auth_id: string; public_id: number }>('select auth_id, public_id from public.profiles order by auth_id');
+      expect(profiles.rows[0]!.public_id).toBe(oldPublicId);
+      expect(String(profiles.rows[1]!.public_id)).toMatch(/^\d{7}$/);
+
+      await addUser(db, third, 'ثالث');
+      expect((await db.query('select uid::integer from public.account_uids where auth_id = $1', [third])).rows).toEqual([{ uid: 20002 }]);
+    } finally { await db.close(); }
+  }, 30000);
 });

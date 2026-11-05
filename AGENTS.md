@@ -30,5 +30,5 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Use AppScreen for application pages so viewport sizing, internal scrolling, and stationary navigation remain consistent across routes.
-- Keep starter external database SQL in sql/ and verify account identity and RLS with PGlite; never expose the private internal UID schema to clients.
+- Keep starter external database SQL in sql/ re-runnable (if-not-exists, drop-then-create policies/triggers, explicit revoke+grant because Supabase grants new public tables to app roles by default) and verify it with PGlite on fresh, rerun and upgrade-from-fixture databases; internal UIDs live in public.account_uids with RLS on, no policies and no app-role grants, so clients can never read them.
 - AccountForm shares login and signup validation and talks to the user's own external project through src/lib/supabase.ts (publishable key only, RLS enforces access); signup with no session means email confirmation is required, never a signed-in redirect.
