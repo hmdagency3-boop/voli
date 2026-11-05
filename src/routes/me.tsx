@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  LogOut,
   Settings, Copy, Gem, Coins, ChevronLeft, Crown, Wallet, Gift, Star,
   Shield, Headphones, Video, Pencil, BadgeCheck, QrCode, TrendingUp,
 } from "lucide-react";
@@ -159,6 +160,16 @@ function MePage() {
             </li>
           ))}
         </ul>
+
+        <Link
+          to="/login"
+          className="mx-4 mt-4 flex w-[calc(100%-2rem)] items-center gap-3 rounded-[1.5rem] border bg-card px-4 py-3.5 text-destructive transition hover:bg-destructive/10"
+        >
+          <span className="grid size-9 place-items-center rounded-xl bg-destructive/10">
+            <LogOut className="size-[18px]" />
+          </span>
+          <span className="flex-1 text-sm font-bold">تسجيل الخروج</span>
+        </Link>
 
         <p className="mt-5 text-center text-[11px] text-muted-foreground">Diwan — الإصدار 1.0.0</p>
 
