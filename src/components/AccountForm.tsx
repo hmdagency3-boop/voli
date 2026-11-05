@@ -63,7 +63,6 @@ export function AccountForm({ signup = false }: { signup?: boolean }) {
           <Button type="submit" disabled={busy} className="h-12 w-full rounded-full bg-brand font-bold">{busy ? 'جارٍ التحميل…' : signup ? 'إنشاء حساب' : 'تسجيل الدخول'}</Button>
         </form>
         <p className="mt-8 text-center text-sm text-muted-foreground">{signup ? 'لديك حساب؟ ' : 'ليس لديك حساب؟ '}<Button asChild variant="link" className="h-auto p-0"><Link to={signup ? '/login' : '/signup'}>{signup ? 'تسجيل الدخول' : 'أنشئ حساباً'}</Link></Button></p>
-        <p className="mt-4 text-center"><Button asChild variant="link"><Link to="/">تصفّح كزائر</Link></Button></p>
       </section>
     </AppScreen>
   );

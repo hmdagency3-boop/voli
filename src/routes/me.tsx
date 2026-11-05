@@ -1,13 +1,58 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import diamondIcon from '@/assets/diamond.webp';
+import coinIcon from '@/assets/coin.webp';
+import vipClubCard from '@/assets/vip-club-card.webp';
 import { useAccount } from "@/hooks/use-account";
 import { supabase } from "@/lib/supabase";
 import {
-  LogOut,
-  Settings, Gem, Coins, ChevronLeft, Crown, Wallet, Gift, User,
+  LogOut, Copy,
+  Settings, ChevronLeft, Crown, Wallet, Gift, User,
   Shield, Headphones, Video, QrCode, TrendingUp,
 } from "lucide-react";
 import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { levelProgress, type LevelKind, type Threshold } from "@/lib/levels";
+import { Sparkles } from "lucide-react";
+import { LevelBadge } from "@/components/LevelBadge";
+import { badgeTier, charismaBadge, wealthBadge } from "@/lib/badges";
+
+function useThresholds() {
+  const [data, setData] = useState<Record<LevelKind, Threshold[]>>({ charisma: [], wealth: [] });
+  useEffect(() => {
+    supabase.from("level_thresholds").select("kind, level, required").then(({ data: rows }) => {
+      if (!rows) return;
+      const out: Record<LevelKind, Threshold[]> = { charisma: [], wealth: [] };
+      for (const r of rows as { kind: LevelKind; level: number; required: number }[]) out[r.kind]?.push({ level: r.level, required: Number(r.required) });
+      setData(out);
+    });
+  }, []);
+  return data;
+}
+
+function LevelCard({ kind, points, thresholds }: { kind: LevelKind; points: number; thresholds: Threshold[] }) {
+  const p = levelProgress(points, thresholds);
+  const charisma = kind === "charisma";
+  const Icon = charisma ? Sparkles : Crown;
+  return (
+    <div className="rounded-[1.5rem] bg-card p-4 ring-1 ring-border">
+      <div className="flex items-center gap-2">
+        <span className={`grid size-9 place-items-center rounded-xl ${charisma ? "bg-primary/10" : "bg-accent/15"}`}>
+          <Icon className={`size-5 ${charisma ? "text-primary" : "text-accent-foreground"}`} />
+        </span>
+        <span className="text-xs font-semibold text-muted-foreground">{charisma ? "الكاريزما" : "الثروة"}</span>
+      </div>
+      <p className="mt-2 font-display text-2xl font-extrabold">Lv.{p.level}</p>
+      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
+        <div className="h-full rounded-full bg-brand" style={{ width: `${p.percent}%` }} />
+      </div>
+      <p className="mt-1.5 text-[11px] text-muted-foreground">
+        {thresholds.length === 0 ? "—" : p.next === null ? "أعلى مستوى" : `باقي ${p.remaining.toLocaleString("en")} ${charisma ? "ماسة" : "كوينز"}`}
+      </p>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/me")({
   head: () => ({
@@ -41,6 +86,7 @@ const menu = [
 function MePage() {
   const { session, profile, ready } = useAccount();
   const navigate = useNavigate();
+  const thresholds = useThresholds();
   return (
     <AppScreen>
         {/* ── الغلاف ── */}
@@ -74,10 +120,31 @@ function MePage() {
                   <h1 className="truncate font-display text-xl font-extrabold">
                     {profile?.display_name ?? (session.user.user_metadata?.["display_name"] as string | undefined) ?? 'حسابي'}
                   </h1>
-                  <p className="mt-1 truncate text-sm text-muted-foreground" dir="ltr">{session.user.email}</p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {profile ? <>المعرّف: <span dir="ltr" className="font-semibold text-foreground">{profile.public_id}</span></> : 'المعرّف غير متوفر بعد'}
+                    {profile ? (
+                      <span className="inline-flex items-center gap-1.5" dir="ltr">
+                        ID: <span className="font-semibold text-foreground">{profile.public_id}</span>
+                        <button
+                          type="button"
+                          aria-label="نسخ الـ ID"
+                          onClick={() => { navigator.clipboard.writeText(String(profile.public_id)); toast.success('تم نسخ الـ ID'); }}
+                          className="grid size-6 place-items-center rounded-md text-muted-foreground transition hover:bg-secondary hover:text-foreground"
+                        >
+                          <Copy className="size-3.5" />
+                        </button>
+                      </span>
+                    ) : 'ID غير متوفر بعد'}
                   </p>
+                  {(() => {
+                    const wl = levelProgress(Number(profile?.wealth_points ?? 0), thresholds.wealth).level;
+                    const cl = levelProgress(Number(profile?.charisma_points ?? 0), thresholds.charisma).level;
+                    return (
+                      <div className="mt-1 flex gap-1.5">
+                        <LevelBadge badge={wealthBadge(wl)} level={wl} locked={badgeTier(wl) === null} className="w-11" />
+                        <LevelBadge badge={charismaBadge(cl)} level={cl} locked={badgeTier(cl) === null} className="w-11" />
+                      </div>
+                    );
+                  })()}
                 </>
               ) : (
                 <>
@@ -102,23 +169,19 @@ function MePage() {
 
         {/* ── المحفظة ── */}
         <section className="mx-4 mt-3 grid grid-cols-2 gap-3">
-          <div className="relative overflow-hidden rounded-[1.5rem] bg-card p-4 ring-1 ring-border">
-            <div className="flex items-center gap-2">
-              <span className="grid size-9 place-items-center rounded-xl bg-primary/10">
-                <Gem className="size-5 text-primary" />
-              </span>
-              <span className="text-xs font-semibold text-muted-foreground">ماسات</span>
-            </div>
-            <p className="mt-2 font-display text-2xl font-extrabold tracking-tight">—</p>
+          <div className="flex items-center gap-2 rounded-2xl bg-card px-3 py-2 ring-1 ring-border">
+            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-primary/10">
+              <img src={diamondIcon} alt="ماسة" className="size-5 object-contain" />
+            </span>
+            <span className="text-xs font-semibold text-muted-foreground">الدخل</span>
+            <span className="ms-auto font-sans text-sm font-semibold tabular-nums">0</span>
           </div>
-          <div className="relative overflow-hidden rounded-[1.5rem] bg-card p-4 ring-1 ring-border">
-            <div className="flex items-center gap-2">
-              <span className="grid size-9 place-items-center rounded-xl bg-accent/15">
-                <Coins className="size-5 text-accent-foreground" />
-              </span>
-              <span className="text-xs font-semibold text-muted-foreground">عملات</span>
-            </div>
-            <p className="mt-2 font-display text-2xl font-extrabold tracking-tight">—</p>
+          <div className="flex items-center gap-2 rounded-2xl bg-card px-3 py-2 ring-1 ring-border">
+            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-accent/15">
+              <img src={coinIcon} alt="كوينز" className="size-5 object-contain" />
+            </span>
+            <span className="text-xs font-semibold text-muted-foreground">شحن</span>
+            <span className="ms-auto font-sans text-sm font-semibold tabular-nums">0</span>
           </div>
         </section>
 
@@ -127,20 +190,26 @@ function MePage() {
         </Button>
 
         {/* ── بانر VIP ── */}
-        <Button disabled className="h-auto mx-4 mt-4 flex w-[calc(100%-2rem)] items-center gap-3 overflow-hidden rounded-[1.5rem] bg-brand p-4 text-start text-primary-foreground shadow-soft transition active:scale-[0.98]">
-          <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary-foreground/20">
-            <Crown className="size-6" />
+        <button type="button" dir="ltr" className="relative mx-4 mt-4 block w-[calc(100%-2rem)] transition active:scale-[0.98]">
+          <img src={vipClubCard} alt="" draggable={false} className="block w-full select-none" />
+          <span dir="rtl" className="absolute inset-y-0 left-[32%] right-[12%] flex items-center justify-center font-display text-base font-extrabold text-on-media [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]">
+            انضم لنادي VIP
           </span>
-          <span className="flex-1">
-            <span className="block font-display font-extrabold">انضم لنادي VIP</span>
-          </span>
-          <ChevronLeft className="size-5 shrink-0" />
-        </Button>
+        </button>
 
         {/* ── القائمة ── */}
         <ul className="mx-4 mt-4 overflow-hidden rounded-[1.5rem] border bg-card">
           {menu.map((m, i) => (
             <li key={m.label}>
+              {m.label === "المستوى" ? (
+                <Link to="/levels" className={`flex w-full items-center gap-3 px-4 py-3.5 text-start transition hover:bg-secondary ${i ? "border-t" : ""}`}>
+                  <span className="grid size-9 place-items-center rounded-xl bg-secondary">
+                    <m.icon className="size-[18px] text-foreground" />
+                  </span>
+                  <span className="flex-1 text-sm font-semibold">{m.label}</span>
+                  <ChevronLeft className="size-4 text-muted-foreground" />
+                </Link>
+              ) : (
               <Button variant="ghost" disabled className={`h-auto flex w-full items-center gap-3 px-4 py-3.5 text-start transition hover:bg-secondary ${i ? "border-t" : ""}`}>
                 <span className="grid size-9 place-items-center rounded-xl bg-secondary">
                   <m.icon className="size-[18px] text-foreground" />
@@ -149,6 +218,7 @@ function MePage() {
                 {m.hint && <span className="text-xs text-muted-foreground">{m.hint}</span>}
                 <ChevronLeft className="size-4 text-muted-foreground" />
               </Button>
+              )}
             </li>
           ))}
         </ul>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
-export type Profile = { public_id: number; display_name: string; avatar_url: string | null };
+export type Profile = { public_id: number; display_name: string; avatar_url: string | null; charisma_points?: number; wealth_points?: number };
 
 /** Current session plus the signed-in user's public profile row (if the schema exists). */
 export function useAccount() {
@@ -25,8 +25,12 @@ export function useAccount() {
   useEffect(() => {
     if (!userId) { setProfile(null); return; }
     let active = true;
-    supabase.from('profiles').select('public_id, display_name, avatar_url').eq('auth_id', userId).maybeSingle()
-      .then(({ data }) => { if (active) setProfile((data as Profile | null) ?? null); });
+    (async () => {
+      const full = await supabase.from('profiles').select('public_id, display_name, avatar_url, charisma_points, wealth_points').eq('auth_id', userId).maybeSingle();
+      // Older databases without level columns: fall back to the basic profile.
+      const res = full.error ? await supabase.from('profiles').select('public_id, display_name, avatar_url').eq('auth_id', userId).maybeSingle() : full;
+      if (active) setProfile((res.data as Profile | null) ?? null);
+    })();
     return () => { active = false; };
   }, [userId]);
 

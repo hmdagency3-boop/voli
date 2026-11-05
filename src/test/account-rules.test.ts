@@ -5,6 +5,7 @@ import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 import { accountSchema } from '@/lib/account-validation';
 
 const starter = readFileSync('sql/voli-starter.sql', 'utf8');
+const levels = readFileSync('supabase/001_levels.sql', 'utf8');
 const firstVersion = readFileSync('src/test/fixtures/voli-starter-v1.sql', 'utf8');
 const first = '00000000-0000-4000-8000-000000000001';
 const second = '00000000-0000-4000-8000-000000000002';
@@ -135,4 +136,31 @@ describe('Upgrading a project set up with the first version', () => {
       expect((await db.query('select uid::integer from public.account_uids where auth_id = $1', [third])).rows).toEqual([{ uid: 20002 }]);
     } finally { await db.close(); }
   }, 30000);
+});
+
+describe('Levels', () => {
+  let db: PGlite;
+  beforeAll(async () => {
+    db = await supabaseLike();
+    await db.exec(starter); await db.exec(levels);
+    await addUser(db, first, 'الأول');
+  }, 30000);
+  afterAll(async () => { await db.close(); });
+
+  it('has 100 charisma and 100 wealth levels readable by members', async () => {
+    const rows = await asUser(db, first, () => db.query<{ kind: string; n: number }>(
+      'select kind, count(*)::int n from public.level_thresholds group by kind order by kind'));
+    expect(rows.rows).toEqual([{ kind: 'charisma', n: 100 }, { kind: 'wealth', n: 100 }]);
+  });
+  it('members cannot raise their own points or edit thresholds', async () => {
+    await expect(asUser(db, first, () => db.query('update public.profiles set charisma_points = 999 where auth_id = $1', [first]))).rejects.toThrow();
+    await expect(asUser(db, first, () => db.query('update public.profiles set wealth_points = 999 where auth_id = $1', [first]))).rejects.toThrow();
+    await expect(asUser(db, first, () => db.query("update public.level_thresholds set required = 1 where kind = 'wealth'"))).rejects.toThrow();
+  });
+  it('re-running keeps edited thresholds', async () => {
+    await db.query("update public.level_thresholds set required = 5 where kind = 'charisma' and level = 1");
+    await db.exec(starter); await db.exec(levels);
+    const { rows } = await db.query<{ required: number }>("select required::int from public.level_thresholds where kind = 'charisma' and level = 1");
+    expect(rows[0]!.required).toBe(5);
+  });
 });
