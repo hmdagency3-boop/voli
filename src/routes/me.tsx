@@ -17,6 +17,8 @@ import { levelProgress, type LevelKind, type Threshold } from "@/lib/levels";
 import { Sparkles } from "lucide-react";
 import { LevelBadge } from "@/components/LevelBadge";
 import { badgeTier, charismaBadge, wealthBadge } from "@/lib/badges";
+import { SpecialIdBadge } from "@/components/SpecialIdBadge";
+import { shownId } from "@/lib/special-id";
 
 function useThresholds() {
   const [data, setData] = useState<Record<LevelKind, Threshold[]>>({ charisma: [], wealth: [] });
@@ -120,21 +122,25 @@ function MePage() {
                   <h1 className="truncate font-display text-xl font-extrabold">
                     {profile?.display_name ?? (session.user.user_metadata?.["display_name"] as string | undefined) ?? 'حسابي'}
                   </h1>
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <div className="mt-1 text-xs text-muted-foreground">
                     {profile ? (
                       <span className="inline-flex items-center gap-1.5" dir="ltr">
-                        ID: <span className="font-semibold text-foreground">{profile.public_id}</span>
+                        {profile.special_id ? (
+                          <SpecialIdBadge id={profile.special_id} vipLevel={Number(profile.vip_level ?? 0)} className="w-20" />
+                        ) : (
+                          <>ID: <span className="font-semibold text-foreground">{profile.public_id}</span></>
+                        )}
                         <button
                           type="button"
                           aria-label="نسخ الـ ID"
-                          onClick={() => { navigator.clipboard.writeText(String(profile.public_id)); toast.success('تم نسخ الـ ID'); }}
+                          onClick={() => { navigator.clipboard.writeText(shownId(profile)); toast.success('تم نسخ الـ ID'); }}
                           className="grid size-6 place-items-center rounded-md text-muted-foreground transition hover:bg-secondary hover:text-foreground"
                         >
                           <Copy className="size-3.5" />
                         </button>
                       </span>
                     ) : 'ID غير متوفر بعد'}
-                  </p>
+                  </div>
                   {(() => {
                     const wl = levelProgress(Number(profile?.wealth_points ?? 0), thresholds.wealth).level;
                     const cl = levelProgress(Number(profile?.charisma_points ?? 0), thresholds.charisma).level;
@@ -192,7 +198,7 @@ function MePage() {
         {/* ── بانر VIP ── */}
         <button type="button" dir="ltr" className="relative mx-4 mt-4 block w-[calc(100%-2rem)] transition active:scale-[0.98]">
           <img src={vipClubCard} alt="" draggable={false} className="block w-full select-none" />
-          <span dir="rtl" className="absolute inset-y-0 left-[32%] right-[12%] flex items-center justify-center font-display text-base font-extrabold text-on-media [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]">
+          <span dir="rtl" className="absolute inset-y-0 left-[30%] right-[11%] flex items-center justify-center font-display text-base font-extrabold text-on-media [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]">
             انضم لنادي VIP
           </span>
         </button>

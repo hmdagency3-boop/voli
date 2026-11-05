@@ -164,3 +164,50 @@ describe('Levels', () => {
     expect(rows[0]!.required).toBe(5);
   });
 });
+
+const specialIds = readFileSync('supabase/002_special_id.sql', 'utf8');
+
+describe('Special ID (الايدي المميز)', () => {
+  let db: PGlite;
+  beforeAll(async () => {
+    db = await supabaseLike();
+    await db.exec(starter); await db.exec(levels); await db.exec(specialIds);
+    await addUser(db, first, 'الأول');
+    await addUser(db, second, 'الثاني');
+  }, 30000);
+  afterAll(async () => { await db.close(); });
+
+  it('the admin can give a member a special ID and VIP level, which members can read', async () => {
+    await db.query(`update public.profiles set special_id = '777', vip_level = 50 where auth_id = $1`, [first]);
+    const rows = await asUser(db, second, () => db.query<{ special_id: string; vip_level: number }>('select special_id, vip_level from public.profiles where auth_id = $1', [first]));
+    expect(rows.rows).toEqual([{ special_id: '777', vip_level: 50 }]);
+  });
+  it('the admin can grant a special ID below VIP 10', async () => {
+    await db.query(`update public.profiles set special_id = '88', vip_level = 0 where auth_id = $1`, [second]);
+    expect((await db.query('select special_id from public.profiles where auth_id = $1', [second])).rows).toEqual([{ special_id: '88' }]);
+  });
+  it('members cannot set their own special ID or VIP level', async () => {
+    await expect(asUser(db, second, () => db.query(`update public.profiles set special_id = '1' where auth_id = $1`, [second]))).rejects.toThrow();
+    await expect(asUser(db, second, () => db.query('update public.profiles set vip_level = 100 where auth_id = $1', [second]))).rejects.toThrow();
+  });
+  it('two members cannot share a special ID', async () => {
+    await expect(db.query(`update public.profiles set special_id = '777' where auth_id = $1`, [second])).rejects.toThrow();
+  });
+  it("a special ID cannot be another member's normal ID", async () => {
+    const otherId = (await db.query<{ public_id: number }>('select public_id from public.profiles where auth_id = $1', [first])).rows[0]!.public_id;
+    await expect(db.query('update public.profiles set special_id = $1 where auth_id = $2', [String(otherId), second])).rejects.toThrow();
+  });
+  it('rejects non-digit special IDs and VIP levels above 100', async () => {
+    await expect(db.query(`update public.profiles set special_id = 'abc' where auth_id = $1`, [second])).rejects.toThrow();
+    await expect(db.query(`update public.profiles set special_id = '0777' where auth_id = $1`, [second])).rejects.toThrow();
+    await expect(db.query('update public.profiles set vip_level = 101 where auth_id = $1', [second])).rejects.toThrow();
+  });
+  it('members can still edit their bio, and re-running all files keeps special IDs', async () => {
+    await asUser(db, second, () => db.query(`update public.profiles set bio = 'hi' where auth_id = $1`, [second]));
+    await db.exec(starter); await db.exec(levels); await db.exec(specialIds);
+    const rows = await db.query<{ special_id: string; vip_level: number }>('select special_id, vip_level from public.profiles where auth_id = $1', [first]);
+    expect(rows.rows).toEqual([{ special_id: '777', vip_level: 50 }]);
+    await addUser(db, third, 'ثالث');
+    expect(String((await db.query<{ public_id: number }>('select public_id from public.profiles where auth_id = $1', [third])).rows[0]!.public_id)).toMatch(/^\d{7}$/);
+  });
+});

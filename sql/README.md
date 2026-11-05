@@ -14,5 +14,9 @@
 
 No fake accounts or seed data are included. Public IDs have nine million possible values, are unique, and retry on collision. They are identifiers, not secrets or authorization credentials. Internal numeric UIDs are never included in public profile rows. All user-owned writes are protected by RLS and column grants. Wallets, payments, VIP, gifts, video transport and realtime chat delivery are outside this starter setup.
 
+## Updates (run after the starter file, in order; each is safe to run again)
+- `supabase/001_levels.sql`: charisma and wealth points and the 100-level tables.
+- `supabase/002_special_id.sql`: `vip_level` (0–100) and `special_id` (الايدي المميز) on `profiles`. Only the admin sets them from the SQL Editor, e.g. `update public.profiles set vip_level = 50, special_id = '777' where public_id = 1234567;`. A special ID is digits only, unique, and can never equal another member's normal ID. The app shows it instead of the normal ID, on a frame chosen by VIP level.
+
 ## Current status
 The form is prepared but intentionally does not create sessions while the external connection is missing. Real signup, sign-in, profile loading, recovery and sign-out must be connected and tested after linking the project. Google, Apple and phone sign-in require separate provider configuration and are not part of email/password signup.

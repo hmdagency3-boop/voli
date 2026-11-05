@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
-export type Profile = { public_id: number; display_name: string; avatar_url: string | null; charisma_points?: number; wealth_points?: number };
+export type Profile = {
+  public_id: number; display_name: string; avatar_url: string | null;
+  charisma_points?: number; wealth_points?: number;
+  /** Admin-assigned special ID, shown instead of public_id when set. */
+  special_id?: string | null; vip_level?: number;
+};
 
 /** Current session plus the signed-in user's public profile row (if the schema exists). */
 export function useAccount() {
@@ -26,9 +31,17 @@ export function useAccount() {
     if (!userId) { setProfile(null); return; }
     let active = true;
     (async () => {
-      const full = await supabase.from('profiles').select('public_id, display_name, avatar_url, charisma_points, wealth_points').eq('auth_id', userId).maybeSingle();
-      // Older databases without level columns: fall back to the basic profile.
-      const res = full.error ? await supabase.from('profiles').select('public_id, display_name, avatar_url').eq('auth_id', userId).maybeSingle() : full;
+      // Older databases may miss the special-ID or level columns: fall back step by step.
+      const selects = [
+        'public_id, display_name, avatar_url, charisma_points, wealth_points, special_id, vip_level',
+        'public_id, display_name, avatar_url, charisma_points, wealth_points',
+        'public_id, display_name, avatar_url',
+      ];
+      let res = await supabase.from('profiles').select(selects[0]!).eq('auth_id', userId).maybeSingle();
+      for (const cols of selects.slice(1)) {
+        if (!res.error) break;
+        res = await supabase.from('profiles').select(cols).eq('auth_id', userId).maybeSingle();
+      }
       if (active) setProfile((res.data as Profile | null) ?? null);
     })();
     return () => { active = false; };
