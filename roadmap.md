@@ -8,3 +8,8 @@
 # Rename application
 - [x] Change the application name to voli inside all pages and page titles.
 - [x] Confirm no old application name remains in project source.
+
+# Consistent screen sizes
+- [x] Use a shared screen-sized layout across all pages.
+- [x] Scroll long content inside the screen with stationary bottom navigation.
+- [x] Verify page dimensions and scrolling on phone and desktop.

@@ -5,7 +5,7 @@ const cls = "flex flex-1 flex-col items-center gap-0.5 py-1 text-[11px] font-sem
 
 export function BottomNav() {
   return (
-    <footer className="fixed bottom-4 left-1/2 w-[calc(100%-2rem)] max-w-[24rem] -translate-x-1/2 md:absolute">
+    <footer className="shrink-0 bg-background px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))]">
       <div className="flex items-center justify-around rounded-full border bg-card/90 px-3 py-2 shadow-soft backdrop-blur">
         <Link to="/" className={cls} activeProps={{ className: "text-primary" }} activeOptions={{ exact: true }}>
           <Home className="size-5" />الرئيسية

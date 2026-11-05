@@ -4,7 +4,7 @@ import {
   Settings, Gem, Coins, ChevronLeft, Crown, Wallet, Gift, User,
   Shield, Headphones, Video, QrCode, TrendingUp,
 } from "lucide-react";
-import { BottomNav } from "@/components/BottomNav";
+import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/me")({
@@ -38,8 +38,7 @@ const menu = [
 
 function MePage() {
   return (
-    <div className="min-h-screen bg-muted md:py-8">
-      <main className="relative mx-auto min-h-screen max-w-md overflow-hidden bg-background pb-28 md:min-h-[860px] md:rounded-[2.5rem] md:border md:shadow-soft">
+    <AppScreen>
         {/* ── الغلاف ── */}
         <div className="relative h-44">
           <div className="absolute inset-0 bg-brand" />
@@ -148,8 +147,6 @@ function MePage() {
 
         <p className="mt-5 text-center text-[11px] text-muted-foreground">voli</p>
 
-        <BottomNav />
-      </main>
-    </div>
+    </AppScreen>
   );
 }

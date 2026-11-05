@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Search, SquarePen, MessageCircle } from "lucide-react";
-import { BottomNav } from "@/components/BottomNav";
+import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/chat")({
@@ -23,9 +23,8 @@ const tabs = ["الكل", "غير مقروءة", "الأصدقاء"];
 function ChatPage() {
   const [tab, setTab] = useState("الكل");
   return (
-    <div className="min-h-screen bg-muted md:py-8">
-      <main className="relative mx-auto min-h-screen max-w-md bg-background pb-28 md:min-h-[860px] md:rounded-[2.5rem] md:border md:shadow-soft md:overflow-hidden">
-        <header className="flex items-center justify-between px-5 pt-6">
+    <AppScreen>
+        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 pt-6">
           <h1 className="font-display text-3xl font-extrabold">دردشة<span className="text-primary">.</span></h1>
           <Button disabled aria-label="رسالة جديدة" size="icon" className="size-11 rounded-full"><SquarePen /></Button>
         </header>
@@ -42,8 +41,6 @@ function ChatPage() {
           <MessageCircle className="size-12 text-primary" aria-hidden="true" />
           <p className="text-sm">{tab === "الأصدقاء" ? "لا يوجد أصدقاء حالياً" : tab === "غير مقروءة" ? "لا توجد رسائل غير مقروءة" : "لا توجد محادثات حالياً"}</p>
         </div>
-        <BottomNav />
-      </main>
-    </div>
+    </AppScreen>
   );
 }

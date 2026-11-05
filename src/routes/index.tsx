@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bell, Search, Video } from "lucide-react";
-import { BottomNav } from "@/components/BottomNav";
+import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -23,14 +23,13 @@ const categories = ["الكل", "غناء", "ألعاب", "دردشة", "DJ", "�
 function Index() {
   const [category, setCategory] = useState("الكل");
   return (
-    <div className="min-h-screen bg-muted md:py-8">
-      <main className="relative mx-auto min-h-screen max-w-md bg-background pb-28 md:min-h-[860px] md:rounded-[2.5rem] md:border md:shadow-soft md:overflow-hidden">
-        <header className="flex items-center justify-between px-5 pt-6">
-          <div>
+    <AppScreen>
+        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 pt-6">
+          <div className="min-w-0">
             <p className="text-sm text-muted-foreground">أهلاً بك</p>
             <h1 className="font-display text-3xl font-extrabold">voli<span className="text-primary">.</span></h1>
           </div>
-          <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2">
             <Button variant="secondary" size="icon" disabled aria-label="البحث" className="size-11 rounded-full"><Search /></Button>
             <Button variant="secondary" size="icon" disabled aria-label="الإشعارات" className="size-11 rounded-full"><Bell /></Button>
           </div>
@@ -47,8 +46,6 @@ function Index() {
             <p className="text-sm">لا توجد بثوث مباشرة حالياً</p>
           </div>
         </section>
-        <BottomNav />
-      </main>
-    </div>
+    </AppScreen>
   );
 }

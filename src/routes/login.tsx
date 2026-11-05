@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { AppScreen } from "@/components/AppScreen";
 import { Eye, EyeOff, Lock, Phone, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/login")({
@@ -21,8 +22,7 @@ function LoginPage() {
   const [show, setShow] = useState(false);
 
   return (
-    <div dir="rtl" className="min-h-screen bg-muted md:py-8">
-      <main className="relative mx-auto min-h-screen max-w-md overflow-hidden bg-background md:min-h-[860px] md:rounded-[2.5rem] md:border md:shadow-soft">
+    <AppScreen navigation={false}>
         <div className="relative h-72 bg-brand">
           <div className="absolute bottom-14 right-6 text-on-media">
             <h1 className="font-display text-4xl font-extrabold">voli.</h1>
@@ -96,7 +96,6 @@ function LoginPage() {
             <Link to="/" className="underline">تصفّح كزائر</Link>
           </p>
         </section>
-      </main>
-    </div>
+    </AppScreen>
   );
 }
