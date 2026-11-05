@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Eye, EyeOff, Lock, Phone, Mail } from "lucide-react";
-import cover from "@/assets/live1.jpg";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -24,9 +23,7 @@ function LoginPage() {
   return (
     <div dir="rtl" className="min-h-screen bg-muted md:py-8">
       <main className="relative mx-auto min-h-screen max-w-md overflow-hidden bg-background md:min-h-[860px] md:rounded-[2.5rem] md:border md:shadow-soft">
-        <div className="relative h-72">
-          <img src={cover} alt="" className="absolute inset-0 size-full object-cover" />
-          <div className="absolute inset-0" style={{ background: "var(--gradient-media)" }} />
+        <div className="relative h-72 bg-brand">
           <div className="absolute bottom-14 right-6 text-on-media">
             <h1 className="font-display text-4xl font-extrabold">Diwan.</h1>
             <p className="mt-1 text-sm opacity-90">عالمك المباشر، في جيبك ✨</p>
@@ -54,7 +51,7 @@ function LoginPage() {
               {mode === "phone" ? <Phone className="size-5 text-muted-foreground" /> : <Mail className="size-5 text-muted-foreground" />}
               <input
                 type={mode === "phone" ? "tel" : "email"}
-                placeholder={mode === "phone" ? "05xxxxxxxx" : "you@example.com"}
+                placeholder={mode === "phone" ? "رقم الهاتف" : "البريد الإلكتروني"}
                 className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
             </label>
