@@ -1,4 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useAccount } from "@/hooks/use-account";
+import { supabase } from "@/lib/supabase";
 import {
   LogOut,
   Settings, Gem, Coins, ChevronLeft, Crown, Wallet, Gift, User,
@@ -37,6 +39,8 @@ const menu = [
 ];
 
 function MePage() {
+  const { session, profile, ready } = useAccount();
+  const navigate = useNavigate();
   return (
     <AppScreen>
         {/* ── الغلاف ── */}
@@ -65,9 +69,23 @@ function MePage() {
               <User className="size-10" aria-hidden="true" />
             </span>
             <div className="min-w-0 flex-1 pt-1">
-              <h1 className="font-display text-xl font-extrabold">حسابي</h1>
-              <p className="mt-2 text-sm text-muted-foreground">لم يتم تسجيل الدخول</p>
-              <Button asChild className="mt-3 rounded-full"><Link to="/login">تسجيل الدخول</Link></Button>
+              {session ? (
+                <>
+                  <h1 className="truncate font-display text-xl font-extrabold">
+                    {profile?.display_name ?? (session.user.user_metadata?.["display_name"] as string | undefined) ?? 'حسابي'}
+                  </h1>
+                  <p className="mt-1 truncate text-sm text-muted-foreground" dir="ltr">{session.user.email}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {profile ? <>المعرّف: <span dir="ltr" className="font-semibold text-foreground">{profile.public_id}</span></> : 'المعرّف غير متوفر بعد'}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1 className="font-display text-xl font-extrabold">حسابي</h1>
+                  <p className="mt-2 text-sm text-muted-foreground">{ready ? 'لم يتم تسجيل الدخول' : '…'}</p>
+                  {ready && <Button asChild className="mt-3 rounded-full"><Link to="/login">تسجيل الدخول</Link></Button>}
+                </>
+              )}
             </div>
           </div>
         </section>
@@ -135,15 +153,18 @@ function MePage() {
           ))}
         </ul>
 
-        <Link
-          to="/login"
-          className="mx-4 mt-4 flex w-[calc(100%-2rem)] items-center gap-3 rounded-[1.5rem] border bg-card px-4 py-3.5 text-destructive transition hover:bg-destructive/10"
-        >
-          <span className="grid size-9 place-items-center rounded-xl bg-destructive/10">
-            <LogOut className="size-[18px]" />
-          </span>
-          <span className="flex-1 text-sm font-bold">تسجيل الخروج</span>
-        </Link>
+        {session && (
+          <Button
+            variant="ghost"
+            onClick={async () => { await supabase.auth.signOut(); navigate({ to: '/login' }); }}
+            className="h-auto mx-4 mt-4 flex w-[calc(100%-2rem)] items-center justify-start gap-3 rounded-[1.5rem] border bg-card px-4 py-3.5 text-destructive transition hover:bg-destructive/10"
+          >
+            <span className="grid size-9 place-items-center rounded-xl bg-destructive/10">
+              <LogOut className="size-[18px]" />
+            </span>
+            <span className="flex-1 text-start text-sm font-bold">تسجيل الخروج</span>
+          </Button>
+        )}
 
         <p className="mt-5 text-center text-[11px] text-muted-foreground">voli</p>
 

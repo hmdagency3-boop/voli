@@ -18,4 +18,5 @@
 - [x] Prepare starter SQL with profiles, private sequential UIDs, random seven-digit public IDs, follows, streams, and direct messages.
 - [x] Prepare sign-in and signup forms with display name and email, without a username field.
 - [x] Verify form validation and SQL account rules.
-- [ ] Connect and verify real signup, sign-in, and sign-out (blocked until the user connects their external project).
+- [x] Wire signup, sign-in, and sign-out to the user's external project.
+- [ ] Apply sql/voli-starter.sql in the project's SQL Editor (needs the user; tables are missing).

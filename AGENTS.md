@@ -31,4 +31,4 @@ use the editor.
 
 - Use AppScreen for application pages so viewport sizing, internal scrolling, and stationary navigation remain consistent across routes.
 - Keep starter external database SQL in sql/ and verify account identity and RLS with PGlite; never expose the private internal UID schema to clients.
-- AccountForm shares login and signup validation; authentication remains unavailable until the external integration generates its client, avoiding fake sessions or invented connection settings.
+- AccountForm shares login and signup validation and talks to the user's own external project through src/lib/supabase.ts (publishable key only, RLS enforces access); signup with no session means email confirmation is required, never a signed-in redirect.
