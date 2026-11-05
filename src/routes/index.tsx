@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Diwan — بثوث مباشرة ترفيهية" },
-      { name: "description", content: "تابع البثوث المباشرة على Diwan." },
-      { property: "og:title", content: "Diwan — بثوث مباشرة ترفيهية" },
-      { property: "og:description", content: "تابع البثوث المباشرة على Diwan." },
+      { title: "voli — بثوث مباشرة ترفيهية" },
+      { name: "description", content: "تابع البثوث المباشرة على voli." },
+      { property: "og:title", content: "voli — بثوث مباشرة ترفيهية" },
+      { property: "og:description", content: "تابع البثوث المباشرة على voli." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -28,7 +28,7 @@ function Index() {
         <header className="flex items-center justify-between px-5 pt-6">
           <div>
             <p className="text-sm text-muted-foreground">أهلاً بك</p>
-            <h1 className="font-display text-3xl font-extrabold">Diwan<span className="text-primary">.</span></h1>
+            <h1 className="font-display text-3xl font-extrabold">voli<span className="text-primary">.</span></h1>
           </div>
           <div className="flex gap-2">
             <Button variant="secondary" size="icon" disabled aria-label="البحث" className="size-11 rounded-full"><Search /></Button>

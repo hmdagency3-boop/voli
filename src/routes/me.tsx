@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/me")({
   head: () => ({
     meta: [
-      { title: "حسابي — Diwan" },
-      { name: "description", content: "ملفك الشخصي على Diwan: مستواك، محفظتك، متابعينك وإعداداتك." },
-      { property: "og:title", content: "حسابي — Diwan" },
-      { property: "og:description", content: "ملفك الشخصي على Diwan." },
+      { title: "حسابي — voli" },
+      { name: "description", content: "ملفك الشخصي على voli: مستواك، محفظتك، متابعينك وإعداداتك." },
+      { property: "og:title", content: "حسابي — voli" },
+      { property: "og:description", content: "ملفك الشخصي على voli." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -146,7 +146,7 @@ function MePage() {
           <span className="flex-1 text-sm font-bold">تسجيل الخروج</span>
         </Link>
 
-        <p className="mt-5 text-center text-[11px] text-muted-foreground">Diwan</p>
+        <p className="mt-5 text-center text-[11px] text-muted-foreground">voli</p>
 
         <BottomNav />
       </main>

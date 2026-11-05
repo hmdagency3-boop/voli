@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/chat")({
   head: () => ({
     meta: [
-      { title: "الدردشات — Diwan" },
-      { name: "description", content: "رسائلك ومحادثاتك على Diwan." },
-      { property: "og:title", content: "الدردشات — Diwan" },
-      { property: "og:description", content: "رسائلك ومحادثاتك على Diwan." },
+      { title: "الدردشات — voli" },
+      { name: "description", content: "رسائلك ومحادثاتك على voli." },
+      { property: "og:title", content: "الدردشات — voli" },
+      { property: "og:description", content: "رسائلك ومحادثاتك على voli." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

@@ -5,10 +5,10 @@ import { Eye, EyeOff, Lock, Phone, Mail } from "lucide-react";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "تسجيل الدخول — Diwan" },
-      { name: "description", content: "سجّل دخولك إلى Diwan وتابع البثوث المباشرة وأصدقاءك." },
-      { property: "og:title", content: "تسجيل الدخول — Diwan" },
-      { property: "og:description", content: "سجّل دخولك إلى Diwan." },
+      { title: "تسجيل الدخول — voli" },
+      { name: "description", content: "سجّل دخولك إلى voli وتابع البثوث المباشرة وأصدقاءك." },
+      { property: "og:title", content: "تسجيل الدخول — voli" },
+      { property: "og:description", content: "سجّل دخولك إلى voli." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -25,7 +25,7 @@ function LoginPage() {
       <main className="relative mx-auto min-h-screen max-w-md overflow-hidden bg-background md:min-h-[860px] md:rounded-[2.5rem] md:border md:shadow-soft">
         <div className="relative h-72 bg-brand">
           <div className="absolute bottom-14 right-6 text-on-media">
-            <h1 className="font-display text-4xl font-extrabold">Diwan.</h1>
+            <h1 className="font-display text-4xl font-extrabold">voli.</h1>
             <p className="mt-1 text-sm opacity-90">عالمك المباشر، في جيبك ✨</p>
           </div>
         </div>
