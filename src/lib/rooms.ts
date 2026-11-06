@@ -1,1 +1,153 @@
-aW1wb3J0IHsgc3VwYWJhc2UgfSBmcm9tICdAL2xpYi9zdXBhYmFzZSc7CmltcG9ydCB0aGVtZURlZmF1bHRBcnQgZnJvbSAnQC9hc3NldHMvcm9vbXMvdGhlbWUtZGVmYXVsdC53ZWJwJzsKCi8qKiBDaG9pY2VzIHRoZSByb29tIHNldHVwIHBhZ2Ugb2ZmZXJzOyBtdXN0IG1hdGNoIHRoZSBjaGVja3MgaW4gc3VwYWJhc2UvMDA0X3Jvb21zLnNxbC4gKi8KZXhwb3J0IGNvbnN0IFNFQVRfQ09VTlRTID0gWzUsIDEwLCAxNSwgMjBdIGFzIGNvbnN0OwpleHBvcnQgdHlwZSBTZWF0Q291bnQgPSAodHlwZW9mIFNFQVRfQ09VTlRTKVtudW1iZXJdOwpleHBvcnQgY29uc3QgUk9PTV9USEVNRVMgPSBbCiAgeyBrZXk6ICdkZWZhdWx0JywgbGFiZWw6ICfYp9mE2YXYqNiv2KbZiicsIGNsYXNzTmFtZTogJ2JnLXJvb20tZGVmYXVsdCBiZy1jb3ZlciBiZy1jZW50ZXInLCBpbWFnZTogdGhlbWVEZWZhdWx0QXJ0IGFzIHN0cmluZyB8IHVuZGVmaW5lZCB9LAogIHsga2V5OiAnbmlnaHQnLCBsYWJlbDogJ9mE2YrZhCcsIGNsYXNzTmFtZTogJ2JnLXJvb20tbmlnaHQnLCBpbWFnZTogdW5kZWZpbmVkIGFzIHN0cmluZyB8IHVuZGVmaW5lZCB9LAogIHsga2V5OiAndmlvbGV0JywgbGFiZWw6ICfYqNmG2YHYs9is2YonLCBjbGFzc05hbWU6ICdiZy1yb29tLXZpb2xldCcsIGltYWdlOiB1bmRlZmluZWQgYXMgc3RyaW5nIHwgdW5kZWZpbmVkIH0sCiAgeyBrZXk6ICdnb2xkJywgbGFiZWw6ICfYsNmH2KjZiicsIGNsYXNzTmFtZTogJ2JnLXJvb20tZ29sZCcsIGltYWdlOiB1bmRlZmluZWQgYXMgc3RyaW5nIHwgdW5kZWZpbmVkIH0sCl0gYXMgY29uc3Q7CmV4cG9ydCB0eXBlIFJvb21UaGVtZSA9ICh0eXBlb2YgUk9PTV9USEVNRVMpW251bWJlcl1bJ2tleSddOwpleHBvcnQgY29uc3Qgcm9vbVRoZW1lID0gKGtleTogc3RyaW5nIHwgdW5kZWZpbmVkKSA9PiBST09NX1RIRU1FUy5maW5kKCh0KSA9PiB0LmtleSA9PT0ga2V5KSA/PyBST09NX1RIRU1FU1swXTsKLyoqIElubGluZSBiYWNrZ3JvdW5kIGZvciBhIHRoZW1lIHRoYXQgaGFzIGl0cyBvd24gcGljdHVyZSAoa2VwdCBvdmVyIHRoZSBncmFkaWVudCBmYWxsYmFjaykuICovCmV4cG9ydCBjb25zdCByb29tVGhlbWVTdHlsZSA9IChrZXk6IHN0cmluZyB8IHVuZGVmaW5lZCkgPT4gewogIGNvbnN0IGltZyA9IHJvb21UaGVtZShrZXkpLmltYWdlOwogIHJldHVybiBpbWcgPyB7IGJhY2tncm91bmRJbWFnZTogYHVybCgke2ltZ30pYCB9IDogdW5kZWZpbmVkOwp9OwoKZXhwb3J0IGNvbnN0IEFOTk9VTkNFTUVOVF9NQVggPSAzMDA7CmV4cG9ydCBjb25zdCBST09NX05BTUVfTUFYID0gNDA7Ci8qKiBSb29tIHBhc3N3b3JkOiA04oCTOCBkaWdpdHMuICovCmV4cG9ydCBjb25zdCBpc1Jvb21QYXNzd29yZCA9ICh2OiBzdHJpbmcpID0+IC9eWzAtOV17NCw4fSQvLnRlc3Qodik7Ci8qKiBIb3cgb2Z0ZW4gdGhlIHJvb20gcGFnZSByZWZyZXNoZXMgYW5kIHNheXMgInN0aWxsIGhlcmUiICh0aGUgZGF0YWJhc2UgZm9yZ2V0cyBtZW1iZXJzIGFmdGVyIDYwIHMpLiAqLwpleHBvcnQgY29uc3QgUk9PTV9QT0xMX01TID0gMzAwMDsKZXhwb3J0IGNvbnN0IFJPT01fSEVBUlRCRUFUX01TID0gMjAwMDA7CgpleHBvcnQgdHlwZSBSb29tID0gewogIGlkOiBzdHJpbmc7IG93bmVyX2lkOiBzdHJpbmc7IG5hbWU6IHN0cmluZzsgY292ZXJfdXJsOiBzdHJpbmcgfCBudWxsOyBtb2RlOiAnYXVkaW8nIHwgJ3ZpZGVvJzsKICBzZWF0X2NvdW50OiBTZWF0Q291bnQ7IHRoZW1lOiBSb29tVGhlbWU7IGFubm91bmNlbWVudDogc3RyaW5nOyBsb2NrZWQ6IGJvb2xlYW47IGlzX2xpdmU6IGJvb2xlYW47Cn07CmV4cG9ydCB0eXBlIFJvb21QZXJzb24gPSB7CiAgYXV0aF9pZDogc3RyaW5nOyBwdWJsaWNfaWQ6IG51bWJlcjsgZGlzcGxheV9uYW1lOiBzdHJpbmc7IGF2YXRhcl91cmw6IHN0cmluZyB8IG51bGw7CiAgc3BlY2lhbF9pZD86IHN0cmluZyB8IG51bGw7IHZpcF9sZXZlbD86IG51bWJlcjsgdmlwX2V4cGlyZXNfYXQ/OiBzdHJpbmcgfCBudWxsOwp9OwpleHBvcnQgdHlwZSBTZWF0ID0geyBzZWF0X25vOiBudW1iZXI7IGF1dGhfaWQ6IHN0cmluZyB9OwpleHBvcnQgdHlwZSBSb29tTWVzc2FnZSA9IHsgaWQ6IHN0cmluZzsgc2VuZGVyX2lkOiBzdHJpbmc7IGJvZHk6IHN0cmluZzsgY3JlYXRlZF9hdDogc3RyaW5nIH07Cgpjb25zdCBST09NX0NPTFMgPSAnaWQsIG93bmVyX2lkLCBuYW1lLCBjb3Zlcl91cmwsIG1vZGUsIHNlYXRfY291bnQsIHRoZW1lLCBhbm5vdW5jZW1lbnQsIGxvY2tlZCwgaXNfbGl2ZSc7CgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0TXlSb29tKG1lOiBzdHJpbmcpOiBQcm9taXNlPFJvb20gfCBudWxsPiB7CiAgY29uc3QgeyBkYXRhLCBlcnJvciB9ID0gYXdhaXQgc3VwYWJhc2UuZnJvbSgncm9vbXMnKS5zZWxlY3QoUk9PTV9DT0xTKS5lcSgnb3duZXJfaWQnLCBtZSkubWF5YmVTaW5nbGUoKTsKICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogIHJldHVybiAoZGF0YSBhcyBSb29tIHwgbnVsbCkgPz8gbnVsbDsKfQoKLyoqIE93bmVyIHByb2ZpbGUgKyByb29tLCBsb29rZWQgdXAgYnkgdGhlIG93bmVyJ3MgcHVibGljIElELiAqLwpleHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0Um9vbUJ5T3duZXJQdWJsaWNJZChwdWJsaWNJZDogbnVtYmVyKTogUHJvbWlzZTx7IG93bmVyOiBSb29tUGVyc29uOyByb29tOiBSb29tIHwgbnVsbCB9IHwgbnVsbD4gewogIGNvbnN0IG93bmVyID0gKGF3YWl0IGdldFBlb3BsZSh7IHB1YmxpY19pZDogcHVibGljSWQgfSkpWzBdOwogIGlmICghb3duZXIpIHJldHVybiBudWxsOwogIGNvbnN0IHsgZGF0YSwgZXJyb3IgfSA9IGF3YWl0IHN1cGFiYXNlLmZyb20oJ3Jvb21zJykuc2VsZWN0KFJPT01fQ09MUykuZXEoJ293bmVyX2lkJywgb3duZXIuYXV0aF9pZCkubWF5YmVTaW5nbGUoKTsKICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogIHJldHVybiB7IG93bmVyLCByb29tOiAoZGF0YSBhcyBSb29tIHwgbnVsbCkgPz8gbnVsbCB9Owp9CgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0TGl2ZVJvb21zKCk6IFByb21pc2U8KFJvb20gJiB7IG93bmVyOiBSb29tUGVyc29uIHwgdW5kZWZpbmVkOyBvbmxpbmU6IG51bWJlciB9KVtdPiB7CiAgY29uc3QgeyBkYXRhLCBlcnJvciB9ID0gYXdhaXQgc3VwYWJhc2UuZnJvbSgncm9vbXMnKS5zZWxlY3QoUk9PTV9DT0xTKS5lcSgnaXNfbGl2ZScsIHRydWUpLm9yZGVyKCd1cGRhdGVkX2F0JywgeyBhc2NlbmRpbmc6IGZhbHNlIH0pLmxpbWl0KDUwKTsKICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogIGNvbnN0IHJvb21zID0gKGRhdGEgPz8gW10pIGFzIFJvb21bXTsKICBpZiAoIXJvb21zLmxlbmd0aCkgcmV0dXJuIFtdOwogIGNvbnN0IG93bmVycyA9IGF3YWl0IGdldFBlb3BsZSh7IGlkczogcm9vbXMubWFwKChyKSA9PiByLm93bmVyX2lkKSB9KTsKICBjb25zdCBzaW5jZSA9IG5ldyBEYXRlKERhdGUubm93KCkgLSA2MF8wMDApLnRvSVNPU3RyaW5nKCk7CiAgY29uc3QgeyBkYXRhOiBtZW1iZXJzIH0gPSBhd2FpdCBzdXBhYmFzZS5mcm9tKCdyb29tX21lbWJlcnMnKS5zZWxlY3QoJ3Jvb21faWQnKS5pbigncm9vbV9pZCcsIHJvb21zLm1hcCgocikgPT4gci5pZCkpLmd0KCdsYXN0X3NlZW4nLCBzaW5jZSk7CiAgcmV0dXJuIHJvb21zLm1hcCgocikgPT4gKHsKICAgIC4uLnIsCiAgICBvd25lcjogb3duZXJzLmZpbmQoKG8pID0+IG8uYXV0aF9pZCA9PT0gci5vd25lcl9pZCksCiAgICBvbmxpbmU6IChtZW1iZXJzID8/IFtdKS5maWx0ZXIoKG0pID0+IG0ucm9vbV9pZCA9PT0gci5pZCkubGVuZ3RoLAogIH0pKTsKfQoKLyoqIFByb2ZpbGVzIGJ5IGF1dGggSURzIG9yIG9uZSBwdWJsaWMgSUQ7IGZhbGxzIGJhY2sgd2hlbiBWSVAgLyBzcGVjaWFsIElEIGNvbHVtbnMgYXJlIG1pc3NpbmcuICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBnZXRQZW9wbGUoYnk6IHsgaWRzOiBzdHJpbmdbXSB9IHwgeyBwdWJsaWNfaWQ6IG51bWJlciB9KTogUHJvbWlzZTxSb29tUGVyc29uW10+IHsKICBpZiAoJ2lkcycgaW4gYnkgJiYgYnkuaWRzLmxlbmd0aCA9PT0gMCkgcmV0dXJuIFtdOwogIGNvbnN0IHJ1biA9IChjb2xzOiBzdHJpbmcpID0+IHsKICAgIGNvbnN0IHEgPSBzdXBhYmFzZS5mcm9tKCdwcm9maWxlcycpLnNlbGVjdChjb2xzKTsKICAgIHJldHVybiAnaWRzJyBpbiBieSA/IHEuaW4oJ2F1dGhfaWQnLCBieS5pZHMpIDogcS5lcSgncHVibGljX2lkJywgYnkucHVibGljX2lkKTsKICB9OwogIGxldCByZXMgPSBhd2FpdCBydW4oJ2F1dGhfaWQsIHB1YmxpY19pZCwgZGlzcGxheV9uYW1lLCBhdmF0YXJfdXJsLCBzcGVjaWFsX2lkLCB2aXBfbGV2ZWwsIHZpcF9leHBpcmVzX2F0Jyk7CiAgaWYgKHJlcy5lcnJvcikgcmVzID0gYXdhaXQgcnVuKCdhdXRoX2lkLCBwdWJsaWNfaWQsIGRpc3BsYXlfbmFtZSwgYXZhdGFyX3VybCcpOwogIGlmIChyZXMuZXJyb3IpIHRocm93IHJlcy5lcnJvcjsKICByZXR1cm4gKHJlcy5kYXRhID8/IFtdKSBhcyB1bmtub3duIGFzIFJvb21QZXJzb25bXTsKfQoKZXhwb3J0IHR5cGUgU3RhcnRQYXJ0eSA9IHsKICBuYW1lOiBzdHJpbmc7IGNvdmVyVXJsOiBzdHJpbmcgfCBudWxsOyBtb2RlOiAnYXVkaW8nIHwgJ3ZpZGVvJzsgc2VhdENvdW50OiBTZWF0Q291bnQ7IHRoZW1lOiBSb29tVGhlbWU7CiAgYW5ub3VuY2VtZW50OiBzdHJpbmc7IC8qKiBudWxsIGtlZXBzIHRoZSBsb2NrLCAnJyByZW1vdmVzIGl0LCBkaWdpdHMgc2V0IGl0LiAqLyBwYXNzd29yZDogc3RyaW5nIHwgbnVsbDsKfTsKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHN0YXJ0UGFydHkoczogU3RhcnRQYXJ0eSk6IFByb21pc2U8c3RyaW5nPiB7CiAgY29uc3QgeyBkYXRhLCBlcnJvciB9ID0gYXdhaXQgc3VwYWJhc2UucnBjKCdzdGFydF9wYXJ0eScsIHsKICAgIHBfbmFtZTogcy5uYW1lLCBwX2NvdmVyX3VybDogcy5jb3ZlclVybCA/PyAnJywgcF9tb2RlOiBzLm1vZGUsIHBfc2VhdF9jb3VudDogcy5zZWF0Q291bnQsCiAgICBwX3RoZW1lOiBzLnRoZW1lLCBwX2Fubm91bmNlbWVudDogcy5hbm5vdW5jZW1lbnQsIHBfcGFzc3dvcmQ6IHMucGFzc3dvcmQsCiAgfSk7CiAgaWYgKGVycm9yKSB0aHJvdyBlcnJvcjsKICByZXR1cm4gZGF0YSBhcyBzdHJpbmc7Cn0KCmV4cG9ydCB0eXBlIEVudGVyUmVzdWx0ID0gJ29rJyB8ICdub3RfZm91bmQnIHwgJ25vdF9saXZlJyB8ICd3cm9uZ19wYXNzd29yZCcgfCAna2lja2VkJzsKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGVudGVyUm9vbShyb29tSWQ6IHN0cmluZywgcGFzc3dvcmQ/OiBzdHJpbmcpOiBQcm9taXNlPEVudGVyUmVzdWx0PiB7CiAgY29uc3QgeyBkYXRhLCBlcnJvciB9ID0gYXdhaXQgc3VwYWJhc2UucnBjKCdlbnRlcl9yb29tJywgeyBwX3Jvb206IHJvb21JZCwgcF9wYXNzd29yZDogcGFzc3dvcmQgPz8gbnVsbCB9KTsKICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogIHJldHVybiBkYXRhIGFzIEVudGVyUmVzdWx0Owp9CgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0Um9vbVN0YXRlKHJvb21JZDogc3RyaW5nKSB7CiAgY29uc3Qgc2luY2UgPSBuZXcgRGF0ZShEYXRlLm5vdygpIC0gNjBfMDAwKS50b0lTT1N0cmluZygpOwogIGNvbnN0IFttZW1iZXJzLCBzZWF0cywgbWVzc2FnZXMsIHJvb20sIGNvaW5zXSA9IGF3YWl0IFByb21pc2UuYWxsKFsKICAgIHN1cGFiYXNlLmZyb20oJ3Jvb21fbWVtYmVycycpLnNlbGVjdCgnYXV0aF9pZCcpLmVxKCdyb29tX2lkJywgcm9vbUlkKS5ndCgnbGFzdF9zZWVuJywgc2luY2UpLAogICAgc3VwYWJhc2UuZnJvbSgncm9vbV9zZWF0cycpLnNlbGVjdCgnc2VhdF9ubywgYXV0aF9pZCcpLmVxKCdyb29tX2lkJywgcm9vbUlkKSwKICAgIHN1cGFiYXNlLmZyb20oJ3Jvb21fbWVzc2FnZXMnKS5zZWxlY3QoJ2lkLCBzZW5kZXJfaWQsIGJvZHksIGNyZWF0ZWRfYXQnKS5lcSgncm9vbV9pZCcsIHJvb21JZCkub3JkZXIoJ2NyZWF0ZWRfYXQnLCB7IGFzY2VuZGluZzogdHJ1ZSB9KS5saW1pdCgyMDApLAogICAgc3VwYWJhc2UuZnJvbSgncm9vbXMnKS5zZWxlY3QoUk9PTV9DT0xTKS5lcSgnaWQnLCByb29tSWQpLm1heWJlU2luZ2xlKCksCiAgICAvLyBDb2lucyB0aHJvd24gaW4gdGhpcyByb29tICgwMDVfcm9vbV9jb2lucy5zcWwpLiBNaXNzaW5nIGZ1bmN0aW9uID0gbm8gY29pbnMgeWV0LCBuZXZlciBhIGJyb2tlbiBwYWdlLgogICAgc3VwYWJhc2UucnBjKCdyb29tX2NvaW5zX3RvdGFsJywgeyBwX3Jvb206IHJvb21JZCB9KSwKICBdKTsKICByZXR1cm4gewogICAgbWVtYmVyczogKChtZW1iZXJzLmRhdGEgPz8gW10pIGFzIHsgYXV0aF9pZDogc3RyaW5nIH1bXSkubWFwKChtKSA9PiBtLmF1dGhfaWQpLAogICAgc2VhdHM6IChzZWF0cy5kYXRhID8/IFtdKSBhcyBTZWF0W10sCiAgICBtZXNzYWdlczogKG1lc3NhZ2VzLmRhdGEgPz8gW10pIGFzIFJvb21NZXNzYWdlW10sCiAgICByb29tOiAocm9vbS5kYXRhIGFzIFJvb20gfCBudWxsKSA/PyBudWxsLAogICAgY29pbnM6IE51bWJlcihjb2lucy5kYXRhID8/IDApIHx8IDAsCiAgfTsKfQoKY29uc3QgY2FsbCA9IGFzeW5jIChmbjogc3RyaW5nLCBhcmdzOiBSZWNvcmQ8c3RyaW5nLCB1bmtub3duPikgPT4gewogIGNvbnN0IHsgZGF0YSwgZXJyb3IgfSA9IGF3YWl0IHN1cGFiYXNlLnJwYyhmbiwgYXJncyk7CiAgaWYgKGVycm9yKSB0aHJvdyBlcnJvcjsKICByZXR1cm4gZGF0YSBhcyBzdHJpbmcgfCBudWxsOwp9OwpleHBvcnQgY29uc3QgdGFrZVNlYXQgPSAocm9vbUlkOiBzdHJpbmcsIHNlYXQ6IG51bWJlcikgPT4gY2FsbCgndGFrZV9zZWF0JywgeyBwX3Jvb206IHJvb21JZCwgcF9zZWF0OiBzZWF0IH0pOwpleHBvcnQgY29uc3QgbGVhdmVTZWF0ID0gKHJvb21JZDogc3RyaW5nKSA9PiBjYWxsKCdsZWF2ZV9zZWF0JywgeyBwX3Jvb206IHJvb21JZCB9KTsKZXhwb3J0IGNvbnN0IGxlYXZlUm9vbSA9IChyb29tSWQ6IHN0cmluZykgPT4gY2FsbCgnbGVhdmVfcm9vbScsIHsgcF9yb29tOiByb29tSWQgfSk7CmV4cG9ydCBjb25zdCBlbmRQYXJ0eSA9ICgpID0+IGNhbGwoJ2VuZF9wYXJ0eScsIHt9KTsKZXhwb3J0IGNvbnN0IHNlbmRSb29tTWVzc2FnZSA9IChyb29tSWQ6IHN0cmluZywgYm9keTogc3RyaW5nKSA9PiBjYWxsKCdzZW5kX3Jvb21fbWVzc2FnZScsIHsgcF9yb29tOiByb29tSWQsIHBfYm9keTogYm9keSB9KTsKZXhwb3J0IGNvbnN0IGtpY2tGcm9tUm9vbSA9IChyb29tSWQ6IHN0cmluZywgdGFyZ2V0OiBzdHJpbmcpID0+IGNhbGwoJ2tpY2tfZnJvbV9yb29tJywgeyBwX3Jvb206IHJvb21JZCwgcF90YXJnZXQ6IHRhcmdldCB9KTsKCi8qKiBDb2lucyBhIG1lbWJlciBtYXkgdGhyb3cgaW4gb25lIGdvICgwMDVfcm9vbV9jb2lucy5zcWwpLiAqLwpleHBvcnQgY29uc3QgQ09JTl9BTU9VTlRTID0gWzEwLCA1MCwgMTAwLCA1MDBdIGFzIGNvbnN0OwoKLyoqIFRocm93cyBjb2lucyBpbnRvIHRoZSByb29tIG91dCBvZiB0aGUgbWVtYmVyJ3Mgb3duIGJhbGFuY2UuIFJldHVybnMgdGhlIHJvb20ncyBuZXcgdG90YWwuICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiB0aHJvd1Jvb21Db2lucyhyb29tSWQ6IHN0cmluZywgYW1vdW50OiBudW1iZXIpOiBQcm9taXNlPG51bWJlcj4gewogIGNvbnN0IHsgZGF0YSwgZXJyb3IgfSA9IGF3YWl0IHN1cGFiYXNlLnJwYygndGhyb3dfcm9vbV9jb2lucycsIHsgcF9yb29tOiByb29tSWQsIHBfYW1vdW50OiBhbW91bnQgfSk7CiAgaWYgKGVycm9yKSB0aHJvdyBlcnJvcjsKICByZXR1cm4gTnVtYmVyKGRhdGEgPz8gMCkgfHwgMDsKfQoKLyoqIFVwbG9hZHMgYSBjb3ZlciBwaWN0dXJlIGludG8gdGhlIG1lbWJlcidzIG93biBmb2xkZXIgYW5kIHJldHVybnMgaXRzIHB1YmxpYyBhZGRyZXNzLiAqLwpleHBvcnQgYXN5bmMgZnVuY3Rpb24gdXBsb2FkUm9vbUNvdmVyKG1lOiBzdHJpbmcsIGZpbGU6IEZpbGUpOiBQcm9taXNlPHN0cmluZz4gewogIGNvbnN0IGV4dCA9IChmaWxlLm5hbWUuc3BsaXQoJy4nKS5wb3AoKSB8fCAnanBnJykudG9Mb3dlckNhc2UoKS5yZXBsYWNlKC9bXmEtejAtOV0vZywgJycpIHx8ICdqcGcnOwogIGNvbnN0IHBhdGggPSBgJHttZX0vY292ZXItJHtEYXRlLm5vdygpfS4ke2V4dH1gOwogIGNvbnN0IHsgZXJyb3IgfSA9IGF3YWl0IHN1cGFiYXNlLnN0b3JhZ2UuZnJvbSgncm9vbS1jb3ZlcnMnKS51cGxvYWQocGF0aCwgZmlsZSwgeyB1cHNlcnQ6IHRydWUsIGNvbnRlbnRUeXBlOiBmaWxlLnR5cGUgfSk7CiAgaWYgKGVycm9yKSB0aHJvdyBlcnJvcjsKICByZXR1cm4gc3VwYWJhc2Uuc3RvcmFnZS5mcm9tKCdyb29tLWNvdmVycycpLmdldFB1YmxpY1VybChwYXRoKS5kYXRhLnB1YmxpY1VybDsKfQo=
+import { supabase } from '@/lib/supabase';
+import themeDefaultArt from '@/assets/rooms/theme-default.webp';
+
+/** Choices the room setup page offers; must match the checks in supabase/004_rooms.sql. */
+export const SEAT_COUNTS = [5, 10, 15, 20] as const;
+export type SeatCount = (typeof SEAT_COUNTS)[number];
+export const ROOM_THEMES = [
+  { key: 'default', label: 'المبدئي', className: 'bg-room-default bg-cover bg-center', image: themeDefaultArt as string | undefined },
+  { key: 'night', label: 'ليل', className: 'bg-room-night', image: undefined as string | undefined },
+  { key: 'violet', label: 'بنفسجي', className: 'bg-room-violet', image: undefined as string | undefined },
+  { key: 'gold', label: 'ذهبي', className: 'bg-room-gold', image: undefined as string | undefined },
+] as const;
+export type RoomTheme = (typeof ROOM_THEMES)[number]['key'];
+export const roomTheme = (key: string | undefined) => ROOM_THEMES.find((t) => t.key === key) ?? ROOM_THEMES[0];
+/** Inline background for a theme that has its own picture (kept over the gradient fallback). */
+export const roomThemeStyle = (key: string | undefined) => {
+  const img = roomTheme(key).image;
+  return img ? { backgroundImage: `url(${img})` } : undefined;
+};
+
+export const ANNOUNCEMENT_MAX = 300;
+export const ROOM_NAME_MAX = 40;
+/** Room password: 4–8 digits. */
+export const isRoomPassword = (v: string) => /^[0-9]{4,8}$/.test(v);
+/** How often the room page refreshes and says "still here" (the database forgets members after 60 s). */
+export const ROOM_POLL_MS = 3000;
+export const ROOM_HEARTBEAT_MS = 20000;
+
+export type Room = {
+  id: string; owner_id: string; name: string; cover_url: string | null; mode: 'audio' | 'video';
+  seat_count: SeatCount; theme: RoomTheme; announcement: string; locked: boolean; is_live: boolean;
+};
+export type RoomPerson = {
+  auth_id: string; public_id: number; display_name: string; avatar_url: string | null;
+  special_id?: string | null; vip_level?: number; vip_expires_at?: string | null;
+};
+export type Seat = { seat_no: number; auth_id: string };
+export type RoomMessage = { id: string; sender_id: string; body: string; created_at: string };
+
+const ROOM_COLS = 'id, owner_id, name, cover_url, mode, seat_count, theme, announcement, locked, is_live';
+
+export async function getMyRoom(me: string): Promise<Room | null> {
+  const { data, error } = await supabase.from('rooms').select(ROOM_COLS).eq('owner_id', me).maybeSingle();
+  if (error) throw error;
+  return (data as Room | null) ?? null;
+}
+
+/** Owner profile + room, looked up by the owner's public ID. */
+export async function getRoomByOwnerPublicId(publicId: number): Promise<{ owner: RoomPerson; room: Room | null } | null> {
+  const owner = (await getPeople({ public_id: publicId }))[0];
+  if (!owner) return null;
+  const { data, error } = await supabase.from('rooms').select(ROOM_COLS).eq('owner_id', owner.auth_id).maybeSingle();
+  if (error) throw error;
+  return { owner, room: (data as Room | null) ?? null };
+}
+
+export async function getLiveRooms(): Promise<(Room & { owner: RoomPerson | undefined; online: number })[]> {
+  const { data, error } = await supabase.from('rooms').select(ROOM_COLS).eq('is_live', true).order('updated_at', { ascending: false }).limit(50);
+  if (error) throw error;
+  const rooms = (data ?? []) as Room[];
+  if (!rooms.length) return [];
+  const owners = await getPeople({ ids: rooms.map((r) => r.owner_id) });
+  const since = new Date(Date.now() - 60_000).toISOString();
+  const { data: members } = await supabase.from('room_members').select('room_id').in('room_id', rooms.map((r) => r.id)).gt('last_seen', since);
+  return rooms.map((r) => ({
+    ...r,
+    owner: owners.find((o) => o.auth_id === r.owner_id),
+    online: (members ?? []).filter((m) => m.room_id === r.id).length,
+  }));
+}
+
+/** Profiles by auth IDs or one public ID; falls back when VIP / special ID columns are missing. */
+export async function getPeople(by: { ids: string[] } | { public_id: number }): Promise<RoomPerson[]> {
+  if ('ids' in by && by.ids.length === 0) return [];
+  const run = (cols: string) => {
+    const q = supabase.from('profiles').select(cols);
+    return 'ids' in by ? q.in('auth_id', by.ids) : q.eq('public_id', by.public_id);
+  };
+  let res = await run('auth_id, public_id, display_name, avatar_url, special_id, vip_level, vip_expires_at');
+  if (res.error) res = await run('auth_id, public_id, display_name, avatar_url');
+  if (res.error) throw res.error;
+  return (res.data ?? []) as unknown as RoomPerson[];
+}
+
+export type StartParty = {
+  name: string; coverUrl: string | null; mode: 'audio' | 'video'; seatCount: SeatCount; theme: RoomTheme;
+  announcement: string; /** null keeps the lock, '' removes it, digits set it. */ password: string | null;
+};
+export async function startParty(s: StartParty): Promise<string> {
+  const { data, error } = await supabase.rpc('start_party', {
+    p_name: s.name, p_cover_url: s.coverUrl ?? '', p_mode: s.mode, p_seat_count: s.seatCount,
+    p_theme: s.theme, p_announcement: s.announcement, p_password: s.password,
+  });
+  if (error) throw error;
+  return data as string;
+}
+
+export type EnterResult = 'ok' | 'not_found' | 'not_live' | 'wrong_password' | 'kicked';
+export async function enterRoom(roomId: string, password?: string): Promise<EnterResult> {
+  const { data, error } = await supabase.rpc('enter_room', { p_room: roomId, p_password: password ?? null });
+  if (error) throw error;
+  return data as EnterResult;
+}
+
+export async function getRoomState(roomId: string) {
+  const since = new Date(Date.now() - 60_000).toISOString();
+  const [members, seats, messages, room, coins] = await Promise.all([
+    supabase.from('room_members').select('auth_id').eq('room_id', roomId).gt('last_seen', since),
+    supabase.from('room_seats').select('seat_no, auth_id').eq('room_id', roomId),
+    supabase.from('room_messages').select('id, sender_id, body, created_at').eq('room_id', roomId).order('created_at', { ascending: true }).limit(200),
+    supabase.from('rooms').select(ROOM_COLS).eq('id', roomId).maybeSingle(),
+    // Coins thrown in this room (005_room_coins.sql). Missing function = no coins yet, never a broken page.
+    supabase.rpc('room_coins_total', { p_room: roomId }),
+  ]);
+  return {
+    members: ((members.data ?? []) as { auth_id: string }[]).map((m) => m.auth_id),
+    seats: (seats.data ?? []) as Seat[],
+    messages: (messages.data ?? []) as RoomMessage[],
+    room: (room.data as Room | null) ?? null,
+    coins: Number(coins.data ?? 0) || 0,
+  };
+}
+
+const call = async (fn: string, args: Record<string, unknown>) => {
+  const { data, error } = await supabase.rpc(fn, args);
+  if (error) throw error;
+  return data as string | null;
+};
+export const takeSeat = (roomId: string, seat: number) => call('take_seat', { p_room: roomId, p_seat: seat });
+export const leaveSeat = (roomId: string) => call('leave_seat', { p_room: roomId });
+export const leaveRoom = (roomId: string) => call('leave_room', { p_room: roomId });
+export const endParty = () => call('end_party', {});
+export const sendRoomMessage = (roomId: string, body: string) => call('send_room_message', { p_room: roomId, p_body: body });
+export const kickFromRoom = (roomId: string, target: string) => call('kick_from_room', { p_room: roomId, p_target: target });
+
+/** Coins a member may throw in one go (005_room_coins.sql). */
+export const COIN_AMOUNTS = [10, 50, 100, 500] as const;
+
+/** Throws coins into the room out of the member's own balance. Returns the room's new total. */
+export async function throwRoomCoins(roomId: string, amount: number): Promise<number> {
+  const { data, error } = await supabase.rpc('throw_room_coins', { p_room: roomId, p_amount: amount });
+  if (error) throw error;
+  return Number(data ?? 0) || 0;
+}
+
+/** Uploads a cover picture into the member's own folder and returns its public address. */
+export async function uploadRoomCover(me: string, file: File): Promise<string> {
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+  const path = `${me}/cover-${Date.now()}.${ext}`;
+  const { error } = await supabase.storage.from('room-covers').upload(path, file, { upsert: true, contentType: file.type });
+  if (error) throw error;
+  return supabase.storage.from('room-covers').getPublicUrl(path).data.publicUrl;
+}

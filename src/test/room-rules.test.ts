@@ -1,1 +1,118 @@
-Ly8gQHZpdGVzdC1lbnZpcm9ubWVudCBub2RlCmltcG9ydCB7IHJlYWRGaWxlU3luYyB9IGZyb20gJ25vZGU6ZnMnOwppbXBvcnQgdHlwZSB7IFBHbGl0ZSB9IGZyb20gJ0BlbGVjdHJpYy1zcWwvcGdsaXRlJzsKaW1wb3J0IHsgYmVmb3JlQWxsLCBhZnRlckFsbCwgZGVzY3JpYmUsIGl0LCBleHBlY3QgfSBmcm9tICd2aXRlc3QnOwppbXBvcnQgeyBzdXBhYmFzZUxpa2UsIGFkZFVzZXIsIGFzVXNlciB9IGZyb20gJy4vc3VwYWJhc2UtbGlrZSc7Cgpjb25zdCBmaWxlcyA9IFsnc3FsL3ZvbGktc3RhcnRlci5zcWwnLCAnc3VwYWJhc2UvMDAxX2xldmVscy5zcWwnLCAnc3VwYWJhc2UvMDAyX3NwZWNpYWxfaWQuc3FsJywgJ3N1cGFiYXNlLzAwM192aXAuc3FsJywgJ3N1cGFiYXNlLzAwNF9yb29tcy5zcWwnLCAnc3VwYWJhc2UvMDA1X3Jvb21fY29pbnMuc3FsJ10KICAubWFwKChmKSA9PiByZWFkRmlsZVN5bmMoZiwgJ3V0ZjgnKSk7CmNvbnN0IHV1aWQgPSAobjogbnVtYmVyKSA9PiBgMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtJHtTdHJpbmcobikucGFkU3RhcnQoMTIsICcwJyl9YDsKY29uc3QgT1dORVIgPSB1dWlkKDEpLCBHVUVTVCA9IHV1aWQoMiksIE9USEVSID0gdXVpZCgzKTsKCmFzeW5jIGZ1bmN0aW9uIHNldHVwKCkgewogIGNvbnN0IGRiID0gYXdhaXQgc3VwYWJhc2VMaWtlKCk7CiAgZm9yIChjb25zdCBmIG9mIGZpbGVzKSBhd2FpdCBkYi5leGVjKGYpOwogIGZvciAobGV0IGkgPSAxOyBpIDw9IDM7IGkrKykgYXdhaXQgYWRkVXNlcihkYiwgdXVpZChpKSwgYNi52LbZiCAke2l9YCk7CiAgcmV0dXJuIGRiOwp9CmNvbnN0IG9uZSA9IGFzeW5jIDxULD4oZGI6IFBHbGl0ZSwgd2hvOiBzdHJpbmcsIHNxbDogc3RyaW5nLCBwYXJhbXM6IHVua25vd25bXSA9IFtdKSA9PgogIChhd2FpdCBhc1VzZXIoZGIsIHdobywgKCkgPT4gZGIucXVlcnk8eyByOiBUIH0+KHNxbCwgcGFyYW1zKSkpLnJvd3NbMF0hLnI7CmNvbnN0IHN0YXJ0ID0gKGRiOiBQR2xpdGUsIHBhc3N3b3JkOiBzdHJpbmcgfCBudWxsID0gbnVsbCwgc2VhdHMgPSAxMCkgPT4KICBvbmU8c3RyaW5nPihkYiwgT1dORVIsICJzZWxlY3QgcHVibGljLnN0YXJ0X3BhcnR5KCfYsdmI2YUg2KfZhNit2YHZhNipJywgbnVsbCwgJ2F1ZGlvJywgJDEsICdkZWZhdWx0JywgJ9ij2YfZhNin2YsnLCAkMikgYXMgciIsIFtzZWF0cywgcGFzc3dvcmRdKTsKCmRlc2NyaWJlKCdwYXJ0eSByb29tcycsICgpID0+IHsKICBsZXQgZGI6IFBHbGl0ZTsKICBsZXQgcm9vbTogc3RyaW5nOwogIGJlZm9yZUFsbChhc3luYyAoKSA9PiB7IGRiID0gYXdhaXQgc2V0dXAoKTsgcm9vbSA9IGF3YWl0IHN0YXJ0KGRiKTsgfSwgMzAwMDApOwogIGFmdGVyQWxsKGFzeW5jICgpID0+IHsgYXdhaXQgZGIuY2xvc2UoKTsgfSk7CgogIGl0KCdydW5zIGFnYWluIHdpdGhvdXQgZXJyb3JzIGFuZCBrZWVwcyB0aGUgcm9vbScsIGFzeW5jICgpID0+IHsKICAgIGF3YWl0IGRiLmV4ZWMoZmlsZXNbNF0hKTsKICAgIGNvbnN0IHsgcm93cyB9ID0gYXdhaXQgZGIucXVlcnk8eyBuOiBudW1iZXIgfT4oJ3NlbGVjdCBjb3VudCgqKTo6aW50IGFzIG4gZnJvbSBwdWJsaWMucm9vbXMnKTsKICAgIGV4cGVjdChyb3dzWzBdIS5uKS50b0JlKDEpOwogIH0pOwoKICBpdCgnZ2l2ZXMgZWFjaCBtZW1iZXIgb25lIHJvb20sIHJldXNlZCBvbiBldmVyeSBzdGFydCcsIGFzeW5jICgpID0+IHsKICAgIGV4cGVjdChhd2FpdCBzdGFydChkYikpLnRvQmUocm9vbSk7CiAgfSk7CgogIGl0KCdvbmx5IGFsbG93cyA1LCAxMCwgMTUgb3IgMjAgc2VhdHMnLCBhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBleHBlY3Qoc3RhcnQoZGIsIG51bGwsIDEyKSkucmVqZWN0cy50b1Rocm93KCk7CiAgfSk7CgogIGl0KCdtZW1iZXJzIGNhbm5vdCBjaGFuZ2Ugcm9vbSB0YWJsZXMgZGlyZWN0bHknLCBhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBleHBlY3QoYXNVc2VyKGRiLCBHVUVTVCwgKCkgPT4gZGIucXVlcnkoInVwZGF0ZSBwdWJsaWMucm9vbXMgc2V0IG5hbWUgPSAneCciKSkpLnJlamVjdHMudG9UaHJvdygpOwogICAgYXdhaXQgZXhwZWN0KGFzVXNlcihkYiwgR1VFU1QsICgpID0+IGRiLnF1ZXJ5KCdpbnNlcnQgaW50byBwdWJsaWMucm9vbV9zZWF0cyB2YWx1ZXMgKCQxLCAxLCAkMiknLCBbcm9vbSwgR1VFU1RdKSkpLnJlamVjdHMudG9UaHJvdygpOwogICAgYXdhaXQgZXhwZWN0KGFzVXNlcihkYiwgR1VFU1QsICgpID0+IGRiLnF1ZXJ5KCdzZWxlY3QgKiBmcm9tIHB1YmxpYy5yb29tX3NlY3JldHMnKSkpLnJlamVjdHMudG9UaHJvdygpOwogIH0pOwoKICBpdCgnYSBsb2NrZWQgcm9vbSBuZWVkcyB0aGUgcmlnaHQgcGFzc3dvcmQ7IGEgd3Jvbmcgb25lIGlzIHJlZnVzZWQnLCBhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBzdGFydChkYiwgJzEyMzQnKTsKICAgIGV4cGVjdChhd2FpdCBvbmUoZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy5lbnRlcl9yb29tKCQxKSBhcyByJywgW3Jvb21dKSkudG9CZSgnd3JvbmdfcGFzc3dvcmQnKTsKICAgIGV4cGVjdChhd2FpdCBvbmUoZGIsIEdVRVNULCAic2VsZWN0IHB1YmxpYy5lbnRlcl9yb29tKCQxLCAnOTk5OScpIGFzIHIiLCBbcm9vbV0pKS50b0JlKCd3cm9uZ19wYXNzd29yZCcpOwogICAgZXhwZWN0KGF3YWl0IG9uZShkYiwgR1VFU1QsICJzZWxlY3QgcHVibGljLmVudGVyX3Jvb20oJDEsICcxMjM0JykgYXMgciIsIFtyb29tXSkpLnRvQmUoJ29rJyk7CiAgICAvLyBBbHJlYWR5IGluc2lkZTogdGhlIGhlYXJ0YmVhdCBuZWVkcyBubyBwYXNzd29yZC4KICAgIGV4cGVjdChhd2FpdCBvbmUoZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy5lbnRlcl9yb29tKCQxKSBhcyByJywgW3Jvb21dKSkudG9CZSgnb2snKTsKICB9KTsKCiAgaXQoJ2EgcGFzc3dvcmQgbXVzdCBiZSA0IHRvIDggZGlnaXRzJywgYXN5bmMgKCkgPT4gewogICAgYXdhaXQgZXhwZWN0KHN0YXJ0KGRiLCAnMTInKSkucmVqZWN0cy50b1Rocm93KCk7CiAgICBhd2FpdCBleHBlY3Qoc3RhcnQoZGIsICdhYmNkJykpLnJlamVjdHMudG9UaHJvdygpOwogIH0pOwoKICBpdCgncmVtb3ZpbmcgdGhlIGxvY2sgbGV0cyBhbnlvbmUgaW4nLCBhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBzdGFydChkYiwgJycpOwogICAgZXhwZWN0KGF3YWl0IG9uZShkYiwgT1RIRVIsICdzZWxlY3QgcHVibGljLmVudGVyX3Jvb20oJDEpIGFzIHInLCBbcm9vbV0pKS50b0JlKCdvaycpOwogIH0pOwoKICBpdCgnb25lIG1lbWJlciBwZXIgc2VhdCwgb25lIHNlYXQgcGVyIG1lbWJlciwgb25seSBpbnNpZGUgdGhlIHJvb20nLCBhc3luYyAoKSA9PiB7CiAgICBleHBlY3QoYXdhaXQgb25lKGRiLCBHVUVTVCwgJ3NlbGVjdCBwdWJsaWMudGFrZV9zZWF0KCQxLCAzKSBhcyByJywgW3Jvb21dKSkudG9CZSgnb2snKTsKICAgIGV4cGVjdChhd2FpdCBvbmUoZGIsIE9USEVSLCAnc2VsZWN0IHB1YmxpYy50YWtlX3NlYXQoJDEsIDMpIGFzIHInLCBbcm9vbV0pKS50b0JlKCd0YWtlbicpOwogICAgZXhwZWN0KGF3YWl0IG9uZShkYiwgT1RIRVIsICdzZWxlY3QgcHVibGljLnRha2Vfc2VhdCgkMSwgMTEpIGFzIHInLCBbcm9vbV0pKS50b0JlKCdub19zZWF0Jyk7CiAgICBleHBlY3QoYXdhaXQgb25lKGRiLCBHVUVTVCwgJ3NlbGVjdCBwdWJsaWMudGFrZV9zZWF0KCQxLCA1KSBhcyByJywgW3Jvb21dKSkudG9CZSgnb2snKTsKICAgIGNvbnN0IHsgcm93cyB9ID0gYXdhaXQgZGIucXVlcnk8eyBzZWF0X25vOiBudW1iZXIgfT4oJ3NlbGVjdCBzZWF0X25vIGZyb20gcHVibGljLnJvb21fc2VhdHMgd2hlcmUgYXV0aF9pZCA9ICQxJywgW0dVRVNUXSk7CiAgICBleHBlY3Qocm93cy5tYXAoKHIpID0+IHIuc2VhdF9ubykpLnRvRXF1YWwoWzVdKTsKICB9KTsKCiAgaXQoJ2Zld2VyIHNlYXRzIGZyZWVzIHRoZSBzZWF0cyB0aGF0IG5vIGxvbmdlciBleGlzdCcsIGFzeW5jICgpID0+IHsKICAgIGV4cGVjdChhd2FpdCBvbmUoZGIsIE9USEVSLCAnc2VsZWN0IHB1YmxpYy50YWtlX3NlYXQoJDEsIDgpIGFzIHInLCBbcm9vbV0pKS50b0JlKCdvaycpOwogICAgYXdhaXQgc3RhcnQoZGIsIG51bGwsIDUpOwogICAgY29uc3QgeyByb3dzIH0gPSBhd2FpdCBkYi5xdWVyeTx7IHNlYXRfbm86IG51bWJlciB9Pignc2VsZWN0IHNlYXRfbm8gZnJvbSBwdWJsaWMucm9vbV9zZWF0cyBvcmRlciBieSBzZWF0X25vJyk7CiAgICBleHBlY3Qocm93cy5tYXAoKHIpID0+IHIuc2VhdF9ubykpLnRvRXF1YWwoWzVdKTsKICAgIGF3YWl0IHN0YXJ0KGRiLCBudWxsLCAxMCk7CiAgfSk7CgogIGl0KCdvbmx5IG1lbWJlcnMgaW5zaWRlIHRoZSByb29tIGNhbiBjaGF0IGFuZCByZWFkIHRoZSBjaGF0JywgYXN5bmMgKCkgPT4gewogICAgZXhwZWN0KGF3YWl0IG9uZShkYiwgR1VFU1QsICJzZWxlY3QgcHVibGljLnNlbmRfcm9vbV9tZXNzYWdlKCQxLCAn2LPZhNin2YUnKSBhcyByIiwgW3Jvb21dKSkudG9CZSgnb2snKTsKICAgIGF3YWl0IG9uZShkYiwgT1RIRVIsICdzZWxlY3QgcHVibGljLmxlYXZlX3Jvb20oJDEpIGFzIHInLCBbcm9vbV0pOwogICAgZXhwZWN0KGF3YWl0IG9uZShkYiwgT1RIRVIsICJzZWxlY3QgcHVibGljLnNlbmRfcm9vbV9tZXNzYWdlKCQxLCAnaGknKSBhcyByIiwgW3Jvb21dKSkudG9CZSgnbm90X2luX3Jvb20nKTsKICAgIGNvbnN0IHNlZW4gPSBhd2FpdCBhc1VzZXIoZGIsIE9USEVSLCAoKSA9PiBkYi5xdWVyeSgnc2VsZWN0ICogZnJvbSBwdWJsaWMucm9vbV9tZXNzYWdlcycpKTsKICAgIGV4cGVjdChzZWVuLnJvd3MpLnRvSGF2ZUxlbmd0aCgwKTsKICAgIGNvbnN0IGluc2lkZSA9IGF3YWl0IGFzVXNlcihkYiwgR1VFU1QsICgpID0+IGRiLnF1ZXJ5PHsgYm9keTogc3RyaW5nIH0+KCdzZWxlY3QgYm9keSBmcm9tIHB1YmxpYy5yb29tX21lc3NhZ2VzJykpOwogICAgZXhwZWN0KGluc2lkZS5yb3dzLm1hcCgocikgPT4gci5ib2R5KSkudG9FcXVhbChbJ9iz2YTYp9mFJ10pOwogIH0pOwoKICBpdCgndGhlIG93bmVyIGNhbiByZW1vdmUgYSBtZW1iZXIgZm9yIDEwIG1pbnV0ZXM7IG1lbWJlcnMgY2Fubm90IHJlbW92ZSBlYWNoIG90aGVyJywgYXN5bmMgKCkgPT4gewogICAgYXdhaXQgb25lKGRiLCBPVEhFUiwgJ3NlbGVjdCBwdWJsaWMuZW50ZXJfcm9vbSgkMSkgYXMgcicsIFtyb29tXSk7CiAgICBleHBlY3QoYXdhaXQgb25lKGRiLCBHVUVTVCwgJ3NlbGVjdCBwdWJsaWMua2lja19mcm9tX3Jvb20oJDEsICQyKSBhcyByJywgW3Jvb20sIE9USEVSXSkpLnRvQmUoJ25vdF9hbGxvd2VkJyk7CiAgICBleHBlY3QoYXdhaXQgb25lKGRiLCBPV05FUiwgJ3NlbGVjdCBwdWJsaWMua2lja19mcm9tX3Jvb20oJDEsICQyKSBhcyByJywgW3Jvb20sIEdVRVNUXSkpLnRvQmUoJ29rJyk7CiAgICBleHBlY3QoYXdhaXQgb25lKGRiLCBHVUVTVCwgJ3NlbGVjdCBwdWJsaWMuZW50ZXJfcm9vbSgkMSkgYXMgcicsIFtyb29tXSkpLnRvQmUoJ2tpY2tlZCcpOwogICAgY29uc3QgeyByb3dzIH0gPSBhd2FpdCBkYi5xdWVyeTx7IG1pbnM6IG51bWJlciB9PigKICAgICAgInNlbGVjdCByb3VuZChleHRyYWN0KGVwb2NoIGZyb20gdW50aWwgLSBub3coKSkgLyA2MCk6OmludCBhcyBtaW5zIGZyb20gcHVibGljLnJvb21fa2lja3Mgd2hlcmUgYXV0aF9pZCA9ICQxIiwgW0dVRVNUXSk7CiAgICBleHBlY3Qocm93c1swXSEubWlucykudG9CZSgxMCk7CiAgfSk7CgogIGl0KCdub2JvZHkgY2FuIHJlbW92ZSB0aGUgb3duZXInLCBhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBkYi5xdWVyeSgic2VsZWN0IHB1YmxpYy5hZG1pbl9zZXRfcm9sZSgoc2VsZWN0IHB1YmxpY19pZCBmcm9tIHB1YmxpYy5wcm9maWxlcyB3aGVyZSBhdXRoX2lkID0gJDEpLCAnbW9kZXJhdG9yJykiLCBbT1RIRVJdKTsKICAgIGV4cGVjdChhd2FpdCBvbmUoZGIsIE9USEVSLCAnc2VsZWN0IHB1YmxpYy5raWNrX2Zyb21fcm9vbSgkMSwgJDIpIGFzIHInLCBbcm9vbSwgT1dORVJdKSkudG9CZSgnbm90X2FsbG93ZWQnKTsKICB9KTsKCiAgaXQoJ2VuZGluZyB0aGUgcGFydHkgZW1wdGllcyB0aGUgcm9vbSBhbmQgaGlkZXMgaXQnLCBhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBvbmUoZGIsIE9XTkVSLCAnc2VsZWN0IHB1YmxpYy5lbmRfcGFydHkoKSBhcyByJyk7CiAgICBleHBlY3QoYXdhaXQgb25lKGRiLCBPVEhFUiwgJ3NlbGVjdCBwdWJsaWMuZW50ZXJfcm9vbSgkMSkgYXMgcicsIFtyb29tXSkpLnRvQmUoJ25vdF9saXZlJyk7CiAgICBjb25zdCB7IHJvd3MgfSA9IGF3YWl0IGRiLnF1ZXJ5PHsgbjogbnVtYmVyIH0+KCdzZWxlY3QgY291bnQoKik6OmludCBhcyBuIGZyb20gcHVibGljLnJvb21fbWVtYmVycycpOwogICAgZXhwZWN0KHJvd3NbMF0hLm4pLnRvQmUoMCk7CiAgICBjb25zdCB2aXNpYmxlID0gYXdhaXQgYXNVc2VyKGRiLCBPVEhFUiwgKCkgPT4gZGIucXVlcnkoJ3NlbGVjdCAqIGZyb20gcHVibGljLnJvb21zJykpOwogICAgZXhwZWN0KHZpc2libGUucm93cykudG9IYXZlTGVuZ3RoKDApOwogIH0pOwp9KTsK
+// @vitest-environment node
+import { readFileSync } from 'node:fs';
+import type { PGlite } from '@electric-sql/pglite';
+import { beforeAll, afterAll, describe, it, expect } from 'vitest';
+import { supabaseLike, addUser, asUser } from './supabase-like';
+
+const files = ['sql/voli-starter.sql', 'supabase/001_levels.sql', 'supabase/002_special_id.sql', 'supabase/003_vip.sql', 'supabase/004_rooms.sql', 'supabase/005_room_coins.sql']
+  .map((f) => readFileSync(f, 'utf8'));
+const uuid = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
+const OWNER = uuid(1), GUEST = uuid(2), OTHER = uuid(3);
+
+async function setup() {
+  const db = await supabaseLike();
+  for (const f of files) await db.exec(f);
+  for (let i = 1; i <= 3; i++) await addUser(db, uuid(i), `عضو ${i}`);
+  return db;
+}
+const one = async <T,>(db: PGlite, who: string, sql: string, params: unknown[] = []) =>
+  (await asUser(db, who, () => db.query<{ r: T }>(sql, params))).rows[0]!.r;
+const start = (db: PGlite, password: string | null = null, seats = 10) =>
+  one<string>(db, OWNER, "select public.start_party('روم الحفلة', null, 'audio', $1, 'default', 'أهلاً', $2) as r", [seats, password]);
+
+describe('party rooms', () => {
+  let db: PGlite;
+  let room: string;
+  beforeAll(async () => { db = await setup(); room = await start(db); }, 30000);
+  afterAll(async () => { await db.close(); });
+
+  it('runs again without errors and keeps the room', async () => {
+    await db.exec(files[4]!);
+    const { rows } = await db.query<{ n: number }>('select count(*)::int as n from public.rooms');
+    expect(rows[0]!.n).toBe(1);
+  });
+
+  it('gives each member one room, reused on every start', async () => {
+    expect(await start(db)).toBe(room);
+  });
+
+  it('only allows 5, 10, 15 or 20 seats', async () => {
+    await expect(start(db, null, 12)).rejects.toThrow();
+  });
+
+  it('members cannot change room tables directly', async () => {
+    await expect(asUser(db, GUEST, () => db.query("update public.rooms set name = 'x'"))).rejects.toThrow();
+    await expect(asUser(db, GUEST, () => db.query('insert into public.room_seats values ($1, 1, $2)', [room, GUEST]))).rejects.toThrow();
+    await expect(asUser(db, GUEST, () => db.query('select * from public.room_secrets'))).rejects.toThrow();
+  });
+
+  it('a locked room needs the right password; a wrong one is refused', async () => {
+    await start(db, '1234');
+    expect(await one(db, GUEST, 'select public.enter_room($1) as r', [room])).toBe('wrong_password');
+    expect(await one(db, GUEST, "select public.enter_room($1, '9999') as r", [room])).toBe('wrong_password');
+    expect(await one(db, GUEST, "select public.enter_room($1, '1234') as r", [room])).toBe('ok');
+    // Already inside: the heartbeat needs no password.
+    expect(await one(db, GUEST, 'select public.enter_room($1) as r', [room])).toBe('ok');
+  });
+
+  it('a password must be 4 to 8 digits', async () => {
+    await expect(start(db, '12')).rejects.toThrow();
+    await expect(start(db, 'abcd')).rejects.toThrow();
+  });
+
+  it('removing the lock lets anyone in', async () => {
+    await start(db, '');
+    expect(await one(db, OTHER, 'select public.enter_room($1) as r', [room])).toBe('ok');
+  });
+
+  it('one member per seat, one seat per member, only inside the room', async () => {
+    expect(await one(db, GUEST, 'select public.take_seat($1, 3) as r', [room])).toBe('ok');
+    expect(await one(db, OTHER, 'select public.take_seat($1, 3) as r', [room])).toBe('taken');
+    expect(await one(db, OTHER, 'select public.take_seat($1, 11) as r', [room])).toBe('no_seat');
+    expect(await one(db, GUEST, 'select public.take_seat($1, 5) as r', [room])).toBe('ok');
+    const { rows } = await db.query<{ seat_no: number }>('select seat_no from public.room_seats where auth_id = $1', [GUEST]);
+    expect(rows.map((r) => r.seat_no)).toEqual([5]);
+  });
+
+  it('fewer seats frees the seats that no longer exist', async () => {
+    expect(await one(db, OTHER, 'select public.take_seat($1, 8) as r', [room])).toBe('ok');
+    await start(db, null, 5);
+    const { rows } = await db.query<{ seat_no: number }>('select seat_no from public.room_seats order by seat_no');
+    expect(rows.map((r) => r.seat_no)).toEqual([5]);
+    await start(db, null, 10);
+  });
+
+  it('only members inside the room can chat and read the chat', async () => {
+    expect(await one(db, GUEST, "select public.send_room_message($1, 'سلام') as r", [room])).toBe('ok');
+    await one(db, OTHER, 'select public.leave_room($1) as r', [room]);
+    expect(await one(db, OTHER, "select public.send_room_message($1, 'hi') as r", [room])).toBe('not_in_room');
+    const seen = await asUser(db, OTHER, () => db.query('select * from public.room_messages'));
+    expect(seen.rows).toHaveLength(0);
+    const inside = await asUser(db, GUEST, () => db.query<{ body: string }>('select body from public.room_messages'));
+    expect(inside.rows.map((r) => r.body)).toEqual(['سلام']);
+  });
+
+  it('the owner can remove a member for 10 minutes; members cannot remove each other', async () => {
+    await one(db, OTHER, 'select public.enter_room($1) as r', [room]);
+    expect(await one(db, GUEST, 'select public.kick_from_room($1, $2) as r', [room, OTHER])).toBe('not_allowed');
+    expect(await one(db, OWNER, 'select public.kick_from_room($1, $2) as r', [room, GUEST])).toBe('ok');
+    expect(await one(db, GUEST, 'select public.enter_room($1) as r', [room])).toBe('kicked');
+    const { rows } = await db.query<{ mins: number }>(
+      "select round(extract(epoch from until - now()) / 60)::int as mins from public.room_kicks where auth_id = $1", [GUEST]);
+    expect(rows[0]!.mins).toBe(10);
+  });
+
+  it('nobody can remove the owner', async () => {
+    await db.query("select public.admin_set_role((select public_id from public.profiles where auth_id = $1), 'moderator')", [OTHER]);
+    expect(await one(db, OTHER, 'select public.kick_from_room($1, $2) as r', [room, OWNER])).toBe('not_allowed');
+  });
+
+  it('ending the party empties the room and hides it', async () => {
+    await one(db, OWNER, 'select public.end_party() as r');
+    expect(await one(db, OTHER, 'select public.enter_room($1) as r', [room])).toBe('not_live');
+    const { rows } = await db.query<{ n: number }>('select count(*)::int as n from public.room_members');
+    expect(rows[0]!.n).toBe(0);
+    const visible = await asUser(db, OTHER, () => db.query('select * from public.rooms'));
+    expect(visible.rows).toHaveLength(0);
+  });
+});

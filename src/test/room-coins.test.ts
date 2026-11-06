@@ -1,1 +1,76 @@
-Ly8gQHZpdGVzdC1lbnZpcm9ubWVudCBub2RlCmltcG9ydCB7IHJlYWRGaWxlU3luYyB9IGZyb20gJ25vZGU6ZnMnOwppbXBvcnQgdHlwZSB7IFBHbGl0ZSB9IGZyb20gJ0BlbGVjdHJpYy1zcWwvcGdsaXRlJzsKaW1wb3J0IHsgYmVmb3JlQWxsLCBhZnRlckFsbCwgZGVzY3JpYmUsIGl0LCBleHBlY3QgfSBmcm9tICd2aXRlc3QnOwppbXBvcnQgeyBzdXBhYmFzZUxpa2UsIGFkZFVzZXIsIGFzVXNlciB9IGZyb20gJy4vc3VwYWJhc2UtbGlrZSc7Cgpjb25zdCBmaWxlcyA9IFsnc3FsL3ZvbGktc3RhcnRlci5zcWwnLCAnc3VwYWJhc2UvMDAxX2xldmVscy5zcWwnLCAnc3VwYWJhc2UvMDAyX3NwZWNpYWxfaWQuc3FsJywgJ3N1cGFiYXNlLzAwM192aXAuc3FsJywgJ3N1cGFiYXNlLzAwNF9yb29tcy5zcWwnLCAnc3VwYWJhc2UvMDA1X3Jvb21fY29pbnMuc3FsJ10KICAubWFwKChmKSA9PiByZWFkRmlsZVN5bmMoZiwgJ3V0ZjgnKSk7CmNvbnN0IHV1aWQgPSAobjogbnVtYmVyKSA9PiBgMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtJHtTdHJpbmcobikucGFkU3RhcnQoMTIsICcwJyl9YDsKY29uc3QgT1dORVIgPSB1dWlkKDEpLCBHVUVTVCA9IHV1aWQoMiksIE9VVFNJREVSID0gdXVpZCgzKTsKCmFzeW5jIGZ1bmN0aW9uIHNldHVwKCkgewogIGNvbnN0IGRiID0gYXdhaXQgc3VwYWJhc2VMaWtlKCk7CiAgZm9yIChjb25zdCBmIG9mIGZpbGVzKSBhd2FpdCBkYi5leGVjKGYpOwogIGZvciAobGV0IGkgPSAxOyBpIDw9IDM7IGkrKykgYXdhaXQgYWRkVXNlcihkYiwgdXVpZChpKSwgYNi52LbZiCAke2l9YCk7CiAgcmV0dXJuIGRiOwp9CmNvbnN0IG9uZSA9IGFzeW5jIDxULD4oZGI6IFBHbGl0ZSwgd2hvOiBzdHJpbmcsIHNxbDogc3RyaW5nLCBwYXJhbXM6IHVua25vd25bXSA9IFtdKSA9PgogIChhd2FpdCBhc1VzZXIoZGIsIHdobywgKCkgPT4gZGIucXVlcnk8eyByOiBUIH0+KHNxbCwgcGFyYW1zKSkpLnJvd3NbMF0hLnI7CmNvbnN0IHB1YmxpY0lkID0gYXN5bmMgKGRiOiBQR2xpdGUsIHdobzogc3RyaW5nKSA9PgogIChhd2FpdCBkYi5xdWVyeTx7IHB1YmxpY19pZDogbnVtYmVyIH0+KCdzZWxlY3QgcHVibGljX2lkIGZyb20gcHVibGljLnByb2ZpbGVzIHdoZXJlIGF1dGhfaWQgPSAkMScsIFt3aG9dKSkucm93c1swXSEucHVibGljX2lkOwpjb25zdCBnaXZlID0gYXN5bmMgKGRiOiBQR2xpdGUsIHdobzogc3RyaW5nLCBhbW91bnQ6IG51bWJlcikgPT4KICBkYi5xdWVyeSgnc2VsZWN0IHB1YmxpYy5hZG1pbl9hZGRfY29pbnMoJDEsICQyKScsIFthd2FpdCBwdWJsaWNJZChkYiwgd2hvKSwgYW1vdW50XSk7CmNvbnN0IGJhbGFuY2UgPSBhc3luYyAoZGI6IFBHbGl0ZSwgd2hvOiBzdHJpbmcpID0+CiAgKGF3YWl0IGRiLnF1ZXJ5PHsgY29pbnM6IG51bWJlciB9Pignc2VsZWN0IGNvaW5zOjppbnQgYXMgY29pbnMgZnJvbSBwdWJsaWMucHJvZmlsZXMgd2hlcmUgYXV0aF9pZCA9ICQxJywgW3dob10pKS5yb3dzWzBdIS5jb2luczsKCmRlc2NyaWJlKCdjb2lucyB0aHJvd24gaW4gYSByb29tJywgKCkgPT4gewogIGxldCBkYjogUEdsaXRlOwogIGxldCByb29tOiBzdHJpbmc7CiAgYmVmb3JlQWxsKGFzeW5jICgpID0+IHsKICAgIGRiID0gYXdhaXQgc2V0dXAoKTsKICAgIHJvb20gPSBhd2FpdCBvbmU8c3RyaW5nPihkYiwgT1dORVIsICJzZWxlY3QgcHVibGljLnN0YXJ0X3BhcnR5KCfYsdmI2YUg2KfZhNit2YHZhNipJywgbnVsbCwgJ2F1ZGlvJywgMTAsICdkZWZhdWx0JywgJ9ij2YfZhNin2YsnLCBudWxsKSBhcyByIik7CiAgICBhd2FpdCBvbmUoZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy5lbnRlcl9yb29tKCQxKSBhcyByJywgW3Jvb21dKTsKICAgIGF3YWl0IGdpdmUoZGIsIEdVRVNULCAxMDAwKTsKICB9LCAzMDAwMCk7CiAgYWZ0ZXJBbGwoYXN5bmMgKCkgPT4geyBhd2FpdCBkYi5jbG9zZSgpOyB9KTsKCiAgaXQoJ21vdmVzIGNvaW5zIGZyb20gdGhlIG1lbWJlciBiYWxhbmNlIGludG8gdGhlIHJvb20gdG90YWwnLCBhc3luYyAoKSA9PiB7CiAgICBleHBlY3QoYXdhaXQgb25lPG51bWJlcj4oZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy50aHJvd19yb29tX2NvaW5zKCQxLCAxMDApOjppbnQgYXMgcicsIFtyb29tXSkpLnRvQmUoMTAwKTsKICAgIGV4cGVjdChhd2FpdCBiYWxhbmNlKGRiLCBHVUVTVCkpLnRvQmUoOTAwKTsKICAgIGV4cGVjdChhd2FpdCBvbmU8bnVtYmVyPihkYiwgR1VFU1QsICdzZWxlY3QgcHVibGljLnRocm93X3Jvb21fY29pbnMoJDEsIDUwKTo6aW50IGFzIHInLCBbcm9vbV0pKS50b0JlKDE1MCk7CiAgICBleHBlY3QoYXdhaXQgYmFsYW5jZShkYiwgR1VFU1QpKS50b0JlKDg1MCk7CiAgICBleHBlY3QoYXdhaXQgb25lPG51bWJlcj4oZGIsIE9XTkVSLCAnc2VsZWN0IHB1YmxpYy5yb29tX2NvaW5zX3RvdGFsKCQxKTo6aW50IGFzIHInLCBbcm9vbV0pKS50b0JlKDE1MCk7CiAgfSk7CgogIGl0KCdyZWZ1c2VzIGEgdGhyb3cgYmlnZ2VyIHRoYW4gdGhlIGJhbGFuY2UgYW5kIGtlZXBzIHRoZSBjb2lucycsIGFzeW5jICgpID0+IHsKICAgIGF3YWl0IGV4cGVjdChvbmUoZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy50aHJvd19yb29tX2NvaW5zKCQxLCAxMDAwMDApOjppbnQgYXMgcicsIFtyb29tXSkpLnJlamVjdHMudG9UaHJvdygvTm90IGVub3VnaCBjb2lucy8pOwogICAgZXhwZWN0KGF3YWl0IGJhbGFuY2UoZGIsIEdVRVNUKSkudG9CZSg4NTApOwogICAgZXhwZWN0KGF3YWl0IG9uZTxudW1iZXI+KGRiLCBHVUVTVCwgJ3NlbGVjdCBwdWJsaWMucm9vbV9jb2luc190b3RhbCgkMSk6OmludCBhcyByJywgW3Jvb21dKSkudG9CZSgxNTApOwogIH0pOwoKICBpdCgnbm9ib2R5IG91dHNpZGUgdGhlIHJvb20gY2FuIHRocm93IGNvaW5zIG9yIHJlYWQgdGhlIHRvdGFsJywgYXN5bmMgKCkgPT4gewogICAgYXdhaXQgZ2l2ZShkYiwgT1VUU0lERVIsIDUwMCk7CiAgICBhd2FpdCBleHBlY3Qob25lKGRiLCBPVVRTSURFUiwgJ3NlbGVjdCBwdWJsaWMudGhyb3dfcm9vbV9jb2lucygkMSwgMTApOjppbnQgYXMgcicsIFtyb29tXSkpLnJlamVjdHMudG9UaHJvdygvTm90IGluc2lkZSB0aGUgcm9vbS8pOwogICAgZXhwZWN0KGF3YWl0IG9uZTxudW1iZXIgfCBudWxsPihkYiwgT1VUU0lERVIsICdzZWxlY3QgcHVibGljLnJvb21fY29pbnNfdG90YWwoJDEpOjppbnQgYXMgcicsIFtyb29tXSkpLnRvQmUobnVsbCk7CiAgICBleHBlY3QoYXdhaXQgYmFsYW5jZShkYiwgT1VUU0lERVIpKS50b0JlKDUwMCk7CiAgfSk7CgogIGl0KCdhbiBhbW91bnQgbXVzdCBiZSBhdCBsZWFzdCAxIGFuZCBubyBtb3JlIHRoYW4gdGhlIGNhcCcsIGFzeW5jICgpID0+IHsKICAgIGF3YWl0IGV4cGVjdChvbmUoZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy50aHJvd19yb29tX2NvaW5zKCQxLCAwKTo6aW50IGFzIHInLCBbcm9vbV0pKS5yZWplY3RzLnRvVGhyb3coL2F0IGxlYXN0IDEvKTsKICAgIGF3YWl0IGV4cGVjdChvbmUoZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy50aHJvd19yb29tX2NvaW5zKCQxLCAxMDAwMDAxKTo6aW50IGFzIHInLCBbcm9vbV0pKS5yZWplY3RzLnRvVGhyb3coL1RvbyBtYW55IGNvaW5zLyk7CiAgICBleHBlY3QoYXdhaXQgb25lPG51bWJlcj4oZGIsIEdVRVNULCAnc2VsZWN0IHB1YmxpYy5yb29tX2NvaW5zX3RvdGFsKCQxKTo6aW50IGFzIHInLCBbcm9vbV0pKS50b0JlKDE1MCk7CiAgfSk7CgogIGl0KCdtZW1iZXJzIGNhbiBuZXZlciByZWFkIG9yIHdyaXRlIHRoZSBjb2lucyB0YWJsZSBkaXJlY3RseScsIGFzeW5jICgpID0+IHsKICAgIGF3YWl0IGV4cGVjdChhc1VzZXIoZGIsIEdVRVNULCAoKSA9PiBkYi5xdWVyeSgnc2VsZWN0ICogZnJvbSBwdWJsaWMucm9vbV9jb2lucycpKSkucmVqZWN0cy50b1Rocm93KCk7CiAgICBhd2FpdCBleHBlY3QoYXNVc2VyKGRiLCBHVUVTVCwgKCkgPT4KICAgICAgZGIucXVlcnkoJ2luc2VydCBpbnRvIHB1YmxpYy5yb29tX2NvaW5zKHJvb21faWQsIHNlbmRlcl9pZCwgYW1vdW50KSB2YWx1ZXMgKCQxLCAkMiwgNSknLCBbcm9vbSwgR1VFU1RdKSkpLnJlamVjdHMudG9UaHJvdygpOwogIH0pOwoKICBpdCgncnVucyBhZ2FpbiB3aXRob3V0IGVycm9ycyBhbmQga2VlcHMgdGhlIHRocm93cycsIGFzeW5jICgpID0+IHsKICAgIGF3YWl0IGRiLmV4ZWMoZmlsZXNbNV0hKTsKICAgIGNvbnN0IHsgcm93cyB9ID0gYXdhaXQgZGIucXVlcnk8eyBuOiBudW1iZXIgfT4oJ3NlbGVjdCBjb3VudCgqKTo6aW50IGFzIG4gZnJvbSBwdWJsaWMucm9vbV9jb2lucycpOwogICAgZXhwZWN0KHJvd3NbMF0hLm4pLnRvQmUoMik7CiAgfSk7Cn0pOwo=
+// @vitest-environment node
+import { readFileSync } from 'node:fs';
+import type { PGlite } from '@electric-sql/pglite';
+import { beforeAll, afterAll, describe, it, expect } from 'vitest';
+import { supabaseLike, addUser, asUser } from './supabase-like';
+
+const files = ['sql/voli-starter.sql', 'supabase/001_levels.sql', 'supabase/002_special_id.sql', 'supabase/003_vip.sql', 'supabase/004_rooms.sql', 'supabase/005_room_coins.sql']
+  .map((f) => readFileSync(f, 'utf8'));
+const uuid = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
+const OWNER = uuid(1), GUEST = uuid(2), OUTSIDER = uuid(3);
+
+async function setup() {
+  const db = await supabaseLike();
+  for (const f of files) await db.exec(f);
+  for (let i = 1; i <= 3; i++) await addUser(db, uuid(i), `عضو ${i}`);
+  return db;
+}
+const one = async <T,>(db: PGlite, who: string, sql: string, params: unknown[] = []) =>
+  (await asUser(db, who, () => db.query<{ r: T }>(sql, params))).rows[0]!.r;
+const publicId = async (db: PGlite, who: string) =>
+  (await db.query<{ public_id: number }>('select public_id from public.profiles where auth_id = $1', [who])).rows[0]!.public_id;
+const give = async (db: PGlite, who: string, amount: number) =>
+  db.query('select public.admin_add_coins($1, $2)', [await publicId(db, who), amount]);
+const balance = async (db: PGlite, who: string) =>
+  (await db.query<{ coins: number }>('select coins::int as coins from public.profiles where auth_id = $1', [who])).rows[0]!.coins;
+
+describe('coins thrown in a room', () => {
+  let db: PGlite;
+  let room: string;
+  beforeAll(async () => {
+    db = await setup();
+    room = await one<string>(db, OWNER, "select public.start_party('روم الحفلة', null, 'audio', 10, 'default', 'أهلاً', null) as r");
+    await one(db, GUEST, 'select public.enter_room($1) as r', [room]);
+    await give(db, GUEST, 1000);
+  }, 30000);
+  afterAll(async () => { await db.close(); });
+
+  it('moves coins from the member balance into the room total', async () => {
+    expect(await one<number>(db, GUEST, 'select public.throw_room_coins($1, 100)::int as r', [room])).toBe(100);
+    expect(await balance(db, GUEST)).toBe(900);
+    expect(await one<number>(db, GUEST, 'select public.throw_room_coins($1, 50)::int as r', [room])).toBe(150);
+    expect(await balance(db, GUEST)).toBe(850);
+    expect(await one<number>(db, OWNER, 'select public.room_coins_total($1)::int as r', [room])).toBe(150);
+  });
+
+  it('refuses a throw bigger than the balance and keeps the coins', async () => {
+    await expect(one(db, GUEST, 'select public.throw_room_coins($1, 100000)::int as r', [room])).rejects.toThrow(/Not enough coins/);
+    expect(await balance(db, GUEST)).toBe(850);
+    expect(await one<number>(db, GUEST, 'select public.room_coins_total($1)::int as r', [room])).toBe(150);
+  });
+
+  it('nobody outside the room can throw coins or read the total', async () => {
+    await give(db, OUTSIDER, 500);
+    await expect(one(db, OUTSIDER, 'select public.throw_room_coins($1, 10)::int as r', [room])).rejects.toThrow(/Not inside the room/);
+    expect(await one<number | null>(db, OUTSIDER, 'select public.room_coins_total($1)::int as r', [room])).toBe(null);
+    expect(await balance(db, OUTSIDER)).toBe(500);
+  });
+
+  it('an amount must be at least 1 and no more than the cap', async () => {
+    await expect(one(db, GUEST, 'select public.throw_room_coins($1, 0)::int as r', [room])).rejects.toThrow(/at least 1/);
+    await expect(one(db, GUEST, 'select public.throw_room_coins($1, 1000001)::int as r', [room])).rejects.toThrow(/Too many coins/);
+    expect(await one<number>(db, GUEST, 'select public.room_coins_total($1)::int as r', [room])).toBe(150);
+  });
+
+  it('members can never read or write the coins table directly', async () => {
+    await expect(asUser(db, GUEST, () => db.query('select * from public.room_coins'))).rejects.toThrow();
+    await expect(asUser(db, GUEST, () =>
+      db.query('insert into public.room_coins(room_id, sender_id, amount) values ($1, $2, 5)', [room, GUEST]))).rejects.toThrow();
+  });
+
+  it('runs again without errors and keeps the throws', async () => {
+    await db.exec(files[5]!);
+    const { rows } = await db.query<{ n: number }>('select count(*)::int as n from public.room_coins');
+    expect(rows[0]!.n).toBe(2);
+  });
+});

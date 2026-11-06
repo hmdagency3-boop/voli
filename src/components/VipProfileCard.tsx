@@ -1,1 +1,39 @@
-aW1wb3J0IHR5cGUgeyBSZWFjdE5vZGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB0eXBlIHsgUHJvZmlsZUNhcmRBcnQgfSBmcm9tICJAL2xpYi92aXAtYXJ0IjsKaW1wb3J0IHsgY24gfSBmcm9tICJAL2xpYi91dGlscyI7CgovKioKICogVGhlIHBvcHBlZC11cCBwcm9maWxlIGNhcmQgZm9yIGEgVklQIHRpZXI6IHRoZSB0aWVyJ3MgcGljdHVyZSBpcyB0aGUgd2hvbGUgY2FyZCBhbmQgdGhlCiAqIG1lbWJlcidzIGRldGFpbHMgc2l0IGluc2lkZSB0aGUgcGljdHVyZSdzIGVtcHR5IGlubmVyIHdpbmRvdyAoaW5zZXRzIGxpdmUgaW4gdmlwLWFydCksCiAqIHNvIHRoZSBhcnR3b3JrJ3MgZnJhbWUsIGNyZXN0IGFuZCBkcmFnb25zIHN0YXkgaW50YWN0IGF0IGV2ZXJ5IHNjcmVlbiBzaXplLgogKi8KZXhwb3J0IGZ1bmN0aW9uIFZpcFByb2ZpbGVDYXJkKHsgYXJ0LCBhdmF0YXIsIG5hbWUsIGlkLCBjaGlsZHJlbiwgY2xhc3NOYW1lIH06IHsKICBhcnQ6IFByb2ZpbGVDYXJkQXJ0OwogIGF2YXRhcjogUmVhY3ROb2RlOwogIG5hbWU6IHN0cmluZzsKICBpZDogc3RyaW5nOwogIGNoaWxkcmVuPzogUmVhY3ROb2RlOwogIGNsYXNzTmFtZT86IHN0cmluZzsKfSkgewogIGNvbnN0IHsgbGVmdCwgcmlnaHQsIHRvcCwgYm90dG9tIH0gPSBhcnQuY2FudmFzOwogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT17Y24oInJlbGF0aXZlIHctZnVsbCIsIGNsYXNzTmFtZSl9IHN0eWxlPXt7IGFzcGVjdFJhdGlvOiBTdHJpbmcoYXJ0LmFzcGVjdCkgfX0+CiAgICAgIDxpbWcgc3JjPXthcnQudXJsfSBhbHQ9IiIgY2xhc3NOYW1lPSJhYnNvbHV0ZSBpbnNldC0wIHNpemUtZnVsbCBvYmplY3QtY29udGFpbiIgLz4KICAgICAgPGRpdgogICAgICAgIGNsYXNzTmFtZT0iYWJzb2x1dGUgZmxleCBmbGV4LWNvbCBpdGVtcy1jZW50ZXIgdGV4dC1jZW50ZXIiCiAgICAgICAgc3R5bGU9e3sgbGVmdDogYCR7bGVmdH0lYCwgcmlnaHQ6IGAke3JpZ2h0fSVgLCB0b3A6IGAke3RvcH0lYCwgYm90dG9tOiBgJHtib3R0b219JWAgfX0KICAgICAgPgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJhc3BlY3Qtc3F1YXJlIHctWzQwJV0gc2hyaW5rLTAgb3ZlcmZsb3ctaGlkZGVuIHJvdW5kZWQtZnVsbCBzaGFkb3ctWzBfMF8xNnB4Xy00cHhdIHNoYWRvdy1yYW5rLWdvbGQvNjAgcmluZy0yIHJpbmctcmFuay1nb2xkLzcwIj4KICAgICAgICAgIHthdmF0YXJ9CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTIgdy1mdWxsIG1pbi13LTAiPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9InRydW5jYXRlIGZvbnQtZGlzcGxheSB0ZXh0LWJhc2UgZm9udC1leHRyYWJvbGQgdGV4dC1yYW5rLWdvbGQgW3RleHQtc2hhZG93OjBfMXB4XzJweF9va2xjaCgwLjFfMC4wM181MC8wLjkpXSI+CiAgICAgICAgICAgIHtuYW1lfQogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibXQtMC41IHRleHQtWzExcHhdIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCIgZGlyPSJsdHIiPklEOntpZH08L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICB7Y2hpbGRyZW4gPyA8ZGl2IGNsYXNzTmFtZT0ibXQtYXV0byBncmlkIHctZnVsbCBnYXAtMS41IHBiLTEiPntjaGlsZHJlbn08L2Rpdj4gOiBudWxsfQogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICk7Cn0K
+import type { ReactNode } from "react";
+import type { ProfileCardArt } from "@/lib/vip-art";
+import { cn } from "@/lib/utils";
+
+/**
+ * The popped-up profile card for a VIP tier: the tier's picture is the whole card and the
+ * member's details sit inside the picture's empty inner window (insets live in vip-art),
+ * so the artwork's frame, crest and dragons stay intact at every screen size.
+ */
+export function VipProfileCard({ art, avatar, name, id, children, className }: {
+  art: ProfileCardArt;
+  avatar: ReactNode;
+  name: string;
+  id: string;
+  children?: ReactNode;
+  className?: string;
+}) {
+  const { left, right, top, bottom } = art.canvas;
+  return (
+    <div className={cn("relative w-full", className)} style={{ aspectRatio: String(art.aspect) }}>
+      <img src={art.url} alt="" className="absolute inset-0 size-full object-contain" />
+      <div
+        className="absolute flex flex-col items-center text-center"
+        style={{ left: `${left}%`, right: `${right}%`, top: `${top}%`, bottom: `${bottom}%` }}
+      >
+        <div className="aspect-square w-[40%] shrink-0 overflow-hidden rounded-full shadow-[0_0_16px_-4px] shadow-rank-gold/60 ring-2 ring-rank-gold/70">
+          {avatar}
+        </div>
+        <div className="mt-2 w-full min-w-0">
+          <div className="truncate font-display text-base font-extrabold text-rank-gold [text-shadow:0_1px_2px_oklch(0.1_0.03_50/0.9)]">
+            {name}
+          </div>
+          <div className="mt-0.5 text-[11px] text-muted-foreground" dir="ltr">ID:{id}</div>
+        </div>
+        {children ? <div className="mt-auto grid w-full gap-1.5 px-[9%] pb-1">{children}</div> : null}
+      </div>
+    </div>
+  );
+}

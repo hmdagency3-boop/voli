@@ -1,1 +1,71 @@
-IyBSZW1vdmUgZmljdGlvbmFsIGRhdGEKLSBbeF0gUmVtb3ZlIHNhbXBsZSBzdHJlYW1zLCBzdG9yaWVzLCBldmVudHMsIGFuZCBub3RpZmljYXRpb25zLgotIFt4XSBSZW1vdmUgc2FtcGxlIGNoYXRzIGFuZCBvbmxpbmUgcGVvcGxlLgotIFt4XSBSZW1vdmUgZmFicmljYXRlZCBwcm9maWxlIGlkZW50aXR5LCBzdGF0cywgbGV2ZWxzLCBhbmQgYmFsYW5jZXMuCi0gW3hdIFJlbW92ZSBzYW1wbGUgcGhvdG9ncmFwaHMgYW5kIHJldmlldyByZW1haW5pbmcgcGFnZXMuCi0gW3hdIFZlcmlmeSBlbXB0eSBwYWdlcywgbmF2aWdhdGlvbiwgYW5kIHRlc3RzLgoKIyBSZW5hbWUgYXBwbGljYXRpb24KLSBbeF0gQ2hhbmdlIHRoZSBhcHBsaWNhdGlvbiBuYW1lIHRvIHZvbGkgaW5zaWRlIGFsbCBwYWdlcyBhbmQgcGFnZSB0aXRsZXMuCi0gW3hdIENvbmZpcm0gbm8gb2xkIGFwcGxpY2F0aW9uIG5hbWUgcmVtYWlucyBpbiBwcm9qZWN0IHNvdXJjZS4KCiMgQ29uc2lzdGVudCBzY3JlZW4gc2l6ZXMKLSBbeF0gVXNlIGEgc2hhcmVkIHNjcmVlbi1zaXplZCBsYXlvdXQgYWNyb3NzIGFsbCBwYWdlcy4KLSBbeF0gU2Nyb2xsIGxvbmcgY29udGVudCBpbnNpZGUgdGhlIHNjcmVlbiB3aXRoIHN0YXRpb25hcnkgYm90dG9tIG5hdmlnYXRpb24uCi0gW3hdIFZlcmlmeSBwYWdlIGRpbWVuc2lvbnMgYW5kIHNjcm9sbGluZyBvbiBwaG9uZSBhbmQgZGVza3RvcC4KCiMgRXh0ZXJuYWwgYWNjb3VudCBzZXR1cAotIFt4XSBQcmVwYXJlIHN0YXJ0ZXIgU1FMIHdpdGggcHJvZmlsZXMsIHByaXZhdGUgc2VxdWVudGlhbCBVSURzLCByYW5kb20gc2V2ZW4tZGlnaXQgcHVibGljIElEcywgZm9sbG93cywgc3RyZWFtcywgYW5kIGRpcmVjdCBtZXNzYWdlcy4KLSBbeF0gUHJlcGFyZSBzaWduLWluIGFuZCBzaWdudXAgZm9ybXMgd2l0aCBkaXNwbGF5IG5hbWUgYW5kIGVtYWlsLCB3aXRob3V0IGEgdXNlcm5hbWUgZmllbGQuCi0gW3hdIFZlcmlmeSBmb3JtIHZhbGlkYXRpb24gYW5kIFNRTCBhY2NvdW50IHJ1bGVzLgotIFt4XSBXaXJlIHNpZ251cCwgc2lnbi1pbiwgYW5kIHNpZ24tb3V0IHRvIHRoZSB1c2VyJ3MgZXh0ZXJuYWwgcHJvamVjdC4KLSBbIF0gQXBwbHkgc3FsL3ZvbGktc3RhcnRlci5zcWwgaW4gdGhlIHByb2plY3QncyBTUUwgRWRpdG9yIChuZWVkcyB0aGUgdXNlcikuCgojIFJlLXJ1bm5hYmxlIHN0YXJ0ZXIgU1FMCi0gW3hdIE1ha2Ugc3FsL3ZvbGktc3RhcnRlci5zcWwgc2FmZSB0byBydW4gcmVwZWF0ZWRseTsgYWRkIGJpbyBhbmQgdXBkYXRlZF9hdCB0byBleGlzdGluZyBwcm9maWxlcy4KLSBbeF0gTW92ZSBhY2NvdW50X3VpZHMgdG8gcHVibGljIChmdWxseSBjbG9zZWQgdG8gY2xpZW50cykgYW5kIHVzZSBwdWJsaWMuaGFuZGxlX25ld191c2VyIHRyaWdnZXIuCi0gW3hdIFJlZnJlc2ggZm9sbG93cywgc3RyZWFtcywgbWVzc2FnZXMgcG9saWNpZXM7IHZlcmlmeSB3aXRoIFBHbGl0ZSB0ZXN0cyAoZnJlc2gsIHJlcnVuLCBvbGRlciBzY2hlbWEpLgoKIyBMZXZlbHMKLSBbeF0gQ2hhcmlzbWEgKGRpYW1vbmRzIHJlY2VpdmVkKSBhbmQgd2VhbHRoIChjb2lucyBzcGVudCkgbGV2ZWxzLCAxMDAgZWFjaCwgcGxhY2Vob2xkZXIgdG90YWxzIGluIFNRTC4KLSBbeF0gU2hvdyBib3RoIGxldmVscyB3aXRoIHByb2dyZXNzIG9uIHRoZSBwcm9maWxlLgotIFsgXSBSdW4gc3VwYWJhc2UvMDAxX2xldmVscy5zcWwgaW4gdGhlIFNRTCBFZGl0b3IgKG5lZWRzIHRoZSB1c2VyKS4KLSBbIF0gUmVhbCBwZXItbGV2ZWwgbnVtYmVycyAodXNlciB3aWxsIHNlbmQgbGF0ZXIpLgotIFsgXSBHaWZ0cyB0aGF0IGFjdHVhbGx5IGFkZCBwb2ludHMgKG5vdCBidWlsdCB5ZXQpLgoKIyBMZXZlbCBiYWRnZXMKLSBbeF0gV2VhbHRoIGJhZGdlcyAoMTEpIG9uIHRoZSBwcm9maWxlLCB3aXRoIHRoZSBsZXZlbCBudW1iZXIgd3JpdHRlbiBvbiBlYWNoLgotIFt4XSBDaGFyaXNtYSBiYWRnZXMgKDExKSBvbiB0aGUgbGV2ZWxzIHBhZ2UgYW5kIHByb2ZpbGUuCgojIENQIHJlbGF0aW9uc2hpcCBjYXJkCi0gW3hdIFJlbW92ZSBncmVlbiBiYWNrZ3JvdW5kIGFuZCB1c2UgdGhlIHN1cHBsaWVkIGdvbGQtYW5kLXB1cnBsZSBjYXJkIGluIGFjY291bnQgZGV0YWlscy4KLSBbeF0gUG9zaXRpb24gdGhlIGFjY291bnQgYXZhdGFyIHdpdGhpbiB0aGUgcmlnaHQgZnJhbWUgYW5kIHByZXNlcnZlIHRoZSBsZWZ0IGNoYWlyIGFuZCBydWJ5IGhlYXJ0LgotIFt4XSBWZXJpZnkgdGhlIGNhcmQgYXQgcGhvbmUgYW5kIGRlc2t0b3Agc2l6ZXMgdXNpbmcgYW4gaXNvbGF0ZWQgdmlzdWFsIGZpeHR1cmU7IHJlYWwgZXh0ZXJuYWwtYWNjb3VudCBhY2Nlc3MgaXMgdW52ZXJpZmllZC4KLSBbeF0gQWx3YXlzIGZpbGwgdGhlIHJpZ2h0IGZyYW1lOiB0aGUgYWNjb3VudCBhdmF0YXIsIG9yIGEgZmlyc3QtbGV0dGVyIGZhbGxiYWNrIHdoZW4gdGhlcmUgaXMgbm9uZSBvciB0aGUgcGljdHVyZSBmYWlscyB0byBsb2FkLgoKIyBWSVAgZHJhZ29uIHN5c3RlbSAoOCB0aWVycykKLSBbeF0gU1FMIHVwZGF0ZSBzdXBhYmFzZS8wMDNfdmlwLnNxbDogdGllcnMgdGFibGUgd2l0aCBldmVyeSBmZWF0dXJlLCBncmFudHMgKHB1cmNoYXNlL2FkbWluL2dpZnQvZXZlbnQpIHdpdGggZXhwaXJ5LCBjb2lucyBiYWxhbmNlLCBwdXJjaGFzZSBmdW5jdGlvbiwgYWRtaW4gZ3JhbnQvcmV2b2tlLCByb29tIG1vZGVyYXRpb24gKyBpbW11bml0eSBydWxlcywgaW52aXNpYmxlL2hpZGUtbG9jYXRpb24gc2V0dGluZ3MuCi0gW3hdIFRlc3RzIGZvciBWSVAgcnVsZXMgKFBHbGl0ZSkuCi0gW3hdIFZJUCBwYWdlIGxpc3RpbmcgdGhlIDggdGllcnMgYW5kIGZlYXR1cmVzOyBvd24gc2V0dGluZ3MgKGhpZGUgbG9jYXRpb24sIGludmlzaWJsZSBtb2RlKS4KLSBbeF0gUGxhY2Vob2xkZXIgZnJhbWUsIGNoYXQgYmFkZ2UsIGNoYXQgYnViYmxlLCBuYW1lIGNvbG91cjsgc3BlY2lhbCBJRCBjYXJkIHBpY2tlZCBieSBuZXcgdGllcnMuCi0gWyBdIFJ1biBzdXBhYmFzZS8wMDNfdmlwLnNxbCBpbiB0aGUgU1FMIEVkaXRvciAobmVlZHMgdGhlIHVzZXIpLgotIFt4XSBWSVAgMSBjaGF0IGJhZGdlIGFuZCBicm9uemUgZW50cmFuY2UgYmFyIHBpY3R1cmVzIChncmVlbiBiYWNrZ3JvdW5kIHJlbW92ZWQpOyBlbnRyYW5jZSBwcmV2aWV3IG9uIHRoZSBWSVAgcGFnZS4KLSBbIF0gUmVhbCBhcnR3b3JrIGZvciB0aGUgb3RoZXIgYmFkZ2VzLCBmcmFtZXMsIGJ1YmJsZXMsIGVudHJhbmNlcywgSUQgY2FyZHMgKHVzZXIgd2lsbCBzZW5kKS4KLSBbeF0gVXBsb2FkIHRoZSBsYXRlc3QgdXBkYXRlcyB0byBHaXRIdWIgKGhtZGFnZW5jeTMtYm9vcC92b2xpKS4KLSBbIF0gUHJpY2VzLCBkdXJhdGlvbnMsIG1vbnRobHkgc2FsYXJ5IGFtb3VudHMsIGZyaWVuZHMtbGlzdCBzaXplcyAodXNlciB3aWxsIGRlY2lkZSkuCi0gWyBdIFN0cmVhbSByb29tcywgZW50cmFuY2VzLCBqb2luIGJhbm5lciwgc3lzdGVtIGJyb2FkY2FzdCAocm9vbXMgbm90IGJ1aWx0IHlldCkuCgojIFBhcnR5IHJvb21zCi0gW3hdIFJvb20gYnV0dG9uIG9uIHRoZSBob21lIHBhZ2Ugb3BlbnMgdGhlIHJvb20gc2V0dXAgcGFnZSAobWljL3ZpZGVvLCBjb3ZlciArIG5hbWUsIHRoZW1lLCBzZWF0cywgbG9jaywgYW5ub3VuY2VtZW50LCBzdGFydCkuCi0gW3hdIFJvb20gcGFnZTogb3duZXIgaGVhZGVyLCBsaXZlIG1lbWJlciBjb3VudCwgbWljIHNlYXRzLCBjaGF0IHRhYnMsIGFubm91bmNlbWVudCwgc2hhcmUsIGxlYXZlL2VuZCBwYXJ0eSwgcmVtb3ZlIGEgbWVtYmVyLgotIFt4XSBMaXZlIHJvb21zIGxpc3RlZCBvbiB0aGUgaG9tZSBwYWdlLgotIFt4XSBzdXBhYmFzZS8wMDRfcm9vbXMuc3FsIHdpdGggUEdsaXRlIHRlc3RzLgotIFsgXSBSdW4gc3VwYWJhc2UvMDA0X3Jvb21zLnNxbCBpbiB0aGUgU1FMIEVkaXRvciAobmVlZHMgdGhlIHVzZXIpLgotIFsgXSBSZWFsIGxpdmUgdm9pY2UvdmlkZW8gb24gdGhlIG1pY3MgKG5lZWRzIGEgdm9pY2Ugc2VydmljZSB0aGUgdXNlciBwaWNrcykuCi0gWyBdIEdpZnRzLCBnYW1lcywgcm9vbSB0YXNrcyAobm90IGJ1aWx0IHlldCkuCgojIEtlZXAgR2l0SHViIHVwIHRvIGRhdGUKLSBbIF0gUHVzaCBldmVyeSBmaW5pc2hlZCB1cGRhdGUgdG8gaG1kYWdlbmN5My1ib29wL3ZvbGkgYXMgc29vbiBhcyBpdCBpcyBkb25lICh1c2VyIGlzIGxvdyBvbiBjcmVkaXRzKS4K
+# Remove fictional data
+- [x] Remove sample streams, stories, events, and notifications.
+- [x] Remove sample chats and online people.
+- [x] Remove fabricated profile identity, stats, levels, and balances.
+- [x] Remove sample photographs and review remaining pages.
+- [x] Verify empty pages, navigation, and tests.
+
+# Rename application
+- [x] Change the application name to voli inside all pages and page titles.
+- [x] Confirm no old application name remains in project source.
+
+# Consistent screen sizes
+- [x] Use a shared screen-sized layout across all pages.
+- [x] Scroll long content inside the screen with stationary bottom navigation.
+- [x] Verify page dimensions and scrolling on phone and desktop.
+
+# External account setup
+- [x] Prepare starter SQL with profiles, private sequential UIDs, random seven-digit public IDs, follows, streams, and direct messages.
+- [x] Prepare sign-in and signup forms with display name and email, without a username field.
+- [x] Verify form validation and SQL account rules.
+- [x] Wire signup, sign-in, and sign-out to the user's external project.
+- [ ] Apply sql/voli-starter.sql in the project's SQL Editor (needs the user).
+
+# Re-runnable starter SQL
+- [x] Make sql/voli-starter.sql safe to run repeatedly; add bio and updated_at to existing profiles.
+- [x] Move account_uids to public (fully closed to clients) and use public.handle_new_user trigger.
+- [x] Refresh follows, streams, messages policies; verify with PGlite tests (fresh, rerun, older schema).
+
+# Levels
+- [x] Charisma (diamonds received) and wealth (coins spent) levels, 100 each, placeholder totals in SQL.
+- [x] Show both levels with progress on the profile.
+- [ ] Run supabase/001_levels.sql in the SQL Editor (needs the user).
+- [ ] Real per-level numbers (user will send later).
+- [ ] Gifts that actually add points (not built yet).
+
+# Level badges
+- [x] Wealth badges (11) on the profile, with the level number written on each.
+- [x] Charisma badges (11) on the levels page and profile.
+
+# CP relationship card
+- [x] Remove green background and use the supplied gold-and-purple card in account details.
+- [x] Position the account avatar within the right frame and preserve the left chair and ruby heart.
+- [x] Verify the card at phone and desktop sizes using an isolated visual fixture; real external-account access is unverified.
+- [x] Always fill the right frame: the account avatar, or a first-letter fallback when there is none or the picture fails to load.
+
+# VIP dragon system (8 tiers)
+- [x] SQL update supabase/003_vip.sql: tiers table with every feature, grants (purchase/admin/gift/event) with expiry, coins balance, purchase function, admin grant/revoke, room moderation + immunity rules, invisible/hide-location settings.
+- [x] Tests for VIP rules (PGlite).
+- [x] VIP page listing the 8 tiers and features; own settings (hide location, invisible mode).
+- [x] Placeholder frame, chat badge, chat bubble, name colour; special ID card picked by new tiers.
+- [ ] Run supabase/003_vip.sql in the SQL Editor (needs the user).
+- [x] VIP 1 chat badge and bronze entrance bar pictures (green background removed); entrance preview on the VIP page.
+- [ ] Real artwork for the other badges, frames, bubbles, entrances, ID cards (user will send).
+- [x] Upload the latest updates to GitHub (hmdagency3-boop/voli).
+- [ ] Prices, durations, monthly salary amounts, friends-list sizes (user will decide).
+- [ ] Stream rooms, entrances, join banner, system broadcast (rooms not built yet).
+
+# Party rooms
+- [x] Room button on the home page opens the room setup page (mic/video, cover + name, theme, seats, lock, announcement, start).
+- [x] Room page: owner header, live member count, mic seats, chat tabs, announcement, share, leave/end party, remove a member.
+- [x] Live rooms listed on the home page.
+- [x] supabase/004_rooms.sql with PGlite tests.
+- [ ] Run supabase/004_rooms.sql in the SQL Editor (needs the user).
+- [ ] Real live voice/video on the mics (needs a voice service the user picks).
+- [ ] Gifts, games, room tasks (not built yet).
+
+# Keep GitHub up to date
+- [ ] Push every finished update to hmdagency3-boop/voli as soon as it is done (user is low on credits).
+
+# VIP 1 profile card
+- [ ] Popped-up profile card for VIP 1 members uses the dragon frame, in the same bottom position as everyone else's card.

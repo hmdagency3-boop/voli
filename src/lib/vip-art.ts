@@ -1,1 +1,72 @@
-aW1wb3J0IHZpcDFCYWRnZSBmcm9tICdAL2Fzc2V0cy92aXAvdmlwLTEtYmFkZ2Uud2VicCc7CmltcG9ydCB2aXAxRW50cmFuY2UgZnJvbSAnQC9hc3NldHMvdmlwL3ZpcC0xLWVudHJhbmNlLndlYnAnOwppbXBvcnQgdmlwMUNoYXRCdWJibGUgZnJvbSAnQC9hc3NldHMvdmlwL3ZpcC0xLWNoYXQtYnViYmxlLndlYnAnOwppbXBvcnQgdmlwMVByb2ZpbGVDYXJkIGZyb20gJ0AvYXNzZXRzL3ZpcC92aXAtMS1wcm9maWxlLWNhcmQud2VicCc7CmltcG9ydCB7IHZpcFRpZXIgfSBmcm9tICdAL2xpYi92aXAnOwoKLyoqCiAqIFBpY3R1cmVzIHRoZSB1c2VyIHNlbnQgZm9yIGVhY2ggVklQIHRpZXIuIEEgdGllciB3aXRob3V0IGl0cyBvd24gYmFkZ2Uga2VlcHMgdGhlIGRyYXduIHBsYWNlaG9sZGVyOwogKiBlbnRyYW5jZSBiYXJzIGFyZSBrZXllZCBsaWtlIHZpcF90aWVycy5lbnRyYW5jZSwgc28gYSB0aWVyIHNob3dzIGEgYmFyIG9ubHkgb25jZSBpdHMgcGljdHVyZSBleGlzdHMuCiAqLwpleHBvcnQgdHlwZSBFbnRyYW5jZUFydCA9IHsKICB1cmw6IHN0cmluZzsKICAvKiogRW1wdHkgcGxhdGUgd2hlcmUgdGhlIG1lbWJlcidzIG5hbWUgaXMgd3JpdHRlbiwgaW4gJSBvZiB0aGUgcGljdHVyZS4gKi8KICBuYW1lOiB7IGxlZnQ6IG51bWJlcjsgcmlnaHQ6IG51bWJlcjsgdG9wOiBudW1iZXI7IGJvdHRvbTogbnVtYmVyIH07Cn07Cgpjb25zdCBCQURHRVM6IFBhcnRpYWw8UmVjb3JkPG51bWJlciwgc3RyaW5nPj4gPSB7CiAgMTogdmlwMUJhZGdlLAp9OwoKY29uc3QgRU5UUkFOQ0VTOiBSZWNvcmQ8c3RyaW5nLCBFbnRyYW5jZUFydD4gPSB7CiAgYnJvbnplX2RyYWdvbl9iYXI6IHsgdXJsOiB2aXAxRW50cmFuY2UsIG5hbWU6IHsgbGVmdDogMzksIHJpZ2h0OiAyMywgdG9wOiA0MiwgYm90dG9tOiAyNSB9IH0sCn07CgpleHBvcnQgZnVuY3Rpb24gdmlwQmFkZ2VBcnQobGV2ZWw6IG51bWJlcik6IHN0cmluZyB8IG51bGwgewogIHJldHVybiBCQURHRVNbbGV2ZWxdID8/IG51bGw7Cn0KCmV4cG9ydCBmdW5jdGlvbiB2aXBFbnRyYW5jZUFydChsZXZlbDogbnVtYmVyKTogRW50cmFuY2VBcnQgfCBudWxsIHsKICBjb25zdCBrZXkgPSB2aXBUaWVyKGxldmVsKT8uZW50cmFuY2U7CiAgcmV0dXJuIChrZXkgJiYgRU5UUkFOQ0VTW2tleV0pIHx8IG51bGw7Cn0KCi8qKiBTdHJldGNoYWJsZSByb29tLWNoYXQgYnViYmxlOiBwaWN0dXJlICsgOS1zbGljZSBjdXQgbGluZXMgKHB4IG9mIHRoZSBwaWN0dXJlKSBhbmQgc2hvd24gYm9yZGVyIHNpemUgKHB4KS4gKi8KZXhwb3J0IHR5cGUgQ2hhdEJ1YmJsZUFydCA9IHsKICB1cmw6IHN0cmluZzsKICBzbGljZTogeyB0b3A6IG51bWJlcjsgcmlnaHQ6IG51bWJlcjsgYm90dG9tOiBudW1iZXI7IGxlZnQ6IG51bWJlciB9OwogIGJvcmRlcjogeyB0b3A6IG51bWJlcjsgcmlnaHQ6IG51bWJlcjsgYm90dG9tOiBudW1iZXI7IGxlZnQ6IG51bWJlciB9Owp9OwoKY29uc3QgQ0hBVF9CVUJCTEVTOiBQYXJ0aWFsPFJlY29yZDxudW1iZXIsIENoYXRCdWJibGVBcnQ+PiA9IHsKICAxOiB7CiAgICB1cmw6IHZpcDFDaGF0QnViYmxlLAogICAgc2xpY2U6IHsgdG9wOiA4MCwgcmlnaHQ6IDU3LCBib3R0b206IDEwMCwgbGVmdDogMTgwIH0sCiAgICBib3JkZXI6IHsgdG9wOiAxMiwgcmlnaHQ6IDksIGJvdHRvbTogMTUsIGxlZnQ6IDI3IH0sCiAgfSwKfTsKCmV4cG9ydCBmdW5jdGlvbiB2aXBDaGF0QnViYmxlQXJ0KGxldmVsOiBudW1iZXIpOiBDaGF0QnViYmxlQXJ0IHwgbnVsbCB7CiAgcmV0dXJuIENIQVRfQlVCQkxFU1tsZXZlbF0gPz8gbnVsbDsKfQoKLyoqCiAqIFBvcHBlZC11cCBwcm9maWxlIGNhcmQ6IHRoZSB0aWVyJ3MgcGljdHVyZSBJUyB0aGUgY2FyZCwgYW5kIHRoZSBtZW1iZXIncyBkZXRhaWxzCiAqIHNpdCBpbnNpZGUgdGhlIHBpY3R1cmUncyBlbXB0eSBpbm5lciB3aW5kb3cuIEluc2V0cyBhcmUgJSBvZiB0aGUgcGljdHVyZSwgbWVhc3VyZWQKICogb2ZmIHRoZSBhcnR3b3JrLCBzbyBhIG5ldyB0aWVyIG9ubHkgbmVlZHMgaXRzIG93biBwaWN0dXJlIHBsdXMgb25lIGxpbmUgaGVyZS4KICovCmV4cG9ydCB0eXBlIFByb2ZpbGVDYXJkQXJ0ID0gewogIHVybDogc3RyaW5nOwogIC8qKiB3aWR0aCAvIGhlaWdodCBvZiB0aGUgcGljdHVyZSwgc28gdGhlIGNhcmQga2VlcHMgaXRzIHNoYXBlIGF0IGFueSBzaXplLiAqLwogIGFzcGVjdDogbnVtYmVyOwogIC8qKiBUaGUgZW1wdHkgaW5uZXIgd2luZG93LCBhcyAlIGluc2V0IGZyb20gZWFjaCBlZGdlIG9mIHRoZSBwaWN0dXJlLiAqLwogIGNhbnZhczogeyBsZWZ0OiBudW1iZXI7IHJpZ2h0OiBudW1iZXI7IHRvcDogbnVtYmVyOyBib3R0b206IG51bWJlciB9Owp9OwoKY29uc3QgUFJPRklMRV9DQVJEUzogUGFydGlhbDxSZWNvcmQ8bnVtYmVyLCBQcm9maWxlQ2FyZEFydD4+ID0gewogIDE6IHsgdXJsOiB2aXAxUHJvZmlsZUNhcmQsIGFzcGVjdDogOTAzIC8gMTA0MywgY2FudmFzOiB7IGxlZnQ6IDE4LjUsIHJpZ2h0OiAxOC41LCB0b3A6IDIzLCBib3R0b206IDE2IH0gfSwKfTsKCmV4cG9ydCBmdW5jdGlvbiB2aXBQcm9maWxlQ2FyZEFydChsZXZlbDogbnVtYmVyKTogUHJvZmlsZUNhcmRBcnQgfCBudWxsIHsKICByZXR1cm4gUFJPRklMRV9DQVJEU1tsZXZlbF0gPz8gbnVsbDsKfQo=
+import vip1Badge from '@/assets/vip/vip-1-badge.webp';
+import vip1Entrance from '@/assets/vip/vip-1-entrance.webp';
+import vip1ChatBubble from '@/assets/vip/vip-1-chat-bubble.webp';
+import vip1ProfileCard from '@/assets/vip/vip-1-profile-card.webp';
+import { vipTier } from '@/lib/vip';
+
+/**
+ * Pictures the user sent for each VIP tier. A tier without its own badge keeps the drawn placeholder;
+ * entrance bars are keyed like vip_tiers.entrance, so a tier shows a bar only once its picture exists.
+ */
+export type EntranceArt = {
+  url: string;
+  /** Empty plate where the member's name is written, in % of the picture. */
+  name: { left: number; right: number; top: number; bottom: number };
+};
+
+const BADGES: Partial<Record<number, string>> = {
+  1: vip1Badge,
+};
+
+const ENTRANCES: Record<string, EntranceArt> = {
+  bronze_dragon_bar: { url: vip1Entrance, name: { left: 39, right: 23, top: 42, bottom: 25 } },
+};
+
+export function vipBadgeArt(level: number): string | null {
+  return BADGES[level] ?? null;
+}
+
+export function vipEntranceArt(level: number): EntranceArt | null {
+  const key = vipTier(level)?.entrance;
+  return (key && ENTRANCES[key]) || null;
+}
+
+/** Stretchable room-chat bubble: picture + 9-slice cut lines (px of the picture) and shown border size (px). */
+export type ChatBubbleArt = {
+  url: string;
+  slice: { top: number; right: number; bottom: number; left: number };
+  border: { top: number; right: number; bottom: number; left: number };
+};
+
+const CHAT_BUBBLES: Partial<Record<number, ChatBubbleArt>> = {
+  1: {
+    url: vip1ChatBubble,
+    slice: { top: 80, right: 57, bottom: 100, left: 180 },
+    border: { top: 12, right: 9, bottom: 15, left: 27 },
+  },
+};
+
+export function vipChatBubbleArt(level: number): ChatBubbleArt | null {
+  return CHAT_BUBBLES[level] ?? null;
+}
+
+/**
+ * Popped-up profile card: the tier's picture IS the card, and the member's details
+ * sit inside the picture's empty inner window. Insets are % of the picture, measured
+ * off the artwork, so a new tier only needs its own picture plus one line here.
+ */
+export type ProfileCardArt = {
+  url: string;
+  /** width / height of the picture, so the card keeps its shape at any size. */
+  aspect: number;
+  /** The empty inner window, as % inset from each edge of the picture. */
+  canvas: { left: number; right: number; top: number; bottom: number };
+};
+
+const PROFILE_CARDS: Partial<Record<number, ProfileCardArt>> = {
+  1: { url: vip1ProfileCard, aspect: 851 / 991, canvas: { left: 18.5, right: 18.5, top: 23, bottom: 16 } },
+};
+
+export function vipProfileCardArt(level: number): ProfileCardArt | null {
+  return PROFILE_CARDS[level] ?? null;
+}

@@ -1,1 +1,71 @@
-LS0gdm9saSB1cGRhdGUgMDA1OiBjb2lucyB0aHJvd24gaW5zaWRlIGEgcGFydHkgcm9vbSAo2KfZhNmD2YjZitmG2LLYp9iqINin2YTZhdix2YXZitipINmB2Yog2KfZhNix2YjZhSkuCi0tIFJ1biBBRlRFUiBzdXBhYmFzZS8wMDRfcm9vbXMuc3FsLiBTYWZlIHRvIHJ1biBhZ2Fpbi4KLS0KLS0gTWVtYmVycyB0aHJvdyBjb2lucyBpbnRvIHRoZSByb29tIHRoZXkgYXJlIGluc2lkZSBvZi4gVGhlIHRocm93IGNvbWVzIG91dCBvZiB0aGUgbWVtYmVyJ3Mgb3duCi0tIGNvaW4gYmFsYW5jZSAocHJvZmlsZXMuY29pbnMsIGFkZGVkIGJ5IDAwM192aXAuc3FsKSBhbmQgaXMgd3JpdHRlbiB0byBwdWJsaWMucm9vbV9jb2lucy4KLS0gVGhlIHJvb20gaGVhZGVyIHNob3dzIHRoZSB0b3RhbCB0aHJvd24sIHNvIHRoZSBudW1iZXIgaXMgcmVhbCBtb25leSBzcGVudCwgbm90IGEgY291bnRlci4KLS0KLS0gTm9ib2R5IHJlYWRzIG9yIHdyaXRlcyB0aGUgdGFibGUgZnJvbSB0aGUgYXBwOiBib3RoIHdheXMgaW4gYW5kIG91dCBhcmUgdGhlIGZ1bmN0aW9ucyBiZWxvdy4KLS0KLS0gQWRtaW46IG5vdGhpbmcgdG8gc2V0IGhlcmUuIFRvIGhhbmQgY29pbnMgb3V0LCB1c2UgcHVibGljLmFkbWluX2FkZF9jb2lucyAoMDAzX3ZpcC5zcWwpLgoKLS0gLS0tLS0tLS0tLSAxKSBUYWJsZSAtLS0tLS0tLS0tCmNyZWF0ZSB0YWJsZSBpZiBub3QgZXhpc3RzIHB1YmxpYy5yb29tX2NvaW5zICgKICBpZCB1dWlkIHByaW1hcnkga2V5IGRlZmF1bHQgZ2VuX3JhbmRvbV91dWlkKCksCiAgcm9vbV9pZCB1dWlkIG5vdCBudWxsIHJlZmVyZW5jZXMgcHVibGljLnJvb21zKGlkKSBvbiBkZWxldGUgY2FzY2FkZSwKICBzZW5kZXJfaWQgdXVpZCBub3QgbnVsbCByZWZlcmVuY2VzIHB1YmxpYy5wcm9maWxlcyhhdXRoX2lkKSBvbiBkZWxldGUgY2FzY2FkZSwKICBhbW91bnQgYmlnaW50IG5vdCBudWxsIGNoZWNrIChhbW91bnQgPiAwKSwKICBjcmVhdGVkX2F0IHRpbWVzdGFtcHR6IG5vdCBudWxsIGRlZmF1bHQgY2xvY2tfdGltZXN0YW1wKCkKKTsKY3JlYXRlIGluZGV4IGlmIG5vdCBleGlzdHMgcm9vbV9jb2luc19yb29tX2lkeCBvbiBwdWJsaWMucm9vbV9jb2lucyhyb29tX2lkLCBjcmVhdGVkX2F0KTsKY3JlYXRlIGluZGV4IGlmIG5vdCBleGlzdHMgcm9vbV9jb2luc19zZW5kZXJfaWR4IG9uIHB1YmxpYy5yb29tX2NvaW5zKHJvb21faWQsIHNlbmRlcl9pZCk7CgotLSAtLS0tLS0tLS0tIDIpIEFjY2VzczogdGhlIHRhYmxlIGl0c2VsZiBpcyBjbG9zZWQgdG8gdGhlIGFwcCAtLS0tLS0tLS0tCnJldm9rZSBhbGwgb24gcHVibGljLnJvb21fY29pbnMgZnJvbSBwdWJsaWMsIGFub24sIGF1dGhlbnRpY2F0ZWQ7CmdyYW50IGFsbCBvbiBwdWJsaWMucm9vbV9jb2lucyB0byBzZXJ2aWNlX3JvbGU7CmFsdGVyIHRhYmxlIHB1YmxpYy5yb29tX2NvaW5zIGVuYWJsZSByb3cgbGV2ZWwgc2VjdXJpdHk7Ci0tIFJvdyBsZXZlbCBzZWN1cml0eSBzdGF5cyBvbiB3aXRoIG5vIHBvbGljaWVzOiBhcHAgcm9sZXMgY2FuIG5ldmVyIHNlbGVjdCwgaW5zZXJ0LCB1cGRhdGUgb3IgZGVsZXRlLgoKLS0gQmlnZ2VzdCBzaW5nbGUgdGhyb3cgYSBtZW1iZXIgY2FuIG1ha2UuCmNyZWF0ZSBvciByZXBsYWNlIGZ1bmN0aW9uIHB1YmxpYy5yb29tX2NvaW5zX21heF90aHJvdygpIHJldHVybnMgYmlnaW50Cmxhbmd1YWdlIHNxbCBpbW11dGFibGUgYXMgJCQgc2VsZWN0IDEwMDAwMDA6OmJpZ2ludCAkJDsKcmV2b2tlIGFsbCBvbiBmdW5jdGlvbiBwdWJsaWMucm9vbV9jb2luc19tYXhfdGhyb3coKSBmcm9tIHB1YmxpYywgYW5vbiwgYXV0aGVudGljYXRlZDsKCi0tIC0tLS0tLS0tLS0gMykgVGhyb3cgY29pbnMgaW50byB0aGUgcm9vbSAtLS0tLS0tLS0tCi0tIFJldHVybnMgdGhlIHJvb20ncyBuZXcgdG90YWwsIG9yIHJhaXNlczoKLS0gICBub3RfaW5fcm9vbSAgICAgIC0+IHRoZSBtZW1iZXIgaXMgbm90IGluc2lkZSB0aGF0IHJvb20gcmlnaHQgbm93Ci0tICAgbm90X2Vub3VnaF9jb2lucyAtPiB0aGUgYmFsYW5jZSBpcyBzbWFsbGVyIHRoYW4gdGhlIHRocm93CmNyZWF0ZSBvciByZXBsYWNlIGZ1bmN0aW9uIHB1YmxpYy50aHJvd19yb29tX2NvaW5zKHBfcm9vbSB1dWlkLCBwX2Ftb3VudCBiaWdpbnQpIHJldHVybnMgYmlnaW50Cmxhbmd1YWdlIHBscGdzcWwgc2VjdXJpdHkgZGVmaW5lciBzZXQgc2VhcmNoX3BhdGggPSAnJyBhcyAkJApkZWNsYXJlIG1lIHV1aWQgOj0gYXV0aC51aWQoKTsgdG90YWwgYmlnaW50OwpiZWdpbgogIGlmIG1lIGlzIG51bGwgdGhlbiByYWlzZSBleGNlcHRpb24gJ05vdCBzaWduZWQgaW4nIHVzaW5nIGVycmNvZGUgPSAnUDAwMDEnLCBoaW50ID0gJ25vdF9pbl9yb29tJzsgZW5kIGlmOwogIGlmIHBfYW1vdW50IGlzIG51bGwgb3IgcF9hbW91bnQgPCAxIHRoZW4gcmFpc2UgZXhjZXB0aW9uICdBbW91bnQgbXVzdCBiZSBhdCBsZWFzdCAxJyB1c2luZyBlcnJjb2RlID0gJ1AwMDAxJywgaGludCA9ICdiYWRfYW1vdW50JzsgZW5kIGlmOwogIGlmIHBfYW1vdW50ID4gcHVibGljLnJvb21fY29pbnNfbWF4X3Rocm93KCkgdGhlbiByYWlzZSBleGNlcHRpb24gJ1RvbyBtYW55IGNvaW5zIGF0IG9uY2UnIHVzaW5nIGVycmNvZGUgPSAnUDAwMDEnLCBoaW50ID0gJ2JhZF9hbW91bnQnOyBlbmQgaWY7CiAgaWYgbm90IHB1YmxpYy5pbl9yb29tKHBfcm9vbSwgbWUpIHRoZW4gcmFpc2UgZXhjZXB0aW9uICdOb3QgaW5zaWRlIHRoZSByb29tJyB1c2luZyBlcnJjb2RlID0gJ1AwMDAxJywgaGludCA9ICdub3RfaW5fcm9vbSc7IGVuZCBpZjsKCiAgLS0gVGFrZSB0aGUgY29pbnMgZnJvbSB0aGUgbWVtYmVyJ3Mgb3duIGJhbGFuY2U7IHRoZSBjaGVjayBrZWVwcyB0aGUgYmFsYW5jZSBmcm9tIGdvaW5nIGJlbG93IHplcm8uCiAgdXBkYXRlIHB1YmxpYy5wcm9maWxlcyBzZXQgY29pbnMgPSBjb2lucyAtIHBfYW1vdW50CiAgICB3aGVyZSBhdXRoX2lkID0gbWUgYW5kIGNvaW5zID49IHBfYW1vdW50OwogIGlmIG5vdCBmb3VuZCB0aGVuIHJhaXNlIGV4Y2VwdGlvbiAnTm90IGVub3VnaCBjb2lucycgdXNpbmcgZXJyY29kZSA9ICdQMDAwMScsIGhpbnQgPSAnbm90X2Vub3VnaF9jb2lucyc7IGVuZCBpZjsKCiAgaW5zZXJ0IGludG8gcHVibGljLnJvb21fY29pbnMocm9vbV9pZCwgc2VuZGVyX2lkLCBhbW91bnQpIHZhbHVlcyAocF9yb29tLCBtZSwgcF9hbW91bnQpOwoKICBzZWxlY3QgY29hbGVzY2Uoc3VtKGFtb3VudCksIDApIGludG8gdG90YWwgZnJvbSBwdWJsaWMucm9vbV9jb2lucyB3aGVyZSByb29tX2lkID0gcF9yb29tOwogIHJldHVybiB0b3RhbDsKZW5kOwokJDsKcmV2b2tlIGFsbCBvbiBmdW5jdGlvbiBwdWJsaWMudGhyb3dfcm9vbV9jb2lucyh1dWlkLCBiaWdpbnQpIGZyb20gcHVibGljLCBhbm9uOwpncmFudCBleGVjdXRlIG9uIGZ1bmN0aW9uIHB1YmxpYy50aHJvd19yb29tX2NvaW5zKHV1aWQsIGJpZ2ludCkgdG8gYXV0aGVudGljYXRlZDsKCi0tIC0tLS0tLS0tLS0gNCkgVGhlIHJvb20gdG90YWwgc2hvd24gaW4gdGhlIGhlYWRlciAtLS0tLS0tLS0tCi0tIE51bGwgd2hlbiB0aGUgY2FsbGVyIGlzIG5vdCBpbnNpZGUgdGhlIHJvb20uCmNyZWF0ZSBvciByZXBsYWNlIGZ1bmN0aW9uIHB1YmxpYy5yb29tX2NvaW5zX3RvdGFsKHBfcm9vbSB1dWlkKSByZXR1cm5zIGJpZ2ludApsYW5ndWFnZSBzcWwgc3RhYmxlIHNlY3VyaXR5IGRlZmluZXIgc2V0IHNlYXJjaF9wYXRoID0gJycgYXMgJCQKICBzZWxlY3QgY2FzZQogICAgd2hlbiBwdWJsaWMuaW5fcm9vbShwX3Jvb20sIGF1dGgudWlkKCkpCiAgICAgIHRoZW4gY29hbGVzY2UoKHNlbGVjdCBzdW0oYW1vdW50KSBmcm9tIHB1YmxpYy5yb29tX2NvaW5zIHdoZXJlIHJvb21faWQgPSBwX3Jvb20pLCAwKQogICAgZW5kCiQkOwpyZXZva2UgYWxsIG9uIGZ1bmN0aW9uIHB1YmxpYy5yb29tX2NvaW5zX3RvdGFsKHV1aWQpIGZyb20gcHVibGljLCBhbm9uOwpncmFudCBleGVjdXRlIG9uIGZ1bmN0aW9uIHB1YmxpYy5yb29tX2NvaW5zX3RvdGFsKHV1aWQpIHRvIGF1dGhlbnRpY2F0ZWQ7Cg==
+-- voli update 005: coins thrown inside a party room (الكوينزات المرمية في الروم).
+-- Run AFTER supabase/004_rooms.sql. Safe to run again.
+--
+-- Members throw coins into the room they are inside of. The throw comes out of the member's own
+-- coin balance (profiles.coins, added by 003_vip.sql) and is written to public.room_coins.
+-- The room header shows the total thrown, so the number is real money spent, not a counter.
+--
+-- Nobody reads or writes the table from the app: both ways in and out are the functions below.
+--
+-- Admin: nothing to set here. To hand coins out, use public.admin_add_coins (003_vip.sql).
+
+-- ---------- 1) Table ----------
+create table if not exists public.room_coins (
+  id uuid primary key default gen_random_uuid(),
+  room_id uuid not null references public.rooms(id) on delete cascade,
+  sender_id uuid not null references public.profiles(auth_id) on delete cascade,
+  amount bigint not null check (amount > 0),
+  created_at timestamptz not null default clock_timestamp()
+);
+create index if not exists room_coins_room_idx on public.room_coins(room_id, created_at);
+create index if not exists room_coins_sender_idx on public.room_coins(room_id, sender_id);
+
+-- ---------- 2) Access: the table itself is closed to the app ----------
+revoke all on public.room_coins from public, anon, authenticated;
+grant all on public.room_coins to service_role;
+alter table public.room_coins enable row level security;
+-- Row level security stays on with no policies: app roles can never select, insert, update or delete.
+
+-- Biggest single throw a member can make.
+create or replace function public.room_coins_max_throw() returns bigint
+language sql immutable as $$ select 1000000::bigint $$;
+revoke all on function public.room_coins_max_throw() from public, anon, authenticated;
+
+-- ---------- 3) Throw coins into the room ----------
+-- Returns the room's new total, or raises:
+--   not_in_room      -> the member is not inside that room right now
+--   not_enough_coins -> the balance is smaller than the throw
+create or replace function public.throw_room_coins(p_room uuid, p_amount bigint) returns bigint
+language plpgsql security definer set search_path = '' as $$
+declare me uuid := auth.uid(); total bigint;
+begin
+  if me is null then raise exception 'Not signed in' using errcode = 'P0001', hint = 'not_in_room'; end if;
+  if p_amount is null or p_amount < 1 then raise exception 'Amount must be at least 1' using errcode = 'P0001', hint = 'bad_amount'; end if;
+  if p_amount > public.room_coins_max_throw() then raise exception 'Too many coins at once' using errcode = 'P0001', hint = 'bad_amount'; end if;
+  if not public.in_room(p_room, me) then raise exception 'Not inside the room' using errcode = 'P0001', hint = 'not_in_room'; end if;
+
+  -- Take the coins from the member's own balance; the check keeps the balance from going below zero.
+  update public.profiles set coins = coins - p_amount
+    where auth_id = me and coins >= p_amount;
+  if not found then raise exception 'Not enough coins' using errcode = 'P0001', hint = 'not_enough_coins'; end if;
+
+  insert into public.room_coins(room_id, sender_id, amount) values (p_room, me, p_amount);
+
+  select coalesce(sum(amount), 0) into total from public.room_coins where room_id = p_room;
+  return total;
+end;
+$$;
+revoke all on function public.throw_room_coins(uuid, bigint) from public, anon;
+grant execute on function public.throw_room_coins(uuid, bigint) to authenticated;
+
+-- ---------- 4) The room total shown in the header ----------
+-- Null when the caller is not inside the room.
+create or replace function public.room_coins_total(p_room uuid) returns bigint
+language sql stable security definer set search_path = '' as $$
+  select case
+    when public.in_room(p_room, auth.uid())
+      then coalesce((select sum(amount) from public.room_coins where room_id = p_room), 0)
+    end
+$$;
+revoke all on function public.room_coins_total(uuid) from public, anon;
+grant execute on function public.room_coins_total(uuid) to authenticated;

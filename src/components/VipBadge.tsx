@@ -1,1 +1,48 @@
-aW1wb3J0IHR5cGUgeyBSZWFjdE5vZGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IENyb3duIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgdmlwVGllciB9IGZyb20gIkAvbGliL3ZpcCI7CmltcG9ydCB7IHZpcEJhZGdlQXJ0IH0gZnJvbSAiQC9saWIvdmlwLWFydCI7CgovKiogQ2hhdCBiYWRnZSAiRHJhZ29uIFYx4oCmVjgiOiB0aGUgdGllcidzIHBpY3R1cmUsIG9yIGEgZHJhd24gcGxhY2Vob2xkZXIgdW50aWwgaXQgYXJyaXZlcy4gKi8KZXhwb3J0IGZ1bmN0aW9uIFZpcEJhZGdlKHsgbGV2ZWwsIGNsYXNzTmFtZSA9ICIiIH06IHsgbGV2ZWw6IG51bWJlcjsgY2xhc3NOYW1lPzogc3RyaW5nIH0pIHsKICBjb25zdCB0aWVyID0gdmlwVGllcihsZXZlbCk7CiAgaWYgKCF0aWVyKSByZXR1cm4gbnVsbDsKICBjb25zdCBhcnQgPSB2aXBCYWRnZUFydCh0aWVyLmxldmVsKTsKICBpZiAoYXJ0KSB7CiAgICByZXR1cm4gKAogICAgICA8aW1nCiAgICAgICAgc3JjPXthcnR9CiAgICAgICAgYWx0PXtgVklQICR7dGllci5sZXZlbH0g4oCUICR7dGllci5uYW1lQXJ9YH0KICAgICAgICB0aXRsZT17dGllci5uYW1lQXJ9CiAgICAgICAgZHJhZ2dhYmxlPXtmYWxzZX0KICAgICAgICBjbGFzc05hbWU9e2BpbmxpbmUtYmxvY2sgaC00IHctYXV0byBzaHJpbmstMCBvYmplY3QtY29udGFpbiAke2NsYXNzTmFtZX1gfQogICAgICAvPgogICAgKTsKICB9CiAgcmV0dXJuICgKICAgIDxzcGFuCiAgICAgIGRpcj0ibHRyIgogICAgICByb2xlPSJpbWciCiAgICAgIGFyaWEtbGFiZWw9e2BWSVAgJHt0aWVyLmxldmVsfSDigJQgJHt0aWVyLm5hbWVBcn1gfQogICAgICB0aXRsZT17dGllci5uYW1lQXJ9CiAgICAgIGNsYXNzTmFtZT17YGlubGluZS1mbGV4IGgtWzE2cHhdIGl0ZW1zLWNlbnRlciBnYXAtMC41IHJvdW5kZWQtZnVsbCBweC0xLjUgdGV4dC1bOXB4XSBmb250LWV4dHJhYm9sZCBsZWFkaW5nLW5vbmUgdGV4dC12aXAtb24gJHt0aWVyLmJnfSAke2NsYXNzTmFtZX1gfQogICAgPgogICAgICA8Q3Jvd24gY2xhc3NOYW1lPSJzaXplLTIuNSIgYXJpYS1oaWRkZW49InRydWUiIC8+Vnt0aWVyLmxldmVsfQogICAgPC9zcGFuPgogICk7Cn0KCi8qKiBQcm9maWxlIGZyYW1lIGZvciBhIFZJUCB0aWVyIChjb2xvdXJlZCByaW5nIHBsYWNlaG9sZGVyIHVudGlsIHRoZSBkcmFnb24gZnJhbWUgcGljdHVyZXMgYXJyaXZlKS4gKi8KZXhwb3J0IGZ1bmN0aW9uIFZpcEZyYW1lKHsgbGV2ZWwsIGNoaWxkcmVuLCBjbGFzc05hbWUgPSAiIiB9OiB7IGxldmVsOiBudW1iZXI7IGNoaWxkcmVuOiBSZWFjdE5vZGU7IGNsYXNzTmFtZT86IHN0cmluZyB9KSB7CiAgY29uc3QgdGllciA9IHZpcFRpZXIobGV2ZWwpOwogIGlmICghdGllcikgcmV0dXJuIDw+e2NoaWxkcmVufTwvPjsKICByZXR1cm4gKAogICAgPHNwYW4KICAgICAgY2xhc3NOYW1lPXtgcmVsYXRpdmUgaW5saW5lLWdyaWQgc2hyaW5rLTAgcm91bmRlZC1mdWxsIHJpbmctNCAke3RpZXIucmluZ30gJHtjbGFzc05hbWV9YH0KICAgICAgc3R5bGU9e3RpZXIubGV2ZWwgPj0gMyA/IHsgYm94U2hhZG93OiBgMCAwICR7OCArIHRpZXIubGV2ZWwgKiAyfXB4ICR7dGllci5jb2xvcn1gIH0gOiB1bmRlZmluZWR9CiAgICAgIHRpdGxlPXt0aWVyLm5hbWVBcn0KICAgID4KICAgICAge2NoaWxkcmVufQogICAgPC9zcGFuPgogICk7Cn0K
+import type { ReactNode } from "react";
+import { Crown } from "lucide-react";
+import { vipTier } from "@/lib/vip";
+import { vipBadgeArt } from "@/lib/vip-art";
+
+/** Chat badge "Dragon V1…V8": the tier's picture, or a drawn placeholder until it arrives. */
+export function VipBadge({ level, className = "" }: { level: number; className?: string }) {
+  const tier = vipTier(level);
+  if (!tier) return null;
+  const art = vipBadgeArt(tier.level);
+  if (art) {
+    return (
+      <img
+        src={art}
+        alt={`VIP ${tier.level} — ${tier.nameAr}`}
+        title={tier.nameAr}
+        draggable={false}
+        className={`inline-block h-4 w-auto shrink-0 object-contain ${className}`}
+      />
+    );
+  }
+  return (
+    <span
+      dir="ltr"
+      role="img"
+      aria-label={`VIP ${tier.level} — ${tier.nameAr}`}
+      title={tier.nameAr}
+      className={`inline-flex h-[16px] items-center gap-0.5 rounded-full px-1.5 text-[9px] font-extrabold leading-none text-vip-on ${tier.bg} ${className}`}
+    >
+      <Crown className="size-2.5" aria-hidden="true" />V{tier.level}
+    </span>
+  );
+}
+
+/** Profile frame for a VIP tier (coloured ring placeholder until the dragon frame pictures arrive). */
+export function VipFrame({ level, children, className = "" }: { level: number; children: ReactNode; className?: string }) {
+  const tier = vipTier(level);
+  if (!tier) return <>{children}</>;
+  return (
+    <span
+      className={`relative inline-grid shrink-0 rounded-full ring-4 ${tier.ring} ${className}`}
+      style={tier.level >= 3 ? { boxShadow: `0 0 ${8 + tier.level * 2}px ${tier.color}` } : undefined}
+      title={tier.nameAr}
+    >
+      {children}
+    </span>
+  );
+}
