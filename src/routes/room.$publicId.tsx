@@ -52,9 +52,13 @@ function RoomPage() {
   const [picked, setPicked] = useState<RoomPerson | null>(null);
   const [exitOpen, setExitOpen] = useState(false);
   const [entrance, setEntrance] = useState(false);
+  const [joins, setJoins] = useState<Join[]>([]);
+  const [entrances, setEntrances] = useState<Join[]>([]);
+  const [listOpen, setListOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const peopleRef = useRef(people);
   peopleRef.current = people;
+  const seenRef = useRef<Set<string> | null>(null);
 
   const isOwner = !!me && owner?.auth_id === me;
 
@@ -106,7 +110,23 @@ function RoomPage() {
         .filter((id) => !peopleRef.current[id]);
       if (unknown.length) {
         const found = await getPeople({ ids: unknown }).catch(() => []);
-        if (active && found.length) setPeople((p) => ({ ...p, ...Object.fromEntries(found.map((x) => [x.auth_id, x])) }));
+        if (!active) return;
+        if (found.length) {
+          const add = Object.fromEntries(found.map((x) => [x.auth_id, x]));
+          peopleRef.current = { ...peopleRef.current, ...add };
+          setPeople((p) => ({ ...p, ...add }));
+        }
+      }
+      // Announce members who just came in (the first load only remembers who is already here).
+      const seen = seenRef.current;
+      seenRef.current = new Set(s.members);
+      if (seen) {
+        const now = new Date().toISOString();
+        const fresh = s.members.filter((id) => !seen.has(id) && id !== me).map((id) => ({ key: `${id}-${now}`, auth_id: id, at: now }));
+        if (fresh.length) {
+          setJoins((j) => [...j, ...fresh].slice(-50));
+          setEntrances((q) => [...q, ...fresh.filter((x) => activeVipLevel(peopleRef.current[x.auth_id]) > 0)]);
+        }
       }
       // Removed by the owner or a moderator.
       if (me && !s.members.includes(me)) {
@@ -128,8 +148,22 @@ function RoomPage() {
     return () => { leaveRoom(roomId).catch(() => {}); };
   }, [roomId]);
 
-  useEffect(() => { if (!entrance) return; const t = setTimeout(() => setEntrance(false), 4500); return () => clearTimeout(t); }, [entrance]);
-  useEffect(() => { endRef.current?.scrollIntoView({ block: "end" }); }, [messages.length, tab]);
+  // My own entrance: a join line for me, and my bar first in line.
+  useEffect(() => {
+    if (!entrance || !me) return;
+    setEntrance(false);
+    const j = { key: `${me}-${Date.now()}`, auth_id: me, at: new Date().toISOString() };
+    setJoins((x) => [...x, j]);
+    if (activeVipLevel(profile) > 0) setEntrances((q) => [j, ...q]);
+  }, [entrance, me, profile]);
+  // Entrance bars play one after another.
+  const shownEntrance = entrances[0];
+  useEffect(() => {
+    if (!shownEntrance) return;
+    const t = setTimeout(() => setEntrances((q) => q.slice(1)), 4500);
+    return () => clearTimeout(t);
+  }, [shownEntrance]);
+  useEffect(() => { endRef.current?.scrollIntoView({ block: "end" }); }, [messages.length, joins.length, tab]);
 
   async function onPassword(e: React.FormEvent) {
     e.preventDefault();
@@ -213,9 +247,12 @@ function RoomPage() {
                 </Button>
               </div>
               <div className="mt-3 flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-overlay px-3 py-1 text-sm" aria-label={`${members.length} في الروم`}>
+                <button type="button" onClick={() => setListOpen(true)} className="inline-flex items-center gap-1.5 rounded-full bg-overlay px-3 py-1 text-sm" aria-label={`${members.length} في الروم`}>
+                  <span className="flex -space-x-2 rtl:space-x-reverse">
+                    {members.slice(0, 3).map((id) => people[id] && <Avatar key={id} person={people[id]} className="size-6 text-[10px] ring-1 ring-on-media/40" />)}
+                  </span>
                   <Users className="size-4" /> <span className="tabular-nums">{members.length}</span>
-                </span>
+                </button>
                 <span className="inline-flex items-center gap-2">
                   <span className="text-xs opacity-80">صاحب الروم</span>
                   <Avatar person={owner} className="size-9 ring-2 ring-vip-3" />
@@ -271,7 +308,18 @@ function RoomPage() {
                       </Card>
                     </>
                   )}
-                  {messages.map((m) => {
+                  {feed(messages, tab === "all" ? joins : []).map((item) => {
+                    if ("auth_id" in item) {
+                      const jp = people[item.auth_id];
+                      return (
+                        <p key={item.key} className="flex w-fit max-w-full items-center gap-1.5 rounded-full bg-overlay px-3 py-1 text-xs">
+                          <span className={`truncate font-semibold ${vipTier(activeVipLevel(jp))?.text ?? ""}`}>{jp?.display_name ?? "…"}</span>
+                          <VipBadge level={activeVipLevel(jp)} />
+                          <span className="shrink-0 opacity-80">دخل الروم</span>
+                        </p>
+                      );
+                    }
+                    const m = item;
                     const p = people[m.sender_id];
                     const lvl = activeVipLevel(p);
                     return (
@@ -310,11 +358,14 @@ function RoomPage() {
               )}
             </form>
 
-            {entrance && myVip > 0 && profile && (
-              <div className="pointer-events-none absolute inset-x-0 top-1/3 px-3">
-                <VipEntrance level={myVip} name={profile.display_name} />
-              </div>
-            )}
+            {shownEntrance && (() => {
+              const ep = shownEntrance.auth_id === me && profile ? { ...profile, vip: myVip } : people[shownEntrance.auth_id] && { ...people[shownEntrance.auth_id], vip: activeVipLevel(people[shownEntrance.auth_id]) };
+              return ep && ep.vip > 0 ? (
+                <div key={shownEntrance.key} className="pointer-events-none absolute inset-x-0 top-1/3 px-3">
+                  <VipEntrance level={ep.vip} name={ep.display_name ?? ""} />
+                </div>
+              ) : null;
+            })()}
           </>
         ) : null}
       </div>
@@ -341,6 +392,30 @@ function RoomPage() {
         </SheetContent>
       </Sheet>
 
+      <Sheet open={listOpen} onOpenChange={setListOpen}>
+        <SheetContent side="bottom" className="mx-auto max-h-[70dvh] max-w-md overflow-y-auto rounded-t-3xl">
+          <SheetHeader><SheetTitle>اللي في الروم ({members.length})</SheetTitle></SheetHeader>
+          <ul className="grid gap-1 p-4">
+            {members.map((id) => {
+              const p = people[id];
+              if (!p) return null;
+              return (
+                <li key={id}>
+                  <button type="button" onClick={() => { setListOpen(false); setPicked(p); }} className="flex w-full items-center gap-3 rounded-2xl p-2 text-start hover:bg-muted">
+                    <Avatar person={p} className="size-10" />
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center gap-1.5 font-semibold"><span className="truncate">{p.display_name}</span><VipBadge level={activeVipLevel(p)} /></span>
+                      <span className="block text-xs text-muted-foreground" dir="ltr">ID:{shownId(p)}</span>
+                    </span>
+                    {id === owner?.auth_id && <Crown className="size-4 text-vip-3" aria-label="صاحب الروم" />}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </SheetContent>
+      </Sheet>
+
       <Sheet open={exitOpen} onOpenChange={setExitOpen}>
         <SheetContent side="bottom" className="mx-auto max-w-md rounded-t-3xl">
           <SheetHeader><SheetTitle>خروج من الروم</SheetTitle></SheetHeader>
@@ -352,6 +427,14 @@ function RoomPage() {
       </Sheet>
     </div>
   );
+}
+
+type Join = { key: string; auth_id: string; at: string };
+
+/** Chat messages and "came in" lines in time order. */
+function feed(messages: RoomMessage[], joins: Join[]): (RoomMessage | Join)[] {
+  const time = (x: RoomMessage | Join) => ("auth_id" in x ? x.at : x.created_at);
+  return [...messages, ...joins].sort((a, b) => time(a).localeCompare(time(b)));
 }
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
