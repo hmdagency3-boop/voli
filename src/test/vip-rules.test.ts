@@ -59,7 +59,7 @@ describe('VIP tiers', () => {
     expect(rows.map((r) => r['immunity'])).toEqual(['none', 'none', 'none', 'moderators', 'moderators', 'moderators', 'moderators', 'absolute']);
     expect(rows.map((r) => r['entrance'] !== null)).toEqual([true, true, true, true, true, true, true, true]);
     expect(rows[0]!['entrance']).toBe('bronze_dragon_bar');
-    expect(rows[1]!['entrance']).toBe('bronze_dragon_bar');
+    expect(rows[1]!['entrance']).toBe('silver_dragon_bar');
     expect(rows[7]!['entrance_fullscreen']).toBe(true);
     expect(rows[7]!['entrance_sound']).toBe(true);
   });

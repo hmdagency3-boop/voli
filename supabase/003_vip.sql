@@ -82,7 +82,7 @@ insert into public.vip_tiers as t (level, key, name_ar, name_en, frame, chat_bad
   monthly_salary, join_banner, private_support, system_broadcast)
 values
   (1, 'bronze',  'تنين البرونز',            'Bronze Hatchling Dragon',  'bronze_hatchling', true, true, null,     false, 'bronze_dragon_bar',     false, false, null,        false, 'none',       false, false, false, false, false, false),
-  (2, 'silver',  'تنين الفضة',              'Silver Wyvern Dragon',     'silver_wyvern',    true, true, 'custom', true,  'bronze_dragon_bar',     false, false, null,        false, 'none',       false, false, false, false, false, false),
+  (2, 'silver',  'تنين الفضة',              'Silver Wyvern Dragon',     'silver_wyvern',    true, true, 'custom', true,  'silver_dragon_bar',     false, false, null,        false, 'none',       false, false, false, false, false, false),
   (3, 'gold',    'تنين الذهب',              'Golden Flame Dragon',      'golden_flame',     true, true, 'custom', true,  'gold_dragon',           false, false, 'special',   true,  'none',       false, false, false, false, false, false),
   (4, 'cosmic',  'تنين الأرجوان الكوني',     'Cosmic Void Dragon',       'cosmic_void',      true, true, 'neon',   true,  'purple_flying_dragon',  false, false, 'special',   true,  'moderators', false, false, false, false, false, false),
   (5, 'ruby',    'تنين الياقوت الأحمر',      'Crimson Ruby Dragon',      'crimson_ruby',     true, true, 'neon',   true,  'red_fire_dragon',       false, false, 'gold',      true,  'moderators', false, true,  false, false, false, false),

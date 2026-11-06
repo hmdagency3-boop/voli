@@ -1,5 +1,6 @@
 import vip1Badge from '@/assets/vip/vip-1-badge.webp';
 import vip1Entrance from '@/assets/vip/vip-1-entrance.webp';
+import vip2Entrance from '@/assets/vip/vip-2-entrance.webp';
 import vip1ChatBubble from '@/assets/vip/vip-1-chat-bubble.webp';
 import vip1ProfileCard from '@/assets/vip/vip-1-profile-card.webp';
 import { vipTier } from '@/lib/vip';
@@ -20,6 +21,7 @@ const BADGES: Partial<Record<number, string>> = {
 
 const ENTRANCES: Record<string, EntranceArt> = {
   bronze_dragon_bar: { url: vip1Entrance, name: { left: 39, right: 23, top: 42, bottom: 25 } },
+  silver_dragon_bar: { url: vip2Entrance, name: { left: 39, right: 23, top: 42, bottom: 25 } },
 };
 
 export function vipBadgeArt(level: number): string | null {

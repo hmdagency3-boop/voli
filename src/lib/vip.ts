@@ -38,7 +38,7 @@ export const VIP_TIERS: VipTier[] = [
   {
     level: 2, key: 'silver', nameAr: 'تنين الفضة', nameEn: 'Silver Wyvern Dragon',
     features: ['إطار البروفايل الفضي', 'فقاعة كلام (Chat Bubble) مخصصة في الشات', 'إخفاء الموقع الجغرافي والبلد'],
-    chatBubble: 'custom', idCard: null, entrance: 'bronze_dragon_bar', hideLocation: true, invisibleMode: false,
+    chatBubble: 'custom', idCard: null, entrance: 'silver_dragon_bar', hideLocation: true, invisibleMode: false,
     text: 'text-vip-2', bg: 'bg-vip-2', ring: 'ring-vip-2', border: 'border-vip-2', color: 'var(--vip-2)',
   },
   {
