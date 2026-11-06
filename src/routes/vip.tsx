@@ -59,15 +59,16 @@ function VipPage() {
   useEffect(() => {
     document.getElementById(`vip-tab-${selected}`)?.scrollIntoView({ inline: "center", block: "nearest" });
   }, [selected]);
-  const tier = vipTier(selected)!;
+  const tier = vipTier(selected) ?? VIP_TIERS[0];
   const price = prices[selected];
+  if (!tier) return null;
 
   async function buy() {
     setBuying(true);
     const { error } = await supabase.rpc("buy_vip", { p_level: selected });
     setBuying(false);
     if (error) { toast.error(buyErrors[error.hint ?? ""] ?? "الشراء ماتمش، حاول تاني"); return; }
-    toast.success(`مبروك! بقيت ${tier.nameAr}`);
+    toast.success(`مبروك! بقيت ${tier?.nameAr ?? "VIP"}`);
     reload();
   }
 
@@ -112,17 +113,18 @@ function VipPage() {
       {/* اختيار الرتبة */}
       <nav aria-label="رتب VIP" className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-4">
         {VIP_TIERS.map((t) => (
-          <button
+          <Button
+            variant="ghost"
             key={t.level}
             id={`vip-tab-${t.level}`}
             type="button"
             onClick={() => setSelected(t.level)}
             aria-pressed={t.level === selected}
-            className={`flex shrink-0 flex-col items-center gap-1 rounded-2xl border-2 px-3 py-2 transition ${t.level === selected ? `${t.border} bg-card` : "border-transparent bg-secondary/60"}`}
+            className={`h-32 w-32 shrink-0 flex-col gap-1 rounded-2xl border-2 px-2 py-2 transition ${t.level === selected ? `${t.border} bg-card` : "border-transparent bg-secondary/60"}`}
           >
-            <VipBadge level={t.level} />
-            <span className="max-w-20 truncate text-[11px] font-semibold text-muted-foreground">{t.nameAr}</span>
-          </button>
+            <VipBadge level={t.level} size="tab" />
+            <span className="max-w-full truncate text-[11px] font-semibold text-muted-foreground">{t.nameAr}</span>
+          </Button>
         ))}
       </nav>
 
@@ -183,6 +185,9 @@ function TierCard({ tier, owned, name }: { tier: VipTier; owned: boolean; name: 
         </div>
         {owned && <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold text-vip-on ${tier.bg}`}>مفعّلة</span>}
       </div>
+      <div className="my-3 grid place-items-center py-2">
+        <VipBadge level={tier.level} size="showcase" />
+      </div>
       <ul className="mt-4 space-y-2.5">
         {tier.features.map((f) => (
           <li key={f} className="flex items-start gap-2 text-sm">
@@ -197,7 +202,7 @@ function TierCard({ tier, owned, name }: { tier: VipTier; owned: boolean; name: 
       </div>}
       {inherited.length > 0 && (
         <p className="mt-4 border-t pt-3 text-xs text-muted-foreground">
-          + كل مميزات {inherited.length === 1 ? inherited[0]!.nameAr : `الرتب من VIP 1 لحد VIP ${tier.level - 1}`}
+          + كل مميزات {inherited.length === 1 ? inherited[0]?.nameAr : `الرتب من VIP 1 لحد VIP ${tier.level - 1}`}
         </p>
       )}
     </section>

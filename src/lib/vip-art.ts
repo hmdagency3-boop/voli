@@ -16,6 +16,12 @@ import vip5ChatBubble from '@/assets/vip/vip-5-chat-bubble.webp';
 import vip6Badge from '@/assets/vip/vip-6-badge.webp';
 import vip6Entrance from '@/assets/vip/vip-6-entrance.webp';
 import vip6ChatBubble from '@/assets/vip/vip-6-chat-bubble.webp';
+import vip7Badge from '@/assets/vip/vip-7-badge.webp';
+import vip7Entrance from '@/assets/vip/vip-7-entrance.webp';
+import vip7ChatBubble from '@/assets/vip/vip-7-chat-bubble.webp';
+import vip8Badge from '@/assets/vip/vip-8-badge.webp';
+import vip8Entrance from '@/assets/vip/vip-8-entrance.webp';
+import vip8ChatBubble from '@/assets/vip/vip-8-chat-bubble.webp';
 import vip1ProfileCard from '@/assets/vip/vip-1-profile-card.webp';
 import { vipTier } from '@/lib/vip';
 
@@ -38,6 +44,8 @@ const BADGES: Partial<Record<number, string>> = {
   4: vip4Badge,
   5: vip5Badge,
   6: vip6Badge,
+  7: vip7Badge,
+  8: vip8Badge,
 };
 
 const ENTRANCES: Record<string, EntranceArt> = {
@@ -47,6 +55,8 @@ const ENTRANCES: Record<string, EntranceArt> = {
   purple_flying_dragon: { url: vip4Entrance, name: { left: 37, right: 17, top: 49.5, bottom: 30.5 }, textScale: 0.7 },
   red_fire_dragon: { url: vip5Entrance, name: { left: 43, right: 23, top: 42, bottom: 36 }, textScale: 0.8 },
   emerald_giant_dragon: { url: vip6Entrance, name: { left: 50, right: 8, top: 52, bottom: 26 }, textScale: 0.75 },
+  diamond_flying_dragon: { url: vip7Entrance, name: { left: 44, right: 9, top: 54, bottom: 27 }, textScale: 0.8 },
+  legendary_dragon: { url: vip8Entrance, name: { left: 47, right: 20, top: 47, bottom: 40 }, textScale: 0.7 },
 };
 
 export function vipBadgeArt(level: number): string | null {
@@ -89,6 +99,14 @@ const CHAT_BUBBLES: Partial<Record<number, Omit<ChatBubbleArt, 'border'>>> = {
   6: {
     url: vip6ChatBubble,
     slice: { top: 80, right: 200, bottom: 95, left: 200 },
+  },
+  7: {
+    url: vip7ChatBubble,
+    slice: { top: 110, right: 240, bottom: 130, left: 240 },
+  },
+  8: {
+    url: vip8ChatBubble,
+    slice: { top: 90, right: 220, bottom: 120, left: 220 },
   },
 };
 

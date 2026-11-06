@@ -73,3 +73,6 @@
 
 # VIP 1 profile card
 - [x] Popped-up profile card for VIP 1 members uses the dragon frame, full screen width, anchored at the bottom like everyone else's card.
+
+# VIP badge readability
+- [x] Enlarge tier tabs and add a full-art badge to tier details; review shared badge sizes and verify phone/desktop layouts in an isolated visual fixture (external-account access remains unverified).

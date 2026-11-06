@@ -206,6 +206,16 @@
 @keyframes vip-glow { 0%,100% { filter: brightness(1) drop-shadow(0 0 0 transparent); } 50% { filter: brightness(1.18) drop-shadow(0 0 6px color-mix(in oklab, var(--color-accent) 80%, transparent)); } }
 @utility animate-vip-glow { animation: vip-glow 1.2s ease-in-out infinite; @media (prefers-reduced-motion: reduce) { animation: none; } }
 
+/* Full badge artwork stays uncut; tier colour supplies a quiet, readable glow. */
+@keyframes vip-badge-gleam {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 8px currentColor); }
+  50% { filter: brightness(1.12) drop-shadow(0 0 12px currentColor); }
+}
+.vip-badge-showcase { animation: vip-badge-gleam 3.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .vip-badge-showcase { animation: none; filter: drop-shadow(0 0 8px currentColor); }
+}
+
 /* Party room backgrounds (one per room theme in src/lib/rooms.ts) */
 @utility bg-room-default { background-image: radial-gradient(120% 70% at 50% 55%, oklch(0.30 0.05 220), oklch(0.15 0.03 230) 60%, oklch(0.11 0.02 240)); }
 @utility bg-room-night { background-image: radial-gradient(120% 70% at 50% 30%, oklch(0.26 0.06 265), oklch(0.12 0.03 270) 65%); }

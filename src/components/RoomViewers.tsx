@@ -68,7 +68,7 @@ function Row({ p, owner, onMic, me, vip, onPick }: { p: RoomPerson; owner: boole
             {onMic && <span className="inline-flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 font-bold text-primary"><MicIcon className="size-3" />على المايك</span>}
           </span>
         </span>
-        <VipBadge level={vip} className="!h-4" />
+        <VipBadge level={vip} />
       </button>
     </li>
   );

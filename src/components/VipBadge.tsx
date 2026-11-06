@@ -2,9 +2,16 @@ import type { ReactNode } from "react";
 import { Crown } from "lucide-react";
 import { vipTier } from "@/lib/vip";
 import { vipBadgeArt } from "@/lib/vip-art";
+import { cn } from "@/lib/utils";
+
+const badgeSizes = {
+  compact: "h-9 w-16",
+  tab: "h-20 w-28",
+  showcase: "h-48 w-72 max-w-full vip-badge-showcase",
+};
 
 /** Chat badge "Dragon V1…V8": the tier's picture, or a drawn placeholder until it arrives. */
-export function VipBadge({ level, className = "" }: { level: number; className?: string }) {
+export function VipBadge({ level, size = "compact", className = "" }: { level: number; size?: keyof typeof badgeSizes; className?: string }) {
   const tier = vipTier(level);
   if (!tier) return null;
   const art = vipBadgeArt(tier.level);
@@ -15,7 +22,7 @@ export function VipBadge({ level, className = "" }: { level: number; className?:
         alt={`VIP ${tier.level} — ${tier.nameAr}`}
         title={tier.nameAr}
         draggable={false}
-        className={`inline-block h-4 w-auto shrink-0 object-contain ${className}`}
+        className={cn("inline-block shrink-0 object-contain", tier.text, badgeSizes[size], className)}
       />
     );
   }
@@ -25,9 +32,9 @@ export function VipBadge({ level, className = "" }: { level: number; className?:
       role="img"
       aria-label={`VIP ${tier.level} — ${tier.nameAr}`}
       title={tier.nameAr}
-      className={`inline-flex h-[16px] items-center gap-0.5 rounded-full px-1.5 text-[9px] font-extrabold leading-none text-vip-on ${tier.bg} ${className}`}
+      className={cn("inline-flex shrink-0 items-center justify-center gap-1 rounded-full px-1.5 font-extrabold leading-none text-vip-on", size === "compact" ? "text-xs" : size === "tab" ? "text-xl" : "text-4xl", tier.bg, badgeSizes[size], className)}
     >
-      <Crown className="size-2.5" aria-hidden="true" />V{tier.level}
+      <Crown className={size === "compact" ? "size-3" : size === "tab" ? "size-6" : "size-10"} aria-hidden="true" />V{tier.level}
     </span>
   );
 }
