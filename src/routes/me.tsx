@@ -145,9 +145,9 @@ function MePage() {
                     const wl = levelProgress(Number(profile?.wealth_points ?? 0), thresholds.wealth).level;
                     const cl = levelProgress(Number(profile?.charisma_points ?? 0), thresholds.charisma).level;
                     return (
-                      <div className="mt-1 flex gap-1.5">
-                        <LevelBadge badge={wealthBadge(wl)} level={wl} locked={badgeTier(wl) === null} className="w-11" />
-                        <LevelBadge badge={charismaBadge(cl)} level={cl} locked={badgeTier(cl) === null} className="w-11" />
+                      <div dir="rtl" className="mt-2 flex items-center gap-2">
+                        <LevelBadge badge={wealthBadge(wl)} level={wl} locked={badgeTier(wl) === null} height={22} />
+                        <LevelBadge badge={charismaBadge(cl)} level={cl} locked={badgeTier(cl) === null} height={22} />
                       </div>
                     );
                   })()}
@@ -196,11 +196,8 @@ function MePage() {
         </Button>
 
         {/* ── بانر VIP ── */}
-        <button type="button" dir="ltr" className="relative mx-4 mt-4 block w-[calc(100%-2rem)] transition active:scale-[0.98]">
-          <img src={vipClubCard} alt="" draggable={false} className="block w-full select-none" />
-          <span dir="rtl" className="absolute inset-y-0 left-[30%] right-[11%] flex items-center justify-center font-display text-base font-extrabold text-on-media [text-shadow:0_1px_2px_rgb(0_0_0/0.6)]">
-            انضم لنادي VIP
-          </span>
+        <button type="button" aria-label="انضم لنادي VIP" className="relative mx-4 mt-4 block w-[calc(100%-2rem)] transition active:scale-[0.98]">
+          <img src={vipClubCard} alt="نادي VIP" draggable={false} className="block w-full select-none" />
         </button>
 
         {/* ── القائمة ── */}
