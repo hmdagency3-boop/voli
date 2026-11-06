@@ -6,6 +6,9 @@ import { RoomRanking } from "@/components/RoomRanking";
 import { RoomViewers } from "@/components/RoomViewers";
 import trophyButton from "@/assets/rank/trophy-button.webp";
 import coinIcon from "@/assets/coin.webp";
+import diamondIcon from "@/assets/diamond.webp";
+import { GiftSheet, type GiftSent, type GiftTarget } from "@/components/GiftSheet";
+import { getGiftsReceived } from "@/lib/gifts";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -69,6 +72,11 @@ function RoomPage() {
   const [coins, setCoins] = useState(0);
   const [amount, setAmount] = useState<number>(COIN_AMOUNTS[0]);
   const [throwing, setThrowing] = useState(false);
+  /** Gift box: open, who it opened for, what each person received here, and the gift that just flew. */
+  const [giftOpen, setGiftOpen] = useState(false);
+  const [giftFor, setGiftFor] = useState<string[]>([]);
+  const [received, setReceived] = useState<Record<string, number>>({});
+  const [flying, setFlying] = useState<(GiftSent & { key: number }) | null>(null);
   const balance = Number(profile?.coins ?? 0);
   const endRef = useRef<HTMLDivElement>(null);
   const peopleRef = useRef(people);
@@ -114,8 +122,9 @@ function RoomPage() {
     if (!inside || !roomId) return;
     let active = true;
     const load = async () => {
-      const s = await getRoomState(roomId).catch(() => null);
+      const [s, got] = await Promise.all([getRoomState(roomId).catch(() => null), getGiftsReceived(roomId)]);
       if (!active || !s) return;
+      setReceived(got);
       if (s.room && !s.room.is_live) { setStatus("offline"); return; }
       if (s.room) setRoom(s.room);
       setMembers(s.members);
@@ -243,6 +252,35 @@ function RoomPage() {
     } finally { setThrowing(false); }
   }
 
+  function openGifts(forIds: string[] = []) {
+    setGiftFor(forIds);
+    setPicked(null);
+    setGiftOpen(true);
+  }
+
+  function onGiftSent(sent: GiftSent) {
+    setCoins(sent.total);
+    setGiftOpen(false);
+    setFlying({ ...sent, key: Date.now() });
+    reload();
+    if (roomId) getGiftsReceived(roomId).then(setReceived);
+    const names = sent.to.length > 2 ? `${sent.to.length} أشخاص` : sent.to.map((p) => p.display_name).join(" و ");
+    toast.success(`بعت ${sent.gift.name} ×${sent.quantity} لـ ${names}`);
+  }
+  useEffect(() => {
+    if (!flying) return;
+    const t = setTimeout(() => setFlying(null), 2600);
+    return () => clearTimeout(t);
+  }, [flying]);
+
+  /** The gift box strip: people on the mics in seat order (not me), plus whoever it was opened for. */
+  const giftTargets: GiftTarget[] = [...seats].sort((a, b) => a.seat_no - b.seat_no)
+    .filter((x) => x.auth_id !== me && people[x.auth_id])
+    .map((x) => ({ person: people[x.auth_id]!, seat: x.seat_no }));
+  for (const id of giftFor) {
+    if (id !== me && people[id] && !giftTargets.some((t) => t.person.auth_id === id)) giftTargets.push({ person: people[id]! });
+  }
+
   async function exit(end: boolean) {
     if (roomId) await (end ? endParty() : leaveRoom(roomId)).catch(() => {});
     navigate({ to: "/" });
@@ -314,6 +352,11 @@ function RoomPage() {
                       <span className="grid size-14 place-items-center rounded-full border-2 border-on-media/15 bg-overlay"><Mic className="size-6 opacity-70" /></span>
                     )}
                     <span className="w-full truncate text-center text-xs opacity-80">{p ? p.display_name : no}</span>
+                    {p && (received[p.auth_id] ?? 0) > 0 && (
+                      <span className="-mt-1 inline-flex items-center gap-0.5 text-[10px] font-bold tabular-nums opacity-90" aria-label={`استلم ${received[p.auth_id]} من الهدايا`}>
+                        <img src={diamondIcon} alt="" className="size-2.5" />{shortCoins(received[p.auth_id]!)}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -413,11 +456,20 @@ function RoomPage() {
                   {sending ? <Loader2 className="animate-spin" /> : <SendHorizontal className="-scale-x-100" />}
                 </Button>
               ) : (
-                <Button type="button" size="icon" variant="ghost" aria-label="هدية" onClick={() => setTab("gifts")} className="size-11 rounded-full bg-overlay text-on-media">
+                <Button type="button" size="icon" variant="ghost" aria-label="هدية" onClick={() => openGifts()} className="size-11 rounded-full bg-overlay text-on-media">
                   <Gift className="size-5" />
                 </Button>
               )}
             </form>
+
+            {flying && (
+              <div key={flying.key} className="pointer-events-none absolute inset-0 z-40 grid place-items-center">
+                <div className="flex flex-col items-center animate-in zoom-in-50 fade-in duration-500">
+                  <img src={flying.gift.art} alt="" className="size-44 object-contain drop-shadow-2xl" />
+                  <p className="mt-1 rounded-full bg-overlay px-3 py-1 text-sm font-bold">{flying.gift.name} ×{flying.quantity}</p>
+                </div>
+              </div>
+            )}
 
             {shownEntrance && (() => {
               const ep = shownEntrance.auth_id === me && profile ? { ...profile, vip: myVip } : people[shownEntrance.auth_id] && { ...people[shownEntrance.auth_id], vip: activeVipLevel(people[shownEntrance.auth_id]) };
@@ -454,6 +506,9 @@ function RoomPage() {
               <Button asChild size="sm" className="h-9 flex-1 rounded-full bg-rank-gold font-bold text-vip-on hover:bg-rank-gold/90">
                 <Link to="/user/$publicId" params={{ publicId: String(picked.public_id) }}>الملف الشخصي</Link>
               </Button>
+              {picked.auth_id !== me && (
+                <Button size="sm" onClick={() => openGifts([picked.auth_id])} className="h-9 flex-1 rounded-full"><Gift /> هدية</Button>
+              )}
               {picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
                 <Button size="sm" variant="destructive" onClick={() => onKick(picked)} className="h-9 flex-1 rounded-full">طرد من الروم</Button>
               )}
@@ -474,6 +529,9 @@ function RoomPage() {
                   <Button asChild variant="secondary" className="h-12 rounded-full">
                     <Link to="/user/$publicId" params={{ publicId: String(picked.public_id) }}>الملف الشخصي</Link>
                   </Button>
+                  {picked.auth_id !== me && (
+                    <Button onClick={() => openGifts([picked.auth_id])} className="h-12 rounded-full"><Gift /> ابعت هدية</Button>
+                  )}
                   {picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
                     <Button variant="destructive" onClick={() => onKick(picked)} className="h-12 rounded-full">طرد من الروم</Button>
                   )}
@@ -488,6 +546,11 @@ function RoomPage() {
         seated={new Set(seats.map((x) => x.auth_id))} me={me} onPick={(p) => { setListOpen(false); setPicked(p); }} />
 
       <RoomRanking open={rankOpen} onOpenChange={setRankOpen} />
+
+      {roomId && (
+        <GiftSheet open={giftOpen} onOpenChange={setGiftOpen} roomId={roomId} targets={giftTargets} preselect={giftFor}
+          balance={balance} wealthPoints={Number(profile?.wealth_points ?? 0)} onSent={onGiftSent} />
+      )}
 
       <Sheet open={exitOpen} onOpenChange={setExitOpen}>
         <SheetContent side="bottom" className="mx-auto max-w-md rounded-t-3xl">
