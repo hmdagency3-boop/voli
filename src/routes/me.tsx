@@ -201,7 +201,7 @@ function MePage() {
               <img src={coinIcon} alt="كوينز" className="size-5 object-contain" />
             </span>
             <span className="text-xs font-semibold text-muted-foreground">شحن</span>
-            <span className="ms-auto font-sans text-sm font-semibold tabular-nums">0</span>
+            <span title={Number(profile?.coins ?? 0).toLocaleString("en")} className="ms-auto min-w-0 truncate font-sans text-sm font-semibold tabular-nums">{new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(Number(profile?.coins ?? 0))}</span>
           </div>
         </section>
 

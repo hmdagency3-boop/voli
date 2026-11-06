@@ -54,3 +54,12 @@
 - [x] Upload the latest updates to GitHub (hmdagency3-boop/voli).
 - [ ] Prices, durations, monthly salary amounts, friends-list sizes (user will decide).
 - [ ] Stream rooms, entrances, join banner, system broadcast (rooms not built yet).
+
+# Party rooms
+- [x] Room button on the home page opens the room setup page (mic/video, cover + name, theme, seats, lock, announcement, start).
+- [x] Room page: owner header, live member count, mic seats, chat tabs, announcement, share, leave/end party, remove a member.
+- [x] Live rooms listed on the home page.
+- [x] supabase/004_rooms.sql with PGlite tests.
+- [ ] Run supabase/004_rooms.sql in the SQL Editor (needs the user).
+- [ ] Real live voice/video on the mics (needs a voice service the user picks).
+- [ ] Gifts, games, room tasks (not built yet).

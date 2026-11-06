@@ -19,6 +19,8 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as VipRouteImport } from './routes/vip'
 import { Route as ChatPublicIdRouteImport } from './routes/chat_.$publicId'
 import { Route as MeDetailsRouteImport } from './routes/me_.details'
+import { Route as RoomPublicIdRouteImport } from './routes/room.$publicId'
+import { Route as RoomNewRouteImport } from './routes/room.new'
 import { Route as UserPublicIdRouteImport } from './routes/user.$publicId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -71,6 +73,16 @@ const MeDetailsRoute = MeDetailsRouteImport.update({
   path: '/me/details',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoomPublicIdRoute = RoomPublicIdRouteImport.update({
+  id: '/room/$publicId',
+  path: '/room/$publicId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoomNewRoute = RoomNewRouteImport.update({
+  id: '/room/new',
+  path: '/room/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UserPublicIdRoute = UserPublicIdRouteImport.update({
   id: '/user/$publicId',
   path: '/user/$publicId',
@@ -88,6 +100,8 @@ export interface FileRoutesByFullPath {
   '/vip': typeof VipRoute
   '/chat/$publicId': typeof ChatPublicIdRoute
   '/me/details': typeof MeDetailsRoute
+  '/room/$publicId': typeof RoomPublicIdRoute
+  '/room/new': typeof RoomNewRoute
   '/user/$publicId': typeof UserPublicIdRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +115,8 @@ export interface FileRoutesByTo {
   '/vip': typeof VipRoute
   '/chat/$publicId': typeof ChatPublicIdRoute
   '/me/details': typeof MeDetailsRoute
+  '/room/$publicId': typeof RoomPublicIdRoute
+  '/room/new': typeof RoomNewRoute
   '/user/$publicId': typeof UserPublicIdRoute
 }
 export interface FileRoutesById {
@@ -115,6 +131,8 @@ export interface FileRoutesById {
   '/vip': typeof VipRoute
   '/chat_/$publicId': typeof ChatPublicIdRoute
   '/me_/details': typeof MeDetailsRoute
+  '/room/$publicId': typeof RoomPublicIdRoute
+  '/room/new': typeof RoomNewRoute
   '/user/$publicId': typeof UserPublicIdRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +148,8 @@ export interface FileRouteTypes {
     | '/vip'
     | '/chat/$publicId'
     | '/me/details'
+    | '/room/$publicId'
+    | '/room/new'
     | '/user/$publicId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +163,8 @@ export interface FileRouteTypes {
     | '/vip'
     | '/chat/$publicId'
     | '/me/details'
+    | '/room/$publicId'
+    | '/room/new'
     | '/user/$publicId'
   id:
     | '__root__'
@@ -156,6 +178,8 @@ export interface FileRouteTypes {
     | '/vip'
     | '/chat_/$publicId'
     | '/me_/details'
+    | '/room/$publicId'
+    | '/room/new'
     | '/user/$publicId'
   fileRoutesById: FileRoutesById
 }
@@ -170,6 +194,8 @@ export interface RootRouteChildren {
   VipRoute: typeof VipRoute
   ChatPublicIdRoute: typeof ChatPublicIdRoute
   MeDetailsRoute: typeof MeDetailsRoute
+  RoomPublicIdRoute: typeof RoomPublicIdRoute
+  RoomNewRoute: typeof RoomNewRoute
   UserPublicIdRoute: typeof UserPublicIdRoute
 }
 
@@ -245,6 +271,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MeDetailsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/room/$publicId': {
+      id: '/room/$publicId'
+      path: '/room/$publicId'
+      fullPath: '/room/$publicId'
+      preLoaderRoute: typeof RoomPublicIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/room/new': {
+      id: '/room/new'
+      path: '/room/new'
+      fullPath: '/room/new'
+      preLoaderRoute: typeof RoomNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/user/$publicId': {
       id: '/user/$publicId'
       path: '/user/$publicId'
@@ -266,6 +306,8 @@ const rootRouteChildren: RootRouteChildren = {
   VipRoute: VipRoute,
   ChatPublicIdRoute: ChatPublicIdRoute,
   MeDetailsRoute: MeDetailsRoute,
+  RoomPublicIdRoute: RoomPublicIdRoute,
+  RoomNewRoute: RoomNewRoute,
   UserPublicIdRoute: UserPublicIdRoute,
 }
 export const routeTree = rootRouteImport
