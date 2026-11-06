@@ -49,6 +49,15 @@
   --color-live: var(--live);
   --color-overlay: var(--overlay);
   --color-on-media: var(--on-media);
+  --color-vip-1: var(--vip-1);
+  --color-vip-2: var(--vip-2);
+  --color-vip-3: var(--vip-3);
+  --color-vip-4: var(--vip-4);
+  --color-vip-5: var(--vip-5);
+  --color-vip-6: var(--vip-6);
+  --color-vip-7: var(--vip-7);
+  --color-vip-8: var(--vip-8);
+  --color-vip-on: var(--vip-on);
   --font-display: "Syne", "Cairo", sans-serif;
   --font-sans: "Plus Jakarta Sans", "Cairo", sans-serif;
   --color-chart-1: var(--chart-1);
@@ -106,6 +115,16 @@
   --sidebar-accent-foreground: oklch(0.95 0.015 310);
   --sidebar-border: oklch(0.36 0.065 310);
   --sidebar-ring: oklch(0.72 0.17 310);
+  /* VIP dragon tiers (placeholder colours until the tier artwork arrives) */
+  --vip-1: oklch(0.66 0.11 55);   /* برونز */
+  --vip-2: oklch(0.84 0.02 260);  /* فضة */
+  --vip-3: oklch(0.84 0.16 85);   /* ذهب */
+  --vip-4: oklch(0.66 0.25 305);  /* أرجوان كوني */
+  --vip-5: oklch(0.63 0.24 22);   /* ياقوت أحمر */
+  --vip-6: oklch(0.74 0.19 155);  /* زمرد */
+  --vip-7: oklch(0.88 0.08 220);  /* ماس */
+  --vip-8: oklch(0.80 0.17 70);   /* إمبراطوري */
+  --vip-on: oklch(0.16 0.03 310);
 }
 
 .dark {

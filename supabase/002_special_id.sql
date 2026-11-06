@@ -10,7 +10,8 @@ alter table public.profiles add column if not exists vip_level smallint not null
 alter table public.profiles add column if not exists special_id text;
 do $$
 begin
-  if not exists (select 1 from pg_constraint where conrelid = 'public.profiles'::regclass and conname = 'profiles_vip_level_range') then
+  -- Skipped once update 003 has moved VIP to the 8 dragon tiers (profiles_vip_level_tier).
+  if not exists (select 1 from pg_constraint where conrelid = 'public.profiles'::regclass and conname in ('profiles_vip_level_range', 'profiles_vip_level_tier')) then
     alter table public.profiles add constraint profiles_vip_level_range check (vip_level between 0 and 100);
   end if;
   -- Digits only, no leading zero, 1 to 10 digits.
@@ -48,5 +49,12 @@ create trigger profiles_special_id_clash before insert or update of public_id, s
 -- ---------- Re-assert member grants (profiles columns members may edit) ----------
 revoke update on public.profiles from authenticated;
 grant update (display_name, avatar_url, bio) on public.profiles to authenticated;
+-- VIP settings added by update 003 stay editable when this file is run again.
+do $$
+begin
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'profiles' and column_name = 'vip_invisible') then
+    grant update (hide_location, vip_invisible) on public.profiles to authenticated;
+  end if;
+end $$;
 
 commit;

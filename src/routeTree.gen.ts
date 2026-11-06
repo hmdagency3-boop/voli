@@ -1,1 +1,283 @@
-LyogZXNsaW50LWRpc2FibGUgKi8KCi8vIEB0cy1ub2NoZWNrCgovLyBub2luc3BlY3Rpb24gSlNVbnVzZWRHbG9iYWxTeW1ib2xzCgovLyBUaGlzIGZpbGUgd2FzIGF1dG9tYXRpY2FsbHkgZ2VuZXJhdGVkIGJ5IFRhblN0YWNrIFJvdXRlci4KLy8gWW91IHNob3VsZCBOT1QgbWFrZSBhbnkgY2hhbmdlcyBpbiB0aGlzIGZpbGUgYXMgaXQgd2lsbCBiZSBvdmVyd3JpdHRlbi4KLy8gQWRkaXRpb25hbGx5LCB5b3Ugc2hvdWxkIGFsc28gZXhjbHVkZSB0aGlzIGZpbGUgZnJvbSB5b3VyIGxpbnRlciBhbmQvb3IgZm9ybWF0dGVyIHRvIHByZXZlbnQgaXQgZnJvbSBiZWluZyBjaGVja2VkIG9yIG1vZGlmaWVkLgoKaW1wb3J0IHsgUm91dGUgYXMgcm9vdFJvdXRlSW1wb3J0IH0gZnJvbSAnLi9yb3V0ZXMvX19yb290JwppbXBvcnQgeyBSb3V0ZSBhcyBJbmRleFJvdXRlSW1wb3J0IH0gZnJvbSAnLi9yb3V0ZXMvaW5kZXgnCmltcG9ydCB7IFJvdXRlIGFzIENoYXRSb3V0ZUltcG9ydCB9IGZyb20gJy4vcm91dGVzL2NoYXQnCmltcG9ydCB7IFJvdXRlIGFzIExldmVsc1JvdXRlSW1wb3J0IH0gZnJvbSAnLi9yb3V0ZXMvbGV2ZWxzJwppbXBvcnQgeyBSb3V0ZSBhcyBMb2dpblJvdXRlSW1wb3J0IH0gZnJvbSAnLi9yb3V0ZXMvbG9naW4nCmltcG9ydCB7IFJvdXRlIGFzIE1lUm91dGVJbXBvcnQgfSBmcm9tICcuL3JvdXRlcy9tZScKaW1wb3J0IHsgUm91dGUgYXMgU2VhcmNoUm91dGVJbXBvcnQgfSBmcm9tICcuL3JvdXRlcy9zZWFyY2gnCmltcG9ydCB7IFJvdXRlIGFzIFNpZ251cFJvdXRlSW1wb3J0IH0gZnJvbSAnLi9yb3V0ZXMvc2lnbnVwJwppbXBvcnQgeyBSb3V0ZSBhcyBDaGF0UHVibGljSWRSb3V0ZUltcG9ydCB9IGZyb20gJy4vcm91dGVzL2NoYXRfLiRwdWJsaWNJZCcKaW1wb3J0IHsgUm91dGUgYXMgTWVEZXRhaWxzUm91dGVJbXBvcnQgfSBmcm9tICcuL3JvdXRlcy9tZV8uZGV0YWlscycKaW1wb3J0IHsgUm91dGUgYXMgVXNlclB1YmxpY0lkUm91dGVJbXBvcnQgfSBmcm9tICcuL3JvdXRlcy91c2VyLiRwdWJsaWNJZCcKCmNvbnN0IEluZGV4Um91dGUgPSBJbmRleFJvdXRlSW1wb3J0LnVwZGF0ZSh7CiAgaWQ6ICcvJywKICBwYXRoOiAnLycsCiAgZ2V0UGFyZW50Um91dGU6ICgpID0+IHJvb3RSb3V0ZUltcG9ydCwKfSBhcyBhbnkpCmNvbnN0IENoYXRSb3V0ZSA9IENoYXRSb3V0ZUltcG9ydC51cGRhdGUoewogIGlkOiAnL2NoYXQnLAogIHBhdGg6ICcvY2hhdCcsCiAgZ2V0UGFyZW50Um91dGU6ICgpID0+IHJvb3RSb3V0ZUltcG9ydCwKfSBhcyBhbnkpCmNvbnN0IExldmVsc1JvdXRlID0gTGV2ZWxzUm91dGVJbXBvcnQudXBkYXRlKHsKICBpZDogJy9sZXZlbHMnLAogIHBhdGg6ICcvbGV2ZWxzJywKICBnZXRQYXJlbnRSb3V0ZTogKCkgPT4gcm9vdFJvdXRlSW1wb3J0LAp9IGFzIGFueSkKY29uc3QgTG9naW5Sb3V0ZSA9IExvZ2luUm91dGVJbXBvcnQudXBkYXRlKHsKICBpZDogJy9sb2dpbicsCiAgcGF0aDogJy9sb2dpbicsCiAgZ2V0UGFyZW50Um91dGU6ICgpID0+IHJvb3RSb3V0ZUltcG9ydCwKfSBhcyBhbnkpCmNvbnN0IE1lUm91dGUgPSBNZVJvdXRlSW1wb3J0LnVwZGF0ZSh7CiAgaWQ6ICcvbWUnLAogIHBhdGg6ICcvbWUnLAogIGdldFBhcmVudFJvdXRlOiAoKSA9PiByb290Um91dGVJbXBvcnQsCn0gYXMgYW55KQpjb25zdCBTZWFyY2hSb3V0ZSA9IFNlYXJjaFJvdXRlSW1wb3J0LnVwZGF0ZSh7CiAgaWQ6ICcvc2VhcmNoJywKICBwYXRoOiAnL3NlYXJjaCcsCiAgZ2V0UGFyZW50Um91dGU6ICgpID0+IHJvb3RSb3V0ZUltcG9ydCwKfSBhcyBhbnkpCmNvbnN0IFNpZ251cFJvdXRlID0gU2lnbnVwUm91dGVJbXBvcnQudXBkYXRlKHsKICBpZDogJy9zaWdudXAnLAogIHBhdGg6ICcvc2lnbnVwJywKICBnZXRQYXJlbnRSb3V0ZTogKCkgPT4gcm9vdFJvdXRlSW1wb3J0LAp9IGFzIGFueSkKY29uc3QgQ2hhdFB1YmxpY0lkUm91dGUgPSBDaGF0UHVibGljSWRSb3V0ZUltcG9ydC51cGRhdGUoewogIGlkOiAnL2NoYXRfLyRwdWJsaWNJZCcsCiAgcGF0aDogJy9jaGF0LyRwdWJsaWNJZCcsCiAgZ2V0UGFyZW50Um91dGU6ICgpID0+IHJvb3RSb3V0ZUltcG9ydCwKfSBhcyBhbnkpCmNvbnN0IE1lRGV0YWlsc1JvdXRlID0gTWVEZXRhaWxzUm91dGVJbXBvcnQudXBkYXRlKHsKICBpZDogJy9tZV8vZGV0YWlscycsCiAgcGF0aDogJy9tZS9kZXRhaWxzJywKICBnZXRQYXJlbnRSb3V0ZTogKCkgPT4gcm9vdFJvdXRlSW1wb3J0LAp9IGFzIGFueSkKY29uc3QgVXNlclB1YmxpY0lkUm91dGUgPSBVc2VyUHVibGljSWRSb3V0ZUltcG9ydC51cGRhdGUoewogIGlkOiAnL3VzZXIvJHB1YmxpY0lkJywKICBwYXRoOiAnL3VzZXIvJHB1YmxpY0lkJywKICBnZXRQYXJlbnRSb3V0ZTogKCkgPT4gcm9vdFJvdXRlSW1wb3J0LAp9IGFzIGFueSkKCmV4cG9ydCBpbnRlcmZhY2UgRmlsZVJvdXRlc0J5RnVsbFBhdGggewogICcvJzogdHlwZW9mIEluZGV4Um91dGUKICAnL2NoYXQnOiB0eXBlb2YgQ2hhdFJvdXRlCiAgJy9sZXZlbHMnOiB0eXBlb2YgTGV2ZWxzUm91dGUKICAnL2xvZ2luJzogdHlwZW9mIExvZ2luUm91dGUKICAnL21lJzogdHlwZW9mIE1lUm91dGUKICAnL3NlYXJjaCc6IHR5cGVvZiBTZWFyY2hSb3V0ZQogICcvc2lnbnVwJzogdHlwZW9mIFNpZ251cFJvdXRlCiAgJy9jaGF0LyRwdWJsaWNJZCc6IHR5cGVvZiBDaGF0UHVibGljSWRSb3V0ZQogICcvbWUvZGV0YWlscyc6IHR5cGVvZiBNZURldGFpbHNSb3V0ZQogICcvdXNlci8kcHVibGljSWQnOiB0eXBlb2YgVXNlclB1YmxpY0lkUm91dGUKfQpleHBvcnQgaW50ZXJmYWNlIEZpbGVSb3V0ZXNCeVRvIHsKICAnLyc6IHR5cGVvZiBJbmRleFJvdXRlCiAgJy9jaGF0JzogdHlwZW9mIENoYXRSb3V0ZQogICcvbGV2ZWxzJzogdHlwZW9mIExldmVsc1JvdXRlCiAgJy9sb2dpbic6IHR5cGVvZiBMb2dpblJvdXRlCiAgJy9tZSc6IHR5cGVvZiBNZVJvdXRlCiAgJy9zZWFyY2gnOiB0eXBlb2YgU2VhcmNoUm91dGUKICAnL3NpZ251cCc6IHR5cGVvZiBTaWdudXBSb3V0ZQogICcvY2hhdC8kcHVibGljSWQnOiB0eXBlb2YgQ2hhdFB1YmxpY0lkUm91dGUKICAnL21lL2RldGFpbHMnOiB0eXBlb2YgTWVEZXRhaWxzUm91dGUKICAnL3VzZXIvJHB1YmxpY0lkJzogdHlwZW9mIFVzZXJQdWJsaWNJZFJvdXRlCn0KZXhwb3J0IGludGVyZmFjZSBGaWxlUm91dGVzQnlJZCB7CiAgX19yb290X186IHR5cGVvZiByb290Um91dGVJbXBvcnQKICAnLyc6IHR5cGVvZiBJbmRleFJvdXRlCiAgJy9jaGF0JzogdHlwZW9mIENoYXRSb3V0ZQogICcvbGV2ZWxzJzogdHlwZW9mIExldmVsc1JvdXRlCiAgJy9sb2dpbic6IHR5cGVvZiBMb2dpblJvdXRlCiAgJy9tZSc6IHR5cGVvZiBNZVJvdXRlCiAgJy9zZWFyY2gnOiB0eXBlb2YgU2VhcmNoUm91dGUKICAnL3NpZ251cCc6IHR5cGVvZiBTaWdudXBSb3V0ZQogICcvY2hhdF8vJHB1YmxpY0lkJzogdHlwZW9mIENoYXRQdWJsaWNJZFJvdXRlCiAgJy9tZV8vZGV0YWlscyc6IHR5cGVvZiBNZURldGFpbHNSb3V0ZQogICcvdXNlci8kcHVibGljSWQnOiB0eXBlb2YgVXNlclB1YmxpY0lkUm91dGUKfQpleHBvcnQgaW50ZXJmYWNlIEZpbGVSb3V0ZVR5cGVzIHsKICBmaWxlUm91dGVzQnlGdWxsUGF0aDogRmlsZVJvdXRlc0J5RnVsbFBhdGgKICBmdWxsUGF0aHM6CiAgICB8ICcvJwogICAgfCAnL2NoYXQnCiAgICB8ICcvbGV2ZWxzJwogICAgfCAnL2xvZ2luJwogICAgfCAnL21lJwogICAgfCAnL3NlYXJjaCcKICAgIHwgJy9zaWdudXAnCiAgICB8ICcvY2hhdC8kcHVibGljSWQnCiAgICB8ICcvbWUvZGV0YWlscycKICAgIHwgJy91c2VyLyRwdWJsaWNJZCcKICBmaWxlUm91dGVzQnlUbzogRmlsZVJvdXRlc0J5VG8KICB0bzoKICAgIHwgJy8nCiAgICB8ICcvY2hhdCcKICAgIHwgJy9sZXZlbHMnCiAgICB8ICcvbG9naW4nCiAgICB8ICcvbWUnCiAgICB8ICcvc2VhcmNoJwogICAgfCAnL3NpZ251cCcKICAgIHwgJy9jaGF0LyRwdWJsaWNJZCcKICAgIHwgJy9tZS9kZXRhaWxzJwogICAgfCAnL3VzZXIvJHB1YmxpY0lkJwogIGlkOgogICAgfCAnX19yb290X18nCiAgICB8ICcvJwogICAgfCAnL2NoYXQnCiAgICB8ICcvbGV2ZWxzJwogICAgfCAnL2xvZ2luJwogICAgfCAnL21lJwogICAgfCAnL3NlYXJjaCcKICAgIHwgJy9zaWdudXAnCiAgICB8ICcvY2hhdF8vJHB1YmxpY0lkJwogICAgfCAnL21lXy9kZXRhaWxzJwogICAgfCAnL3VzZXIvJHB1YmxpY0lkJwogIGZpbGVSb3V0ZXNCeUlkOiBGaWxlUm91dGVzQnlJZAp9CmV4cG9ydCBpbnRlcmZhY2UgUm9vdFJvdXRlQ2hpbGRyZW4gewogIEluZGV4Um91dGU6IHR5cGVvZiBJbmRleFJvdXRlCiAgQ2hhdFJvdXRlOiB0eXBlb2YgQ2hhdFJvdXRlCiAgTGV2ZWxzUm91dGU6IHR5cGVvZiBMZXZlbHNSb3V0ZQogIExvZ2luUm91dGU6IHR5cGVvZiBMb2dpblJvdXRlCiAgTWVSb3V0ZTogdHlwZW9mIE1lUm91dGUKICBTZWFyY2hSb3V0ZTogdHlwZW9mIFNlYXJjaFJvdXRlCiAgU2lnbnVwUm91dGU6IHR5cGVvZiBTaWdudXBSb3V0ZQogIENoYXRQdWJsaWNJZFJvdXRlOiB0eXBlb2YgQ2hhdFB1YmxpY0lkUm91dGUKICBNZURldGFpbHNSb3V0ZTogdHlwZW9mIE1lRGV0YWlsc1JvdXRlCiAgVXNlclB1YmxpY0lkUm91dGU6IHR5cGVvZiBVc2VyUHVibGljSWRSb3V0ZQp9CgpkZWNsYXJlIG1vZHVsZSAnQHRhbnN0YWNrL3JlYWN0LXJvdXRlcicgewogIGludGVyZmFjZSBGaWxlUm91dGVzQnlQYXRoIHsKICAgICcvJzogewogICAgICBpZDogJy8nCiAgICAgIHBhdGg6ICcvJwogICAgICBmdWxsUGF0aDogJy8nCiAgICAgIHByZUxvYWRlclJvdXRlOiB0eXBlb2YgSW5kZXhSb3V0ZUltcG9ydAogICAgICBwYXJlbnRSb3V0ZTogdHlwZW9mIHJvb3RSb3V0ZUltcG9ydAogICAgfQogICAgJy9jaGF0JzogewogICAgICBpZDogJy9jaGF0JwogICAgICBwYXRoOiAnL2NoYXQnCiAgICAgIGZ1bGxQYXRoOiAnL2NoYXQnCiAgICAgIHByZUxvYWRlclJvdXRlOiB0eXBlb2YgQ2hhdFJvdXRlSW1wb3J0CiAgICAgIHBhcmVudFJvdXRlOiB0eXBlb2Ygcm9vdFJvdXRlSW1wb3J0CiAgICB9CiAgICAnL2xldmVscyc6IHsKICAgICAgaWQ6ICcvbGV2ZWxzJwogICAgICBwYXRoOiAnL2xldmVscycKICAgICAgZnVsbFBhdGg6ICcvbGV2ZWxzJwogICAgICBwcmVMb2FkZXJSb3V0ZTogdHlwZW9mIExldmVsc1JvdXRlSW1wb3J0CiAgICAgIHBhcmVudFJvdXRlOiB0eXBlb2Ygcm9vdFJvdXRlSW1wb3J0CiAgICB9CiAgICAnL2xvZ2luJzogewogICAgICBpZDogJy9sb2dpbicKICAgICAgcGF0aDogJy9sb2dpbicKICAgICAgZnVsbFBhdGg6ICcvbG9naW4nCiAgICAgIHByZUxvYWRlclJvdXRlOiB0eXBlb2YgTG9naW5Sb3V0ZUltcG9ydAogICAgICBwYXJlbnRSb3V0ZTogdHlwZW9mIHJvb3RSb3V0ZUltcG9ydAogICAgfQogICAgJy9tZSc6IHsKICAgICAgaWQ6ICcvbWUnCiAgICAgIHBhdGg6ICcvbWUnCiAgICAgIGZ1bGxQYXRoOiAnL21lJwogICAgICBwcmVMb2FkZXJSb3V0ZTogdHlwZW9mIE1lUm91dGVJbXBvcnQKICAgICAgcGFyZW50Um91dGU6IHR5cGVvZiByb290Um91dGVJbXBvcnQKICAgIH0KICAgICcvc2VhcmNoJzogewogICAgICBpZDogJy9zZWFyY2gnCiAgICAgIHBhdGg6ICcvc2VhcmNoJwogICAgICBmdWxsUGF0aDogJy9zZWFyY2gnCiAgICAgIHByZUxvYWRlclJvdXRlOiB0eXBlb2YgU2VhcmNoUm91dGVJbXBvcnQKICAgICAgcGFyZW50Um91dGU6IHR5cGVvZiByb290Um91dGVJbXBvcnQKICAgIH0KICAgICcvc2lnbnVwJzogewogICAgICBpZDogJy9zaWdudXAnCiAgICAgIHBhdGg6ICcvc2lnbnVwJwogICAgICBmdWxsUGF0aDogJy9zaWdudXAnCiAgICAgIHByZUxvYWRlclJvdXRlOiB0eXBlb2YgU2lnbnVwUm91dGVJbXBvcnQKICAgICAgcGFyZW50Um91dGU6IHR5cGVvZiByb290Um91dGVJbXBvcnQKICAgIH0KICAgICcvY2hhdF8vJHB1YmxpY0lkJzogewogICAgICBpZDogJy9jaGF0Xy8kcHVibGljSWQnCiAgICAgIHBhdGg6ICcvY2hhdC8kcHVibGljSWQnCiAgICAgIGZ1bGxQYXRoOiAnL2NoYXQvJHB1YmxpY0lkJwogICAgICBwcmVMb2FkZXJSb3V0ZTogdHlwZW9mIENoYXRQdWJsaWNJZFJvdXRlSW1wb3J0CiAgICAgIHBhcmVudFJvdXRlOiB0eXBlb2Ygcm9vdFJvdXRlSW1wb3J0CiAgICB9CiAgICAnL21lXy9kZXRhaWxzJzogewogICAgICBpZDogJy9tZV8vZGV0YWlscycKICAgICAgcGF0aDogJy9tZS9kZXRhaWxzJwogICAgICBmdWxsUGF0aDogJy9tZS9kZXRhaWxzJwogICAgICBwcmVMb2FkZXJSb3V0ZTogdHlwZW9mIE1lRGV0YWlsc1JvdXRlSW1wb3J0CiAgICAgIHBhcmVudFJvdXRlOiB0eXBlb2Ygcm9vdFJvdXRlSW1wb3J0CiAgICB9CiAgICAnL3VzZXIvJHB1YmxpY0lkJzogewogICAgICBpZDogJy91c2VyLyRwdWJsaWNJZCcKICAgICAgcGF0aDogJy91c2VyLyRwdWJsaWNJZCcKICAgICAgZnVsbFBhdGg6ICcvdXNlci8kcHVibGljSWQnCiAgICAgIHByZUxvYWRlclJvdXRlOiB0eXBlb2YgVXNlclB1YmxpY0lkUm91dGVJbXBvcnQKICAgICAgcGFyZW50Um91dGU6IHR5cGVvZiByb290Um91dGVJbXBvcnQKICAgIH0KICB9Cn0KCmNvbnN0IHJvb3RSb3V0ZUNoaWxkcmVuOiBSb290Um91dGVDaGlsZHJlbiA9IHsKICBJbmRleFJvdXRlOiBJbmRleFJvdXRlLAogIENoYXRSb3V0ZTogQ2hhdFJvdXRlLAogIExldmVsc1JvdXRlOiBMZXZlbHNSb3V0ZSwKICBMb2dpblJvdXRlOiBMb2dpblJvdXRlLAogIE1lUm91dGU6IE1lUm91dGUsCiAgU2VhcmNoUm91dGU6IFNlYXJjaFJvdXRlLAogIFNpZ251cFJvdXRlOiBTaWdudXBSb3V0ZSwKICBDaGF0UHVibGljSWRSb3V0ZTogQ2hhdFB1YmxpY0lkUm91dGUsCiAgTWVEZXRhaWxzUm91dGU6IE1lRGV0YWlsc1JvdXRlLAogIFVzZXJQdWJsaWNJZFJvdXRlOiBVc2VyUHVibGljSWRSb3V0ZSwKfQpleHBvcnQgY29uc3Qgcm91dGVUcmVlID0gcm9vdFJvdXRlSW1wb3J0CiAgLl9hZGRGaWxlQ2hpbGRyZW4ocm9vdFJvdXRlQ2hpbGRyZW4pCiAgLl9hZGRGaWxlVHlwZXM8RmlsZVJvdXRlVHlwZXM+KCkKCmltcG9ydCB0eXBlIHsgZ2V0Um91dGVyIH0gZnJvbSAnLi9yb3V0ZXIudHN4JwppbXBvcnQgdHlwZSB7IHN0YXJ0SW5zdGFuY2UgfSBmcm9tICcuL3N0YXJ0LnRzJwpkZWNsYXJlIG1vZHVsZSAnQHRhbnN0YWNrL3JlYWN0LXN0YXJ0JyB7CiAgaW50ZXJmYWNlIFJlZ2lzdGVyIHsKICAgIHNzcjogdHJ1ZQogICAgcm91dGVyOiBBd2FpdGVkPFJldHVyblR5cGU8dHlwZW9mIGdldFJvdXRlcj4+CiAgICBjb25maWc6IEF3YWl0ZWQ8UmV0dXJuVHlwZTx0eXBlb2Ygc3RhcnRJbnN0YW5jZS5nZXRPcHRpb25zPj4KICB9Cn0K
+/* eslint-disable */
+
+// @ts-nocheck
+
+// noinspection JSUnusedGlobalSymbols
+
+// This file was automatically generated by TanStack Router.
+// You should NOT make any changes in this file as it will be overwritten.
+// Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
+
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatRouteImport } from './routes/chat'
+import { Route as LevelsRouteImport } from './routes/levels'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MeRouteImport } from './routes/me'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as VipRouteImport } from './routes/vip'
+import { Route as ChatPublicIdRouteImport } from './routes/chat_.$publicId'
+import { Route as MeDetailsRouteImport } from './routes/me_.details'
+import { Route as UserPublicIdRouteImport } from './routes/user.$publicId'
+
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LevelsRoute = LevelsRouteImport.update({
+  id: '/levels',
+  path: '/levels',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeRoute = MeRouteImport.update({
+  id: '/me',
+  path: '/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VipRoute = VipRouteImport.update({
+  id: '/vip',
+  path: '/vip',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatPublicIdRoute = ChatPublicIdRouteImport.update({
+  id: '/chat_/$publicId',
+  path: '/chat/$publicId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeDetailsRoute = MeDetailsRouteImport.update({
+  id: '/me_/details',
+  path: '/me/details',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserPublicIdRoute = UserPublicIdRouteImport.update({
+  id: '/user/$publicId',
+  path: '/user/$publicId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/levels': typeof LevelsRoute
+  '/login': typeof LoginRoute
+  '/me': typeof MeRoute
+  '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
+  '/vip': typeof VipRoute
+  '/chat/$publicId': typeof ChatPublicIdRoute
+  '/me/details': typeof MeDetailsRoute
+  '/user/$publicId': typeof UserPublicIdRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/levels': typeof LevelsRoute
+  '/login': typeof LoginRoute
+  '/me': typeof MeRoute
+  '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
+  '/vip': typeof VipRoute
+  '/chat/$publicId': typeof ChatPublicIdRoute
+  '/me/details': typeof MeDetailsRoute
+  '/user/$publicId': typeof UserPublicIdRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/levels': typeof LevelsRoute
+  '/login': typeof LoginRoute
+  '/me': typeof MeRoute
+  '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
+  '/vip': typeof VipRoute
+  '/chat_/$publicId': typeof ChatPublicIdRoute
+  '/me_/details': typeof MeDetailsRoute
+  '/user/$publicId': typeof UserPublicIdRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/chat'
+    | '/levels'
+    | '/login'
+    | '/me'
+    | '/search'
+    | '/signup'
+    | '/vip'
+    | '/chat/$publicId'
+    | '/me/details'
+    | '/user/$publicId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/chat'
+    | '/levels'
+    | '/login'
+    | '/me'
+    | '/search'
+    | '/signup'
+    | '/vip'
+    | '/chat/$publicId'
+    | '/me/details'
+    | '/user/$publicId'
+  id:
+    | '__root__'
+    | '/'
+    | '/chat'
+    | '/levels'
+    | '/login'
+    | '/me'
+    | '/search'
+    | '/signup'
+    | '/vip'
+    | '/chat_/$publicId'
+    | '/me_/details'
+    | '/user/$publicId'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  ChatRoute: typeof ChatRoute
+  LevelsRoute: typeof LevelsRoute
+  LoginRoute: typeof LoginRoute
+  MeRoute: typeof MeRoute
+  SearchRoute: typeof SearchRoute
+  SignupRoute: typeof SignupRoute
+  VipRoute: typeof VipRoute
+  ChatPublicIdRoute: typeof ChatPublicIdRoute
+  MeDetailsRoute: typeof MeDetailsRoute
+  UserPublicIdRoute: typeof UserPublicIdRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/levels': {
+      id: '/levels'
+      path: '/levels'
+      fullPath: '/levels'
+      preLoaderRoute: typeof LevelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/me': {
+      id: '/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof MeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vip': {
+      id: '/vip'
+      path: '/vip'
+      fullPath: '/vip'
+      preLoaderRoute: typeof VipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat_/$publicId': {
+      id: '/chat_/$publicId'
+      path: '/chat/$publicId'
+      fullPath: '/chat/$publicId'
+      preLoaderRoute: typeof ChatPublicIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/me_/details': {
+      id: '/me_/details'
+      path: '/me/details'
+      fullPath: '/me/details'
+      preLoaderRoute: typeof MeDetailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user/$publicId': {
+      id: '/user/$publicId'
+      path: '/user/$publicId'
+      fullPath: '/user/$publicId'
+      preLoaderRoute: typeof UserPublicIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  ChatRoute: ChatRoute,
+  LevelsRoute: LevelsRoute,
+  LoginRoute: LoginRoute,
+  MeRoute: MeRoute,
+  SearchRoute: SearchRoute,
+  SignupRoute: SignupRoute,
+  VipRoute: VipRoute,
+  ChatPublicIdRoute: ChatPublicIdRoute,
+  MeDetailsRoute: MeDetailsRoute,
+  UserPublicIdRoute: UserPublicIdRoute,
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -1,1 +1,151 @@
-aW1wb3J0IHsgY3JlYXRlRmlsZVJvdXRlLCBMaW5rIH0gZnJvbSAiQHRhbnN0YWNrL3JlYWN0LXJvdXRlciI7CmltcG9ydCB7IHVzZUVmZmVjdCwgdXNlUmVmLCB1c2VTdGF0ZSB9IGZyb20gInJlYWN0IjsKaW1wb3J0IHsgQ2hldnJvblJpZ2h0LCBMb2FkZXIyLCBTZW5kSG9yaXpvbnRhbCwgVXNlciB9IGZyb20gImx1Y2lkZS1yZWFjdCI7CmltcG9ydCB7IHRvYXN0IH0gZnJvbSAic29ubmVyIjsKaW1wb3J0IHsgQXBwU2NyZWVuIH0gZnJvbSAiQC9jb21wb25lbnRzL0FwcFNjcmVlbiI7CmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gIkAvY29tcG9uZW50cy91aS9idXR0b24iOwppbXBvcnQgeyB1c2VBY2NvdW50IH0gZnJvbSAiQC9ob29rcy91c2UtYWNjb3VudCI7CmltcG9ydCB7IGdldENvbnZlcnNhdGlvbiwgZ2V0UGFydG5lckJ5UHVibGljSWQsIG1hcmtSZWFkLCBzZW5kTWVzc2FnZSwgdHlwZSBDaGF0UGFydG5lciwgdHlwZSBNZXNzYWdlIH0gZnJvbSAiQC9saWIvbWVzc2FnZXMiOwoKZXhwb3J0IGNvbnN0IFJvdXRlID0gY3JlYXRlRmlsZVJvdXRlKCIvY2hhdF8vJHB1YmxpY0lkIikoewogIGhlYWQ6ICgpID0+ICh7CiAgICBtZXRhOiBbCiAgICAgIHsgdGl0bGU6ICLZhdit2KfYr9ir2Kkg4oCUIHZvbGkiIH0sCiAgICAgIHsgbmFtZTogImRlc2NyaXB0aW9uIiwgY29udGVudDogItmF2K3Yp9iv2KvYqSDYrtin2LXYqSDYudmE2Ykgdm9saS4iIH0sCiAgICAgIHsgcHJvcGVydHk6ICJvZzp0aXRsZSIsIGNvbnRlbnQ6ICLZhdit2KfYr9ir2Kkg4oCUIHZvbGkiIH0sCiAgICAgIHsgcHJvcGVydHk6ICJvZzpkZXNjcmlwdGlvbiIsIGNvbnRlbnQ6ICLZhdit2KfYr9ir2Kkg2K7Yp9i12Kkg2LnZhNmJIHZvbGkuIiB9LAogICAgICB7IHByb3BlcnR5OiAib2c6dHlwZSIsIGNvbnRlbnQ6ICJ3ZWJzaXRlIiB9LAogICAgICB7IG5hbWU6ICJ0d2l0dGVyOmNhcmQiLCBjb250ZW50OiAic3VtbWFyeSIgfSwKICAgIF0sCiAgfSksCiAgY29tcG9uZW50OiBDb252ZXJzYXRpb25QYWdlLAp9KTsKCmZ1bmN0aW9uIENvbnZlcnNhdGlvblBhZ2UoKSB7CiAgY29uc3QgeyBwdWJsaWNJZCB9ID0gUm91dGUudXNlUGFyYW1zKCk7CiAgY29uc3QgeyBzZXNzaW9uLCByZWFkeSB9ID0gdXNlQWNjb3VudCgpOwogIGNvbnN0IG1lID0gc2Vzc2lvbj8udXNlci5pZDsKICBjb25zdCBbcGFydG5lciwgc2V0UGFydG5lcl0gPSB1c2VTdGF0ZTxDaGF0UGFydG5lciB8IG51bGwgfCB1bmRlZmluZWQ+KHVuZGVmaW5lZCk7CiAgY29uc3QgW21lc3NhZ2VzLCBzZXRNZXNzYWdlc10gPSB1c2VTdGF0ZTxNZXNzYWdlW10+KFtdKTsKICBjb25zdCBbdGV4dCwgc2V0VGV4dF0gPSB1c2VTdGF0ZSgiIik7CiAgY29uc3QgW3NlbmRpbmcsIHNldFNlbmRpbmddID0gdXNlU3RhdGUoZmFsc2UpOwogIGNvbnN0IGVuZFJlZiA9IHVzZVJlZjxIVE1MRGl2RWxlbWVudD4obnVsbCk7CgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBpZiAoIW1lKSByZXR1cm47CiAgICBnZXRQYXJ0bmVyQnlQdWJsaWNJZChOdW1iZXIocHVibGljSWQpKS50aGVuKHNldFBhcnRuZXIpLmNhdGNoKCgpID0+IHNldFBhcnRuZXIobnVsbCkpOwogIH0sIFttZSwgcHVibGljSWRdKTsKCiAgY29uc3Qgb3RoZXIgPSBwYXJ0bmVyPy5hdXRoX2lkOwogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBpZiAoIW1lIHx8ICFvdGhlcikgcmV0dXJuOwogICAgbGV0IGFjdGl2ZSA9IHRydWU7CiAgICBjb25zdCBsb2FkID0gKCkgPT4gZ2V0Q29udmVyc2F0aW9uKG1lLCBvdGhlcikudGhlbigobSkgPT4gewogICAgICBpZiAoIWFjdGl2ZSkgcmV0dXJuOwogICAgICBzZXRNZXNzYWdlcygocHJldikgPT4gKHByZXYubGVuZ3RoID09PSBtLmxlbmd0aCAmJiBwcmV2LmF0KC0xKT8uaWQgPT09IG0uYXQoLTEpPy5pZCA/IHByZXYgOiBtKSk7CiAgICAgIGlmIChtLnNvbWUoKHgpID0+IHgucmVjaXBpZW50X2lkID09PSBtZSAmJiAheC5yZWFkX2F0KSkgbWFya1JlYWQobWUsIG90aGVyKTsKICAgIH0pLmNhdGNoKCgpID0+IHt9KTsKICAgIGxvYWQoKTsKICAgIGNvbnN0IHQgPSBzZXRJbnRlcnZhbChsb2FkLCAzMDAwKTsKICAgIHJldHVybiAoKSA9PiB7IGFjdGl2ZSA9IGZhbHNlOyBjbGVhckludGVydmFsKHQpOyB9OwogIH0sIFttZSwgb3RoZXJdKTsKCiAgdXNlRWZmZWN0KCgpID0+IHsgZW5kUmVmLmN1cnJlbnQ/LnNjcm9sbEludG9WaWV3KHsgYmxvY2s6ICJlbmQiIH0pOyB9LCBbbWVzc2FnZXMubGVuZ3RoXSk7CgogIGFzeW5jIGZ1bmN0aW9uIG9uU2VuZChlOiBSZWFjdC5Gb3JtRXZlbnQpIHsKICAgIGUucHJldmVudERlZmF1bHQoKTsKICAgIGlmICghbWUgfHwgIW90aGVyIHx8ICF0ZXh0LnRyaW0oKSB8fCBzZW5kaW5nKSByZXR1cm47CiAgICBzZXRTZW5kaW5nKHRydWUpOwogICAgdHJ5IHsKICAgICAgYXdhaXQgc2VuZE1lc3NhZ2UobWUsIG90aGVyLCB0ZXh0KTsKICAgICAgc2V0VGV4dCgiIik7CiAgICAgIHNldE1lc3NhZ2VzKGF3YWl0IGdldENvbnZlcnNhdGlvbihtZSwgb3RoZXIpKTsKICAgIH0gY2F0Y2ggewogICAgICB0b2FzdC5lcnJvcigi2KfZhNix2LPYp9mE2Kkg2YXYp9iq2KjYudiq2KrYtNiMINit2KfZiNmEINiq2KfZhtmKIik7CiAgICB9IGZpbmFsbHkgewogICAgICBzZXRTZW5kaW5nKGZhbHNlKTsKICAgIH0KICB9CgogIHJldHVybiAoCiAgICA8QXBwU2NyZWVuIG5hdmlnYXRpb249e2ZhbHNlfT4KICAgICAgPGRpdiBjbGFzc05hbWU9Ii1tYi02IGZsZXggbWluLWgtZnVsbCBmbGV4LWNvbCI+CiAgICAgIDxoZWFkZXIgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMyBib3JkZXItYiBweC00IHB5LTMiPgogICAgICAgIDxCdXR0b24gYXNDaGlsZCB2YXJpYW50PSJnaG9zdCIgc2l6ZT0iaWNvbiIgYXJpYS1sYWJlbD0i2LHYrNmI2LkiIGNsYXNzTmFtZT0icm91bmRlZC1mdWxsIj4KICAgICAgICAgIDxMaW5rIHRvPSIvY2hhdCI+PENoZXZyb25SaWdodCBjbGFzc05hbWU9InNpemUtNSIgLz48L0xpbms+CiAgICAgICAgPC9CdXR0b24+CiAgICAgICAge3BhcnRuZXI/LmF2YXRhcl91cmwgPyAoCiAgICAgICAgICA8aW1nIHNyYz17cGFydG5lci5hdmF0YXJfdXJsfSBhbHQ9IiIgY2xhc3NOYW1lPSJzaXplLTEwIHJvdW5kZWQtZnVsbCBvYmplY3QtY292ZXIiIC8+CiAgICAgICAgKSA6ICgKICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0iZ3JpZCBzaXplLTEwIHBsYWNlLWl0ZW1zLWNlbnRlciByb3VuZGVkLWZ1bGwgYmctc2Vjb25kYXJ5IHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+PFVzZXIgY2xhc3NOYW1lPSJzaXplLTUiIC8+PC9zcGFuPgogICAgICAgICl9CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im1pbi13LTAiPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0cnVuY2F0ZSBmb250LXNlbWlib2xkIj57cGFydG5lcj8uZGlzcGxheV9uYW1lID8/ICLigKYifTwvcD4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQiIGRpcj0ibHRyIj5JRDoge3B1YmxpY0lkfTwvcD4KICAgICAgICA8L2Rpdj4KICAgICAgPC9oZWFkZXI+CgogICAgICB7IXJlYWR5ID8gbnVsbCA6ICFzZXNzaW9uID8gKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtY29sIGl0ZW1zLWNlbnRlciBnYXAtMyBwLTggdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj4KICAgICAgICAgIDxwPtiz2KzZkdmEINin2YTYr9iu2YjZhCDYudmE2LTYp9mGINiq2YLYr9ixINiq2LHYp9iz2YQ8L3A+CiAgICAgICAgICA8QnV0dG9uIGFzQ2hpbGQgY2xhc3NOYW1lPSJyb3VuZGVkLWZ1bGwiPjxMaW5rIHRvPSIvbG9naW4iPtiq2LPYrNmK2YQg2KfZhNiv2K7ZiNmEPC9MaW5rPjwvQnV0dG9uPgogICAgICAgIDwvZGl2PgogICAgICApIDogcGFydG5lciA9PT0gdW5kZWZpbmVkID8gKAogICAgICAgIDxwIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTIgcC04IHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+PExvYWRlcjIgY2xhc3NOYW1lPSJzaXplLTQgYW5pbWF0ZS1zcGluIiAvPiDYrNin2LHZiiDYp9mE2KrYrdmF2YrZhOKApjwvcD4KICAgICAgKSA6IHBhcnRuZXIgPT09IG51bGwgPyAoCiAgICAgICAgPHAgY2xhc3NOYW1lPSJwLTggdGV4dC1jZW50ZXIgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj7ZhdmB2YrYtCDZhdiz2KrYrtiv2YUg2KjYp9mE2YAgSUQg2K/ZhzwvcD4KICAgICAgKSA6IHBhcnRuZXIuYXV0aF9pZCA9PT0gbWUgPyAoCiAgICAgICAgPHAgY2xhc3NOYW1lPSJwLTggdGV4dC1jZW50ZXIgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj7ZhdmK2YbZgdi52LQg2KrYsdin2LPZhCDZhtmB2LPZgzwvcD4KICAgICAgKSA6ICgKICAgICAgICA8PgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC0xIGZsZXgtY29sIGdhcC0yIHB4LTQgcHktNCI+CiAgICAgICAgICAgIHttZXNzYWdlcy5sZW5ndGggPT09IDAgJiYgPHAgY2xhc3NOYW1lPSJweS0xMCB0ZXh0LWNlbnRlciB0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+2KfYqNiv2KMg2KfZhNmF2K3Yp9iv2KvYqSDYqNij2YjZhCDYsdiz2KfZhNipPC9wPn0KICAgICAgICAgICAge21lc3NhZ2VzLm1hcCgobSkgPT4gewogICAgICAgICAgICAgIGNvbnN0IG1pbmUgPSBtLnNlbmRlcl9pZCA9PT0gbWU7CiAgICAgICAgICAgICAgcmV0dXJuICgKICAgICAgICAgICAgICAgIDxkaXYga2V5PXttLmlkfSBjbGFzc05hbWU9e2BtYXgtdy1bODAlXSB3aGl0ZXNwYWNlLXByZS13cmFwIGJyZWFrLXdvcmRzIHJvdW5kZWQtMnhsIHB4LTMuNSBweS0yIHRleHQtc20gJHttaW5lID8gInNlbGYtc3RhcnQgYmctcHJpbWFyeSB0ZXh0LXByaW1hcnktZm9yZWdyb3VuZCIgOiAic2VsZi1lbmQgYmctc2Vjb25kYXJ5In1gfT4KICAgICAgICAgICAgICAgICAge20uYm9keX0KICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPXtgbXQtMSBibG9jayB0ZXh0LVsxMHB4XSAke21pbmUgPyAidGV4dC1wcmltYXJ5LWZvcmVncm91bmQvNzAiIDogInRleHQtbXV0ZWQtZm9yZWdyb3VuZCJ9YH0gZGlyPSJsdHIiPgogICAgICAgICAgICAgICAgICAgIHtuZXcgRGF0ZShtLmNyZWF0ZWRfYXQpLnRvTG9jYWxlVGltZVN0cmluZygiYXItRUciLCB7IGhvdXI6ICIyLWRpZ2l0IiwgbWludXRlOiAiMi1kaWdpdCIgfSl9CiAgICAgICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICk7CiAgICAgICAgICAgIH0pfQogICAgICAgICAgICA8ZGl2IHJlZj17ZW5kUmVmfSAvPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8Zm9ybSBvblN1Ym1pdD17b25TZW5kfSBjbGFzc05hbWU9InN0aWNreSBib3R0b20tMCBmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiBib3JkZXItdCBiZy1iYWNrZ3JvdW5kIHB4LTQgcHktMyI+CiAgICAgICAgICAgIDxpbnB1dAogICAgICAgICAgICAgIGFyaWEtbGFiZWw9Itin2YPYqtioINix2LPYp9mE2KkiCiAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9Itin2YPYqtioINix2LPYp9mE2KnigKYiCiAgICAgICAgICAgICAgdmFsdWU9e3RleHR9CiAgICAgICAgICAgICAgbWF4TGVuZ3RoPXs0MDAwfQogICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gc2V0VGV4dChlLnRhcmdldC52YWx1ZSl9CiAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LWZ1bGwgcm91bmRlZC1mdWxsIGJnLXNlY29uZGFyeSBweC00IHB5LTIuNSB0ZXh0LXNtIG91dGxpbmUtbm9uZSBwbGFjZWhvbGRlcjp0ZXh0LW11dGVkLWZvcmVncm91bmQiCiAgICAgICAgICAgIC8+CiAgICAgICAgICAgIDxCdXR0b24gdHlwZT0ic3VibWl0IiBzaXplPSJpY29uIiBhcmlhLWxhYmVsPSLYpdix2LPYp9mEIiBkaXNhYmxlZD17IXRleHQudHJpbSgpIHx8IHNlbmRpbmd9IGNsYXNzTmFtZT0ic2l6ZS0xMCBzaHJpbmstMCByb3VuZGVkLWZ1bGwiPgogICAgICAgICAgICAgIHtzZW5kaW5nID8gPExvYWRlcjIgY2xhc3NOYW1lPSJhbmltYXRlLXNwaW4iIC8+IDogPFNlbmRIb3Jpem9udGFsIGNsYXNzTmFtZT0icm90YXRlLTE4MCIgLz59CiAgICAgICAgICAgIDwvQnV0dG9uPgogICAgICAgICAgPC9mb3JtPgogICAgICAgIDwvPgogICAgICApfQogICAgICA8L2Rpdj4KICAgIDwvQXBwU2NyZWVuPgogICk7Cn0K
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { ChevronRight, Loader2, SendHorizontal, User } from "lucide-react";
+import { toast } from "sonner";
+import { AppScreen } from "@/components/AppScreen";
+import { Button } from "@/components/ui/button";
+import { useAccount } from "@/hooks/use-account";
+import { VipBadge } from "@/components/VipBadge";
+import { activeVipLevel, vipTier } from "@/lib/vip";
+import { getConversation, getPartnerByPublicId, markRead, sendMessage, type ChatPartner, type Message } from "@/lib/messages";
+
+export const Route = createFileRoute("/chat_/$publicId")({
+  head: () => ({
+    meta: [
+      { title: "محادثة — voli" },
+      { name: "description", content: "محادثة خاصة على voli." },
+      { property: "og:title", content: "محادثة — voli" },
+      { property: "og:description", content: "محادثة خاصة على voli." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: ConversationPage,
+});
+
+function ConversationPage() {
+  const { publicId } = Route.useParams();
+  const { session, ready, profile } = useAccount();
+  const me = session?.user.id;
+  const myVip = activeVipLevel(profile);
+  const [partner, setPartner] = useState<ChatPartner | null | undefined>(undefined);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [text, setText] = useState("");
+  const [sending, setSending] = useState(false);
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!me) return;
+    getPartnerByPublicId(Number(publicId)).then(setPartner).catch(() => setPartner(null));
+  }, [me, publicId]);
+
+  const other = partner?.auth_id;
+  const partnerVip = activeVipLevel(partner);
+  useEffect(() => {
+    if (!me || !other) return;
+    let active = true;
+    const load = () => getConversation(me, other).then((m) => {
+      if (!active) return;
+      setMessages((prev) => (prev.length === m.length && prev.at(-1)?.id === m.at(-1)?.id ? prev : m));
+      if (m.some((x) => x.recipient_id === me && !x.read_at)) markRead(me, other);
+    }).catch(() => {});
+    load();
+    const t = setInterval(load, 3000);
+    return () => { active = false; clearInterval(t); };
+  }, [me, other]);
+
+  useEffect(() => { endRef.current?.scrollIntoView({ block: "end" }); }, [messages.length]);
+
+  async function onSend(e: React.FormEvent) {
+    e.preventDefault();
+    if (!me || !other || !text.trim() || sending) return;
+    setSending(true);
+    try {
+      await sendMessage(me, other, text);
+      setText("");
+      setMessages(await getConversation(me, other));
+    } catch {
+      toast.error("الرسالة ماتبعتتش، حاول تاني");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <AppScreen navigation={false}>
+      <div className="-mb-6 flex min-h-full flex-col">
+      <header className="flex items-center gap-3 border-b px-4 py-3">
+        <Button asChild variant="ghost" size="icon" aria-label="رجوع" className="rounded-full">
+          <Link to="/chat"><ChevronRight className="size-5" /></Link>
+        </Button>
+        {partner?.avatar_url ? (
+          <img src={partner.avatar_url} alt="" className="size-10 rounded-full object-cover" />
+        ) : (
+          <span className="grid size-10 place-items-center rounded-full bg-secondary text-muted-foreground"><User className="size-5" /></span>
+        )}
+        <div className="min-w-0">
+          <p className="flex items-center gap-1.5 font-semibold">
+            <span className={`truncate ${vipTier(partnerVip)?.text ?? ""}`}>{partner?.display_name ?? "…"}</span>
+            <VipBadge level={partnerVip} />
+          </p>
+          <p className="text-xs text-muted-foreground" dir="ltr">ID: {publicId}</p>
+        </div>
+      </header>
+
+      {!ready ? null : !session ? (
+        <div className="flex flex-col items-center gap-3 p-8 text-muted-foreground">
+          <p>سجّل الدخول علشان تقدر تراسل</p>
+          <Button asChild className="rounded-full"><Link to="/login">تسجيل الدخول</Link></Button>
+        </div>
+      ) : partner === undefined ? (
+        <p className="flex items-center justify-center gap-2 p-8 text-muted-foreground"><Loader2 className="size-4 animate-spin" /> جاري التحميل…</p>
+      ) : partner === null ? (
+        <p className="p-8 text-center text-muted-foreground">مفيش مستخدم بالـ ID ده</p>
+      ) : partner.auth_id === me ? (
+        <p className="p-8 text-center text-muted-foreground">مينفعش تراسل نفسك</p>
+      ) : (
+        <>
+          <div className="flex flex-1 flex-col gap-2 px-4 py-4">
+            {messages.length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">ابدأ المحادثة بأول رسالة</p>}
+            {messages.map((m) => {
+              const mine = m.sender_id === me;
+              // VIP 2+ senders get their tier's bubble (VIP 4+ neon glow).
+              const tier = vipTier(mine ? myVip : partnerVip);
+              const vipBubble = tier?.chatBubble ? tier : null;
+              const bubble = vipBubble
+                ? `border-2 ${vipBubble.border} bg-card text-card-foreground`
+                : mine ? "bg-primary text-primary-foreground" : "bg-secondary";
+              return (
+                <div
+                  key={m.id}
+                  className={`max-w-[80%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2 text-sm ${mine ? "self-start" : "self-end"} ${bubble}`}
+                  style={vipBubble?.chatBubble === "neon" ? { boxShadow: `0 0 12px ${vipBubble.color}` } : undefined}
+                >
+                  {m.body}
+                  <span className={`mt-1 block text-[10px] ${mine && !vipBubble ? "text-primary-foreground/70" : "text-muted-foreground"}`} dir="ltr">
+                    {new Date(m.created_at).toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                </div>
+              );
+            })}
+            <div ref={endRef} />
+          </div>
+          <form onSubmit={onSend} className="sticky bottom-0 flex items-center gap-2 border-t bg-background px-4 py-3">
+            <input
+              aria-label="اكتب رسالة"
+              placeholder="اكتب رسالة…"
+              value={text}
+              maxLength={4000}
+              onChange={(e) => setText(e.target.value)}
+              className="w-full rounded-full bg-secondary px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground"
+            />
+            <Button type="submit" size="icon" aria-label="إرسال" disabled={!text.trim() || sending} className="size-10 shrink-0 rounded-full">
+              {sending ? <Loader2 className="animate-spin" /> : <SendHorizontal className="rotate-180" />}
+            </Button>
+          </form>
+        </>
+      )}
+      </div>
+    </AppScreen>
+  );
+}

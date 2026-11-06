@@ -1,1 +1,71 @@
-aW1wb3J0IHsgc3VwYWJhc2UgfSBmcm9tICdAL2xpYi9zdXBhYmFzZSc7CgpleHBvcnQgdHlwZSBDaGF0UGFydG5lciA9IHsgYXV0aF9pZDogc3RyaW5nOyBwdWJsaWNfaWQ6IG51bWJlcjsgZGlzcGxheV9uYW1lOiBzdHJpbmc7IGF2YXRhcl91cmw6IHN0cmluZyB8IG51bGwgfTsKZXhwb3J0IHR5cGUgTWVzc2FnZSA9IHsgaWQ6IHN0cmluZzsgc2VuZGVyX2lkOiBzdHJpbmc7IHJlY2lwaWVudF9pZDogc3RyaW5nOyBib2R5OiBzdHJpbmc7IGNyZWF0ZWRfYXQ6IHN0cmluZzsgcmVhZF9hdDogc3RyaW5nIHwgbnVsbCB9OwoKLyoqIEZpbmRzIHRoZSBtZW1iZXIgdG8gY2hhdCB3aXRoIGJ5IHRoZWlyIG5vcm1hbCBwdWJsaWMgSUQuICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBnZXRQYXJ0bmVyQnlQdWJsaWNJZChwdWJsaWNJZDogbnVtYmVyKTogUHJvbWlzZTxDaGF0UGFydG5lciB8IG51bGw+IHsKICBjb25zdCB7IGRhdGEsIGVycm9yIH0gPSBhd2FpdCBzdXBhYmFzZQogICAgLmZyb20oJ3Byb2ZpbGVzJykuc2VsZWN0KCdhdXRoX2lkLCBwdWJsaWNfaWQsIGRpc3BsYXlfbmFtZSwgYXZhdGFyX3VybCcpLmVxKCdwdWJsaWNfaWQnLCBwdWJsaWNJZCkubWF5YmVTaW5nbGUoKTsKICBpZiAoZXJyb3IpIHRocm93IGVycm9yOwogIHJldHVybiAoZGF0YSBhcyBDaGF0UGFydG5lciB8IG51bGwpID8/IG51bGw7Cn0KCi8qKiBNZXNzYWdlcyBiZXR3ZWVuIHRoZSBzaWduZWQtaW4gbWVtYmVyIGFuZCBvbmUgcGFydG5lciwgb2xkZXN0IGZpcnN0LiBSTFMgbGltaXRzIHJvd3MgdG8gdGhlIG1lbWJlcidzIG93bi4gKi8KZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGdldENvbnZlcnNhdGlvbihtZTogc3RyaW5nLCBvdGhlcjogc3RyaW5nKTogUHJvbWlzZTxNZXNzYWdlW10+IHsKICBjb25zdCB7IGRhdGEsIGVycm9yIH0gPSBhd2FpdCBzdXBhYmFzZQogICAgLmZyb20oJ21lc3NhZ2VzJykKICAgIC5zZWxlY3QoJ2lkLCBzZW5kZXJfaWQsIHJlY2lwaWVudF9pZCwgYm9keSwgY3JlYXRlZF9hdCwgcmVhZF9hdCcpCiAgICAub3IoYGFuZChzZW5kZXJfaWQuZXEuJHttZX0scmVjaXBpZW50X2lkLmVxLiR7b3RoZXJ9KSxhbmQoc2VuZGVyX2lkLmVxLiR7b3RoZXJ9LHJlY2lwaWVudF9pZC5lcS4ke21lfSlgKQogICAgLm9yZGVyKCdjcmVhdGVkX2F0JywgeyBhc2NlbmRpbmc6IHRydWUgfSkKICAgIC5saW1pdCg1MDApOwogIGlmIChlcnJvcikgdGhyb3cgZXJyb3I7CiAgcmV0dXJuIChkYXRhID8/IFtdKSBhcyBNZXNzYWdlW107Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBzZW5kTWVzc2FnZShtZTogc3RyaW5nLCBvdGhlcjogc3RyaW5nLCBib2R5OiBzdHJpbmcpIHsKICBjb25zdCB0ZXh0ID0gYm9keS50cmltKCk7CiAgaWYgKCF0ZXh0KSByZXR1cm47CiAgY29uc3QgeyBlcnJvciB9ID0gYXdhaXQgc3VwYWJhc2UuZnJvbSgnbWVzc2FnZXMnKS5pbnNlcnQoeyBzZW5kZXJfaWQ6IG1lLCByZWNpcGllbnRfaWQ6IG90aGVyLCBib2R5OiB0ZXh0LnNsaWNlKDAsIDQwMDApIH0pOwogIGlmIChlcnJvcikgdGhyb3cgZXJyb3I7Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBtYXJrUmVhZChtZTogc3RyaW5nLCBvdGhlcjogc3RyaW5nKSB7CiAgYXdhaXQgc3VwYWJhc2UuZnJvbSgnbWVzc2FnZXMnKS51cGRhdGUoeyByZWFkX2F0OiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCkgfSkKICAgIC5lcSgncmVjaXBpZW50X2lkJywgbWUpLmVxKCdzZW5kZXJfaWQnLCBvdGhlcikuaXMoJ3JlYWRfYXQnLCBudWxsKTsKfQoKZXhwb3J0IHR5cGUgQ29udmVyc2F0aW9uU3VtbWFyeSA9IHsgcGFydG5lcjogQ2hhdFBhcnRuZXI7IGxhc3Q6IE1lc3NhZ2U7IHVucmVhZDogbnVtYmVyIH07CgovKiogTGF0ZXN0IG1lc3NhZ2UgcGVyIHBhcnRuZXIgZm9yIHRoZSBjaGF0IGxpc3QuICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBnZXRDb252ZXJzYXRpb25zKG1lOiBzdHJpbmcpOiBQcm9taXNlPENvbnZlcnNhdGlvblN1bW1hcnlbXT4gewogIGNvbnN0IHsgZGF0YSwgZXJyb3IgfSA9IGF3YWl0IHN1cGFiYXNlCiAgICAuZnJvbSgnbWVzc2FnZXMnKQogICAgLnNlbGVjdCgnaWQsIHNlbmRlcl9pZCwgcmVjaXBpZW50X2lkLCBib2R5LCBjcmVhdGVkX2F0LCByZWFkX2F0JykKICAgIC5vcihgc2VuZGVyX2lkLmVxLiR7bWV9LHJlY2lwaWVudF9pZC5lcS4ke21lfWApCiAgICAub3JkZXIoJ2NyZWF0ZWRfYXQnLCB7IGFzY2VuZGluZzogZmFsc2UgfSkKICAgIC5saW1pdCg1MDApOwogIGlmIChlcnJvcikgdGhyb3cgZXJyb3I7CiAgY29uc3QgYnlQYXJ0bmVyID0gbmV3IE1hcDxzdHJpbmcsIHsgbGFzdDogTWVzc2FnZTsgdW5yZWFkOiBudW1iZXIgfT4oKTsKICBmb3IgKGNvbnN0IG0gb2YgKGRhdGEgPz8gW10pIGFzIE1lc3NhZ2VbXSkgewogICAgY29uc3Qgb3RoZXIgPSBtLnNlbmRlcl9pZCA9PT0gbWUgPyBtLnJlY2lwaWVudF9pZCA6IG0uc2VuZGVyX2lkOwogICAgY29uc3QgZW50cnkgPSBieVBhcnRuZXIuZ2V0KG90aGVyKSA/PyB7IGxhc3Q6IG0sIHVucmVhZDogMCB9OwogICAgaWYgKG0ucmVjaXBpZW50X2lkID09PSBtZSAmJiAhbS5yZWFkX2F0KSBlbnRyeS51bnJlYWQrKzsKICAgIGJ5UGFydG5lci5zZXQob3RoZXIsIGVudHJ5KTsKICB9CiAgaWYgKCFieVBhcnRuZXIuc2l6ZSkgcmV0dXJuIFtdOwogIGNvbnN0IHsgZGF0YTogcHJvZmlsZXMsIGVycm9yOiBwRXJyIH0gPSBhd2FpdCBzdXBhYmFzZQogICAgLmZyb20oJ3Byb2ZpbGVzJykuc2VsZWN0KCdhdXRoX2lkLCBwdWJsaWNfaWQsIGRpc3BsYXlfbmFtZSwgYXZhdGFyX3VybCcpLmluKCdhdXRoX2lkJywgWy4uLmJ5UGFydG5lci5rZXlzKCldKTsKICBpZiAocEVycikgdGhyb3cgcEVycjsKICByZXR1cm4gKChwcm9maWxlcyA/PyBbXSkgYXMgQ2hhdFBhcnRuZXJbXSkKICAgIC5tYXAoKHBhcnRuZXIpID0+ICh7IHBhcnRuZXIsIC4uLmJ5UGFydG5lci5nZXQocGFydG5lci5hdXRoX2lkKSEgfSkpCiAgICAuc29ydCgoYSwgYikgPT4gYi5sYXN0LmNyZWF0ZWRfYXQubG9jYWxlQ29tcGFyZShhLmxhc3QuY3JlYXRlZF9hdCkpOwp9Cg==
+import { supabase } from '@/lib/supabase';
+
+export type ChatPartner = {
+  auth_id: string; public_id: number; display_name: string; avatar_url: string | null;
+  vip_level?: number; vip_expires_at?: string | null;
+};
+export type Message = { id: string; sender_id: string; recipient_id: string; body: string; created_at: string; read_at: string | null };
+
+/** Finds the member to chat with by their normal public ID. */
+export async function getPartnerByPublicId(publicId: number): Promise<ChatPartner | null> {
+  // Databases without the VIP update (003) miss the VIP columns: fall back to the basic ones.
+  let res = await supabase
+    .from('profiles').select('auth_id, public_id, display_name, avatar_url, vip_level, vip_expires_at').eq('public_id', publicId).maybeSingle();
+  if (res.error) {
+    res = await supabase
+      .from('profiles').select('auth_id, public_id, display_name, avatar_url').eq('public_id', publicId).maybeSingle();
+  }
+  if (res.error) throw res.error;
+  return (res.data as ChatPartner | null) ?? null;
+}
+
+/** Messages between the signed-in member and one partner, oldest first. RLS limits rows to the member's own. */
+export async function getConversation(me: string, other: string): Promise<Message[]> {
+  const { data, error } = await supabase
+    .from('messages')
+    .select('id, sender_id, recipient_id, body, created_at, read_at')
+    .or(`and(sender_id.eq.${me},recipient_id.eq.${other}),and(sender_id.eq.${other},recipient_id.eq.${me})`)
+    .order('created_at', { ascending: true })
+    .limit(500);
+  if (error) throw error;
+  return (data ?? []) as Message[];
+}
+
+export async function sendMessage(me: string, other: string, body: string) {
+  const text = body.trim();
+  if (!text) return;
+  const { error } = await supabase.from('messages').insert({ sender_id: me, recipient_id: other, body: text.slice(0, 4000) });
+  if (error) throw error;
+}
+
+export async function markRead(me: string, other: string) {
+  await supabase.from('messages').update({ read_at: new Date().toISOString() })
+    .eq('recipient_id', me).eq('sender_id', other).is('read_at', null);
+}
+
+export type ConversationSummary = { partner: ChatPartner; last: Message; unread: number };
+
+/** Latest message per partner for the chat list. */
+export async function getConversations(me: string): Promise<ConversationSummary[]> {
+  const { data, error } = await supabase
+    .from('messages')
+    .select('id, sender_id, recipient_id, body, created_at, read_at')
+    .or(`sender_id.eq.${me},recipient_id.eq.${me}`)
+    .order('created_at', { ascending: false })
+    .limit(500);
+  if (error) throw error;
+  const byPartner = new Map<string, { last: Message; unread: number }>();
+  for (const m of (data ?? []) as Message[]) {
+    const other = m.sender_id === me ? m.recipient_id : m.sender_id;
+    const entry = byPartner.get(other) ?? { last: m, unread: 0 };
+    if (m.recipient_id === me && !m.read_at) entry.unread++;
+    byPartner.set(other, entry);
+  }
+  if (!byPartner.size) return [];
+  const { data: profiles, error: pErr } = await supabase
+    .from('profiles').select('auth_id, public_id, display_name, avatar_url').in('auth_id', [...byPartner.keys()]);
+  if (pErr) throw pErr;
+  return ((profiles ?? []) as ChatPartner[])
+    .map((partner) => ({ partner, ...byPartner.get(partner.auth_id)! }))
+    .sort((a, b) => b.last.created_at.localeCompare(a.last.created_at));
+}

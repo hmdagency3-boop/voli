@@ -1,1 +1,63 @@
-aW1wb3J0IHsgY3JlYXRlRmlsZVJvdXRlLCBMaW5rLCB1c2VSb3V0ZXIgfSBmcm9tICJAdGFuc3RhY2svcmVhY3Qtcm91dGVyIjsKaW1wb3J0IHsgdXNlRWZmZWN0LCB1c2VTdGF0ZSB9IGZyb20gInJlYWN0IjsKaW1wb3J0IHsgQXJyb3dSaWdodCwgTWVzc2FnZUNpcmNsZSB9IGZyb20gImx1Y2lkZS1yZWFjdCI7CmltcG9ydCB7IEFwcFNjcmVlbiB9IGZyb20gIkAvY29tcG9uZW50cy9BcHBTY3JlZW4iOwppbXBvcnQgeyBCdXR0b24gfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvYnV0dG9uIjsKaW1wb3J0IHsgUHJvZmlsZURldGFpbHMsIHR5cGUgRGV0YWlsc1Byb2ZpbGUgfSBmcm9tICJAL2NvbXBvbmVudHMvUHJvZmlsZURldGFpbHMiOwppbXBvcnQgeyB1c2VBY2NvdW50IH0gZnJvbSAiQC9ob29rcy91c2UtYWNjb3VudCI7CmltcG9ydCB7IHN1cGFiYXNlIH0gZnJvbSAiQC9saWIvc3VwYWJhc2UiOwoKZXhwb3J0IGNvbnN0IFJvdXRlID0gY3JlYXRlRmlsZVJvdXRlKCIvdXNlci8kcHVibGljSWQiKSh7CiAgaGVhZDogKCkgPT4gKHsKICAgIG1ldGE6IFsKICAgICAgeyB0aXRsZTogItio2LHZiNmB2KfZitmEINmF2LPYqtiu2K/ZhSDigJQgdm9saSIgfSwKICAgICAgeyBuYW1lOiAiZGVzY3JpcHRpb24iLCBjb250ZW50OiAi2LTYp9mH2K8g2KjYsdmI2YHYp9mK2YQg2KfZhNmF2LPYqtiu2K/ZhSDYudmE2Ykgdm9saTog2YXYs9iq2YjYp9mHINmI2YXYqtin2KjYudmK2YbZhyDZiNmH2K/Yp9mK2KfZhy4iIH0sCiAgICAgIHsgcHJvcGVydHk6ICJvZzp0aXRsZSIsIGNvbnRlbnQ6ICLYqNix2YjZgdin2YrZhCDZhdiz2KrYrtiv2YUg4oCUIHZvbGkiIH0sCiAgICAgIHsgcHJvcGVydHk6ICJvZzpkZXNjcmlwdGlvbiIsIGNvbnRlbnQ6ICLYqNix2YjZgdin2YrZhCDZhdiz2KrYrtiv2YUg2LnZhNmJIHZvbGkuIiB9LAogICAgICB7IHByb3BlcnR5OiAib2c6dHlwZSIsIGNvbnRlbnQ6ICJwcm9maWxlIiB9LAogICAgICB7IG5hbWU6ICJ0d2l0dGVyOmNhcmQiLCBjb250ZW50OiAic3VtbWFyeSIgfSwKICAgIF0sCiAgfSksCiAgY29tcG9uZW50OiBVc2VyUGFnZSwKfSk7CgpmdW5jdGlvbiBVc2VyUGFnZSgpIHsKICBjb25zdCB7IHB1YmxpY0lkIH0gPSBSb3V0ZS51c2VQYXJhbXMoKTsKICBjb25zdCByb3V0ZXIgPSB1c2VSb3V0ZXIoKTsKICBjb25zdCB7IHNlc3Npb24sIHByb2ZpbGU6IG1lLCByZWFkeSB9ID0gdXNlQWNjb3VudCgpOwogIGNvbnN0IFt1c2VyLCBzZXRVc2VyXSA9IHVzZVN0YXRlPERldGFpbHNQcm9maWxlIHwgbnVsbD4obnVsbCk7CiAgY29uc3QgW2xvYWRlZCwgc2V0TG9hZGVkXSA9IHVzZVN0YXRlKGZhbHNlKTsKCiAgdXNlRWZmZWN0KCgpID0+IHsKICAgIGlmICghc2Vzc2lvbikgcmV0dXJuOwogICAgc2V0TG9hZGVkKGZhbHNlKTsKICAgIHN1cGFiYXNlLmZyb20oInByb2ZpbGVzIikuc2VsZWN0KCIqIikuZXEoInB1YmxpY19pZCIsIE51bWJlcihwdWJsaWNJZCkpLm1heWJlU2luZ2xlKCkKICAgICAgLnRoZW4oKHsgZGF0YSB9KSA9PiB7IHNldFVzZXIoKGRhdGEgYXMgRGV0YWlsc1Byb2ZpbGUgfCBudWxsKSA/PyBudWxsKTsgc2V0TG9hZGVkKHRydWUpOyB9KTsKICB9LCBbcHVibGljSWQsIHNlc3Npb25dKTsKCiAgY29uc3QgaXNTZWxmID0gISFtZSAmJiBTdHJpbmcobWUucHVibGljX2lkKSA9PT0gcHVibGljSWQ7CgogIHJldHVybiAoCiAgICA8QXBwU2NyZWVuIG5hdmlnYXRpb249e2ZhbHNlfT4KICAgICAgPFByb2ZpbGVEZXRhaWxzCiAgICAgICAgcHJvZmlsZT17dXNlcn0KICAgICAgICB1c2VySWQ9e3VzZXI/LmF1dGhfaWR9CiAgICAgICAgcmVhZHk9e3JlYWR5ICYmICghc2Vzc2lvbiB8fCBsb2FkZWQpfQogICAgICAgIHNpZ25lZEluPXshIXNlc3Npb259CiAgICAgICAgaXNTZWxmPXtpc1NlbGZ9CiAgICAgICAgYmFjaz17CiAgICAgICAgICA8QnV0dG9uIHZhcmlhbnQ9Imdob3N0IiBzaXplPSJpY29uIiBhcmlhLWxhYmVsPSLYsdis2YjYuSIgb25DbGljaz17KCkgPT4gcm91dGVyLmhpc3RvcnkuYmFjaygpfSBjbGFzc05hbWU9InJvdW5kZWQtZnVsbCBiZy1vdmVybGF5IHRleHQtb24tbWVkaWEgYmFja2Ryb3AtYmx1ciI+CiAgICAgICAgICAgIDxBcnJvd1JpZ2h0IGNsYXNzTmFtZT0ic2l6ZS01IiAvPgogICAgICAgICAgPC9CdXR0b24+CiAgICAgICAgfQogICAgICAvPgogICAgICB7dXNlciAmJiAhaXNTZWxmICYmICgKICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3RpY2t5IGJvdHRvbS0wIGJnLWJhY2tncm91bmQvOTAgcC00IGJhY2tkcm9wLWJsdXIiPgogICAgICAgICAgPEJ1dHRvbiBhc0NoaWxkIGNsYXNzTmFtZT0idy1mdWxsIHJvdW5kZWQtZnVsbCI+CiAgICAgICAgICAgIDxMaW5rIHRvPSIvY2hhdC8kcHVibGljSWQiIHBhcmFtcz17eyBwdWJsaWNJZCB9fT48TWVzc2FnZUNpcmNsZSBjbGFzc05hbWU9InNpemUtNCIgLz4g2YXYsdin2LPZhNipPC9MaW5rPgogICAgICAgICAgPC9CdXR0b24+CiAgICAgICAgPC9kaXY+CiAgICAgICl9CiAgICA8L0FwcFNjcmVlbj4KICApOwp9Cg==
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ArrowRight, MessageCircle } from "lucide-react";
+import { AppScreen } from "@/components/AppScreen";
+import { Button } from "@/components/ui/button";
+import { ProfileDetails, type DetailsProfile } from "@/components/ProfileDetails";
+import { useAccount } from "@/hooks/use-account";
+import { supabase } from "@/lib/supabase";
+
+export const Route = createFileRoute("/user/$publicId")({
+  head: () => ({
+    meta: [
+      { title: "بروفايل مستخدم — voli" },
+      { name: "description", content: "شاهد بروفايل المستخدم على voli: مستواه ومتابعينه وهداياه." },
+      { property: "og:title", content: "بروفايل مستخدم — voli" },
+      { property: "og:description", content: "بروفايل مستخدم على voli." },
+      { property: "og:type", content: "profile" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: UserPage,
+});
+
+function UserPage() {
+  const { publicId } = Route.useParams();
+  const router = useRouter();
+  const { session, profile: me, ready } = useAccount();
+  const [user, setUser] = useState<DetailsProfile | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!session) return;
+    setLoaded(false);
+    supabase.from("profiles").select("*").eq("public_id", Number(publicId)).maybeSingle()
+      .then(({ data }) => { setUser((data as DetailsProfile | null) ?? null); setLoaded(true); });
+  }, [publicId, session]);
+
+  const isSelf = !!me && String(me.public_id) === publicId;
+
+  return (
+    <AppScreen navigation={false}>
+      <ProfileDetails
+        profile={user}
+        userId={user?.auth_id}
+        ready={ready && (!session || loaded)}
+        signedIn={!!session}
+        isSelf={isSelf}
+        back={
+          <Button variant="ghost" size="icon" aria-label="رجوع" onClick={() => router.history.back()} className="rounded-full bg-overlay text-on-media backdrop-blur">
+            <ArrowRight className="size-5" />
+          </Button>
+        }
+      />
+      {user && !isSelf && (
+        <div className="sticky bottom-0 bg-background/90 p-4 backdrop-blur">
+          <Button asChild className="w-full rounded-full">
+            <Link to="/chat/$publicId" params={{ publicId }}><MessageCircle className="size-4" /> مراسلة</Link>
+          </Button>
+        </div>
+      )}
+    </AppScreen>
+  );
+}

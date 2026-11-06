@@ -16,7 +16,10 @@ No fake accounts or seed data are included. Public IDs have nine million possibl
 
 ## Updates (run after the starter file, in order; each is safe to run again)
 - `supabase/001_levels.sql`: charisma and wealth points and the 100-level tables.
-- `supabase/002_special_id.sql`: `vip_level` (0–100) and `special_id` (الايدي المميز) on `profiles`. Only the admin sets them from the SQL Editor, e.g. `update public.profiles set vip_level = 50, special_id = '777' where public_id = 1234567;`. A special ID is digits only, unique, and can never equal another member's normal ID. The app shows it instead of the normal ID, on a frame chosen by VIP level.
+- `supabase/002_special_id.sql`: `vip_level` and `special_id` (الايدي المميز) on `profiles`. Only the admin sets the special ID from the SQL Editor, e.g. `update public.profiles set special_id = '777' where public_id = 1234567;`. A special ID is digits only, unique, and can never equal another member's normal ID. The app shows it instead of the normal ID, on a card chosen by VIP tier.
+- `supabase/003_vip.sql`: the 8 VIP dragon tiers (`vip_tiers`, one column per feature), VIP grants from purchase / admin / gift / event with optional end date (`vip_grants`), coin balance, `buy_vip` purchase, admin commands (grant, revoke, add coins, set moderator/admin role), member settings (hide location from VIP 2, invisible mode from VIP 5), room rules ready for when rooms exist (`can_mute_or_kick`, `vip_room_entry`) and the monthly salary (`pay_vip_salaries`). Old 0–100 VIP values are moved to the tiers once (1–12 → 1 … 88–100 → 8). The admin commands are listed at the top of the file. Prices, durations, salary amounts and friends-list sizes are empty until you set them; nothing is for sale before that. To drop expired VIP from profiles, run `select public.refresh_all_vips();` (daily, e.g. with pg_cron).
+
+If you re-run `voli-starter.sql`, run the update files again afterwards so their grants come back.
 
 ## Current status
 The form is prepared but intentionally does not create sessions while the external connection is missing. Real signup, sign-in, profile loading, recovery and sign-out must be connected and tested after linking the project. Google, Apple and phone sign-in require separate provider configuration and are not part of email/password signup.

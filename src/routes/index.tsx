@@ -1,1 +1,53 @@
-aW1wb3J0IHsgY3JlYXRlRmlsZVJvdXRlLCBMaW5rIH0gZnJvbSAiQHRhbnN0YWNrL3JlYWN0LXJvdXRlciI7CmltcG9ydCB7IHVzZVN0YXRlIH0gZnJvbSAicmVhY3QiOwppbXBvcnQgeyBCZWxsLCBTZWFyY2gsIFZpZGVvIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgQXBwU2NyZWVuIH0gZnJvbSAiQC9jb21wb25lbnRzL0FwcFNjcmVlbiI7CmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gIkAvY29tcG9uZW50cy91aS9idXR0b24iOwoKZXhwb3J0IGNvbnN0IFJvdXRlID0gY3JlYXRlRmlsZVJvdXRlKCIvIikoewogIGhlYWQ6ICgpID0+ICh7CiAgICBtZXRhOiBbCiAgICAgIHsgdGl0bGU6ICJ2b2xpIOKAlCDYqNir2YjYqyDZhdio2KfYtNix2Kkg2KrYsdmB2YrZh9mK2KkiIH0sCiAgICAgIHsgbmFtZTogImRlc2NyaXB0aW9uIiwgY29udGVudDogItiq2KfYqNi5INin2YTYqNir2YjYqyDYp9mE2YXYqNin2LTYsdipINi52YTZiSB2b2xpLiIgfSwKICAgICAgeyBwcm9wZXJ0eTogIm9nOnRpdGxlIiwgY29udGVudDogInZvbGkg4oCUINio2KvZiNirINmF2KjYp9i02LHYqSDYqtix2YHZitmH2YrYqSIgfSwKICAgICAgeyBwcm9wZXJ0eTogIm9nOmRlc2NyaXB0aW9uIiwgY29udGVudDogItiq2KfYqNi5INin2YTYqNir2YjYqyDYp9mE2YXYqNin2LTYsdipINi52YTZiSB2b2xpLiIgfSwKICAgICAgeyBwcm9wZXJ0eTogIm9nOnR5cGUiLCBjb250ZW50OiAid2Vic2l0ZSIgfSwKICAgICAgeyBuYW1lOiAidHdpdHRlcjpjYXJkIiwgY29udGVudDogInN1bW1hcnkiIH0sCiAgICBdLAogIH0pLAogIGNvbXBvbmVudDogSW5kZXgsCn0pOwoKY29uc3QgY2F0ZWdvcmllcyA9IFsi2KfZhNmD2YQiLCAi2LrZhtin2KEiLCAi2KPZhNi52KfYqCIsICLYr9ix2K/YtNipIiwgIkRKIiwgItmD2YjZhdmK2K/ZitinIiwgItix2YLYtSJdOwoKZnVuY3Rpb24gSW5kZXgoKSB7CiAgY29uc3QgW2NhdGVnb3J5LCBzZXRDYXRlZ29yeV0gPSB1c2VTdGF0ZSgi2KfZhNmD2YQiKTsKICByZXR1cm4gKAogICAgPEFwcFNjcmVlbj4KICAgICAgICA8aGVhZGVyIGNsYXNzTmFtZT0iZ3JpZCBncmlkLWNvbHMtW21pbm1heCgwLDFmcilfYXV0b10gaXRlbXMtY2VudGVyIGdhcC0zIHB4LTUgcHQtNiI+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibWluLXctMCI+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPtij2YfZhNin2Ysg2KjZgzwvcD4KICAgICAgICAgICAgPGgxIGNsYXNzTmFtZT0iZm9udC1kaXNwbGF5IHRleHQtM3hsIGZvbnQtZXh0cmFib2xkIj52b2xpPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LXByaW1hcnkiPi48L3NwYW4+PC9oMT4KICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggc2hyaW5rLTAgZ2FwLTIiPgogICAgICAgICAgICA8QnV0dG9uIGFzQ2hpbGQgdmFyaWFudD0ic2Vjb25kYXJ5IiBzaXplPSJpY29uIiBhcmlhLWxhYmVsPSLYp9mE2KjYrdirIiBjbGFzc05hbWU9InNpemUtMTEgcm91bmRlZC1mdWxsIj4KICAgICAgICAgICAgICA8TGluayB0bz0iL3NlYXJjaCI+PFNlYXJjaCAvPjwvTGluaz4KICAgICAgICAgICAgPC9CdXR0b24+CiAgICAgICAgICAgIDxCdXR0b24gdmFyaWFudD0ic2Vjb25kYXJ5IiBzaXplPSJpY29uIiBkaXNhYmxlZCBhcmlhLWxhYmVsPSLYp9mE2KXYtNi52KfYsdin2KoiIGNsYXNzTmFtZT0ic2l6ZS0xMSByb3VuZGVkLWZ1bGwiPjxCZWxsIC8+PC9CdXR0b24+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2hlYWRlcj4KICAgICAgICA8bmF2IGFyaWEtbGFiZWw9Itiq2LXZhtmK2YHYp9iqINin2YTYqNirIiBjbGFzc05hbWU9Im5vLXNjcm9sbGJhciBtdC02IGZsZXggZ2FwLTIgb3ZlcmZsb3cteC1hdXRvIHB4LTUiPgogICAgICAgICAge2NhdGVnb3JpZXMubWFwKChpdGVtKSA9PiAoCiAgICAgICAgICAgIDxCdXR0b24ga2V5PXtpdGVtfSB2YXJpYW50PXtpdGVtID09PSBjYXRlZ29yeSA/ICJkZWZhdWx0IiA6ICJzZWNvbmRhcnkifSBhcmlhLXByZXNzZWQ9e2l0ZW0gPT09IGNhdGVnb3J5fSBvbkNsaWNrPXsoKSA9PiBzZXRDYXRlZ29yeShpdGVtKX0gY2xhc3NOYW1lPSJzaHJpbmstMCByb3VuZGVkLWZ1bGwiPntpdGVtfTwvQnV0dG9uPgogICAgICAgICAgKSl9CiAgICAgICAgPC9uYXY+CiAgICAgICAgPHNlY3Rpb24gY2xhc3NOYW1lPSJtdC02IHB4LTUiPgogICAgICAgICAgPGgyIGNsYXNzTmFtZT0iZm9udC1kaXNwbGF5IHRleHQtbGcgZm9udC1ib2xkIj7Zhdio2KfYtNixINin2YTYotmGPC9oMj4KICAgICAgICAgIDxkaXYgcm9sZT0ic3RhdHVzIiBjbGFzc05hbWU9ImZsZXggbWluLWgtNzIgZmxleC1jb2wgaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGdhcC00IHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+CiAgICAgICAgICAgIDxWaWRlbyBjbGFzc05hbWU9InNpemUtMTIgdGV4dC1wcmltYXJ5IiBhcmlhLWhpZGRlbj0idHJ1ZSIgLz4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIj7ZhNinINiq2YjYrNivINio2KvZiNirINmF2KjYp9i02LHYqSDYrdin2YTZitin2Ys8L3A+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L3NlY3Rpb24+CiAgICA8L0FwcFNjcmVlbj4KICApOwp9Cg==
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { Bell, Search, Video } from "lucide-react";
+import { AppScreen } from "@/components/AppScreen";
+import { Button } from "@/components/ui/button";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "voli — بثوث مباشرة ترفيهية" },
+      { name: "description", content: "تابع البثوث المباشرة على voli." },
+      { property: "og:title", content: "voli — بثوث مباشرة ترفيهية" },
+      { property: "og:description", content: "تابع البثوث المباشرة على voli." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: Index,
+});
+
+const categories = ["الكل", "غناء", "ألعاب", "دردشة", "DJ", "كوميديا", "رقص"];
+
+function Index() {
+  const [category, setCategory] = useState("الكل");
+  return (
+    <AppScreen>
+        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 pt-6">
+          <div className="min-w-0">
+            <p className="text-sm text-muted-foreground">أهلاً بك</p>
+            <h1 className="font-display text-3xl font-extrabold">voli<span className="text-primary">.</span></h1>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            <Button asChild variant="secondary" size="icon" aria-label="البحث" className="size-11 rounded-full">
+              <Link to="/search"><Search /></Link>
+            </Button>
+            <Button variant="secondary" size="icon" disabled aria-label="الإشعارات" className="size-11 rounded-full"><Bell /></Button>
+          </div>
+        </header>
+        <nav aria-label="تصنيفات البث" className="no-scrollbar mt-6 flex gap-2 overflow-x-auto px-5">
+          {categories.map((item) => (
+            <Button key={item} variant={item === category ? "default" : "secondary"} aria-pressed={item === category} onClick={() => setCategory(item)} className="shrink-0 rounded-full">{item}</Button>
+          ))}
+        </nav>
+        <section className="mt-6 px-5">
+          <h2 className="font-display text-lg font-bold">مباشر الآن</h2>
+          <div role="status" className="flex min-h-72 flex-col items-center justify-center gap-4 text-muted-foreground">
+            <Video className="size-12 text-primary" aria-hidden="true" />
+            <p className="text-sm">لا توجد بثوث مباشرة حالياً</p>
+          </div>
+        </section>
+    </AppScreen>
+  );
+}
