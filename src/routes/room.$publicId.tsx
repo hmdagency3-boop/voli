@@ -326,7 +326,7 @@ function RoomPage() {
                 {/* The ranking opener takes the spot the owner label used to hold, at the end of the row. */}
                 <button type="button" onClick={() => setRankOpen(true)}
                   className="relative inline-flex shrink-0 transition active:scale-95"
-                  aria-label={`ترتيب الدعم والمدعوين — ${coins.toLocaleString("en")} كوينز مرمية في الروم`}>
+                  aria-label={`ترتيب الدعم والمدعومين — ${coins.toLocaleString("en")} كوينز مرمية في الروم`}>
                   <img src={trophyButton} alt="" className="block h-7 w-auto" />
                   {/* The shine is masked to the artwork itself, so it never spills past the gold frame. */}
                   <span aria-hidden className="rank-sweep pointer-events-none absolute inset-0"
@@ -545,7 +545,7 @@ function RoomPage() {
       <RoomViewers open={listOpen} onOpenChange={setListOpen} members={members} people={people} ownerId={owner?.auth_id}
         seated={new Set(seats.map((x) => x.auth_id))} me={me} onPick={(p) => { setListOpen(false); setPicked(p); }} />
 
-      <RoomRanking open={rankOpen} onOpenChange={setRankOpen} />
+      <RoomRanking open={rankOpen} onOpenChange={setRankOpen} roomId={roomId} />
 
       {roomId && (
         <GiftSheet open={giftOpen} onOpenChange={setGiftOpen} roomId={roomId} targets={giftTargets} preselect={giftFor}

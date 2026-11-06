@@ -1,18 +1,16 @@
-import { useState, type CSSProperties } from "react";
-import { Trophy } from "lucide-react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { Loader2, Trophy } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import supportPodium from "@/assets/rank/support-podium.webp";
 import invitedPodium from "@/assets/rank/invited-podium.webp";
 import supportCrown from "@/assets/rank/support-crown.webp";
 import invitedCrown from "@/assets/rank/invited-crown.webp";
 import type { RoomPerson } from "@/lib/rooms";
+import { getRoomRanking, type RankBoard as Board, type RankEntry, type RankPeriod as Period } from "@/lib/ranking";
 
 /** Crown cut-outs and their box on the 1040x860 podium picture, in percent. */
 const crownBox = (x: number, y: number, w: number, h: number) => ({ left: `${x / 10.4}%`, top: `${y / 8.6}%`, width: `${w / 10.4}%`, height: `${h / 8.6}%` });
 
-export type RankEntry = { person: RoomPerson; score: number };
-type Board = "support" | "invited";
-type Period = "day" | "week" | "month";
 
 /** Avatar circle positions on the cropped podium picture: percent of its box, plus its width.
  *  Measured from each artwork's own ring: center of the ring and its inner opening. */
@@ -31,7 +29,7 @@ const INVITED_SPOTS: Spot[] = [
 
 const BOARDS = {
   support: { label: "الدعم", art: supportPodium, accent: "text-rank-gold", ring: "ring-rank-gold", border: "border-rank-gold/60", unit: "دعم", glow: "var(--rank-gold)", crown: { src: supportCrown, box: crownBox(360, 38, 320, 245) }, halo: crownBox(250, -30, 540, 360), spots: SPOTS },
-  invited: { label: "المدعوين", art: invitedPodium, accent: "text-rank-crystal", ring: "ring-rank-crystal", border: "border-rank-crystal/60", unit: "دعوة", glow: "var(--rank-crystal)", crown: { src: invitedCrown, box: crownBox(370, 45, 300, 210) }, halo: crownBox(255, 30, 530, 330), spots: INVITED_SPOTS },
+  received: { label: "المدعومين", art: invitedPodium, accent: "text-rank-crystal", ring: "ring-rank-crystal", border: "border-rank-crystal/60", unit: "مدعوم", glow: "var(--rank-crystal)", crown: { src: invitedCrown, box: crownBox(370, 45, 300, 210) }, halo: crownBox(255, 30, 530, 330), spots: INVITED_SPOTS },
 } as const;
 
 const PERIODS: [Period, string][] = [["day", "يومي"], ["week", "أسبوعي"], ["month", "شهري"]];
@@ -47,16 +45,31 @@ const SPARKS = [
   { x: 83, y: 55, size: 9, delay: 0.4 },
 ];
 
-/** Room leaderboard: supporters and invited members, each over its own podium artwork. */
-export function RoomRanking({ open, onOpenChange, lists }: {
+/** Room leaderboard: who supported the room most and who received the most, each over its own podium artwork.
+ *  Loaded from the database every time it opens or the board / period changes. */
+export function RoomRanking({ open, onOpenChange, roomId }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
-  lists?: Partial<Record<Board, Partial<Record<Period, RankEntry[]>>>>;
+  roomId?: string | undefined;
 }) {
   const [board, setBoard] = useState<Board>("support");
   const [period, setPeriod] = useState<Period>("day");
+  const [state, setState] = useState<{ key: string; rows: RankEntry[] | null } | { key: string; failed: true } | null>(null);
+  const key = `${roomId}:${board}:${period}`;
+  useEffect(() => {
+    if (!open || !roomId) return;
+    let live = true;
+    getRoomRanking(roomId, board, period)
+      .then((rows) => live && setState({ key, rows }))
+      .catch(() => live && setState({ key, failed: true }));
+    return () => { live = false; };
+  }, [open, roomId, board, period, key]);
   const b = BOARDS[board];
-  const rows = [...(lists?.[board]?.[period] ?? [])].sort((x, y) => y.score - x.score);
+  const current = state?.key === key ? state : null;
+  const loading = !current;
+  const notReady = !!current && "rows" in current && current.rows === null;
+  const failed = !!current && "failed" in current;
+  const rows = current && "rows" in current && current.rows ? current.rows : [];
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -123,10 +136,16 @@ export function RoomRanking({ open, onOpenChange, lists }: {
                 <span className={`shrink-0 rounded-full border px-3 py-1 text-xs font-bold tabular-nums ${b.border} ${b.accent}`}>{short(e.score)}</span>
               </li>
             ))}
-            {rows.length === 0 && (
+            {loading && (
+              <li className="flex justify-center py-8"><Loader2 className={`size-7 animate-spin ${b.accent}`} aria-label="بيحمّل الترتيب" /></li>
+            )}
+            {!loading && rows.length === 0 && (
               <li className="flex flex-col items-center gap-2 py-8 text-center text-sm opacity-70">
                 <Trophy className={`size-8 ${b.accent}`} />
-                {board === "support" ? "لسه محدش دعم الروم، أول هدية تطلعك المركز الأول" : "لسه محدش دعا حد للروم"}
+                {notReady ? "الترتيب مش جاهز لسه. اتأكد إن تحديث الترتيب اتشغّل في قاعدة البيانات"
+                  : failed ? "الترتيب ماتحمّلش، اقفل وافتح تاني"
+                  : board === "support" ? "لسه محدش دعم الروم في الفترة دي، أول هدية تطلعك المركز الأول"
+                  : "لسه محدش استلم هدايا في الروم في الفترة دي"}
               </li>
             )}
           </ol>
