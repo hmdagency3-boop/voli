@@ -442,14 +442,21 @@ function RoomPage() {
               </button>
               <VipProfileCard art={cardArt}
                 avatar={<Avatar person={picked} className="size-full text-3xl" />}
-                name={picked.display_name} id={shownId(picked)}>
-                <Button asChild size="sm" className="h-9 w-full rounded-full bg-rank-gold font-bold text-vip-on hover:bg-rank-gold/90">
-                  <Link to="/user/$publicId" params={{ publicId: String(picked.public_id) }}>الملف الشخصي</Link>
-                </Button>
-                {picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
-                  <Button size="sm" variant="destructive" onClick={() => onKick(picked)} className="h-9 w-full rounded-full">طرد من الروم</Button>
-                )}
-              </VipProfileCard>
+                name={picked.display_name}
+                subCard={
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-xs text-on-media/80" dir="ltr">ID:{shownId(picked)}</span>
+                    <VipBadge level={activeVipLevel(picked)} />
+                  </div>
+                } />
+            </div>
+            <div className="mx-auto flex w-full max-w-md items-center gap-2 rounded-t-2xl bg-background px-3 py-2.5">
+              <Button asChild size="sm" className="h-9 flex-1 rounded-full bg-rank-gold font-bold text-vip-on hover:bg-rank-gold/90">
+                <Link to="/user/$publicId" params={{ publicId: String(picked.public_id) }}>الملف الشخصي</Link>
+              </Button>
+              {picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
+                <Button size="sm" variant="destructive" onClick={() => onKick(picked)} className="h-9 flex-1 rounded-full">طرد من الروم</Button>
+              )}
             </div>
           </SheetContent>
         </Sheet>

@@ -68,4 +68,4 @@
 - [ ] Push every finished update to hmdagency3-boop/voli as soon as it is done (user is low on credits).
 
 # VIP 1 profile card
-- [ ] Popped-up profile card for VIP 1 members uses the dragon frame, in the same bottom position as everyone else's card.
+- [x] Popped-up profile card for VIP 1 members uses the dragon frame, full screen width, anchored at the bottom like everyone else's card.
