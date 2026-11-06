@@ -49,6 +49,8 @@
 - [x] VIP page listing the 8 tiers and features; own settings (hide location, invisible mode).
 - [x] Placeholder frame, chat badge, chat bubble, name colour; special ID card picked by new tiers.
 - [ ] Run supabase/003_vip.sql in the SQL Editor (needs the user).
-- [ ] Real artwork for frames, badges, bubbles, entrances, ID cards (user will send).
+- [x] VIP 1 chat badge and bronze entrance bar pictures (green background removed); entrance preview on the VIP page.
+- [ ] Real artwork for the other badges, frames, bubbles, entrances, ID cards (user will send).
+- [ ] Upload the latest updates to GitHub (hmdagency3-boop/voli).
 - [ ] Prices, durations, monthly salary amounts, friends-list sizes (user will decide).
 - [ ] Stream rooms, entrances, join banner, system broadcast (rooms not built yet).

@@ -1,11 +1,24 @@
 import type { ReactNode } from "react";
 import { Crown } from "lucide-react";
 import { vipTier } from "@/lib/vip";
+import { vipBadgeArt } from "@/lib/vip-art";
 
-/** Chat badge "Dragon V1…V8" (placeholder until the badge pictures arrive). */
+/** Chat badge "Dragon V1…V8": the tier's picture, or a drawn placeholder until it arrives. */
 export function VipBadge({ level, className = "" }: { level: number; className?: string }) {
   const tier = vipTier(level);
   if (!tier) return null;
+  const art = vipBadgeArt(tier.level);
+  if (art) {
+    return (
+      <img
+        src={art}
+        alt={`VIP ${tier.level} — ${tier.nameAr}`}
+        title={tier.nameAr}
+        draggable={false}
+        className={`inline-block h-7 w-auto shrink-0 object-contain ${className}`}
+      />
+    );
+  }
   return (
     <span
       dir="ltr"

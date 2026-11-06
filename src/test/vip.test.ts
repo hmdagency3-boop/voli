@@ -15,6 +15,12 @@ describe('VIP tiers shown in the app', () => {
     expect(VIP_TIERS.findIndex((t) => t.hideLocation) + 1).toBe(2);
     expect(VIP_TIERS.findIndex((t) => t.invisibleMode) + 1).toBe(5);
   });
+  it('VIP 1 has the bronze dragon entrance bar, and VIP 2 keeps it', () => {
+    expect(VIP_TIERS.map((t) => t.entrance)).toEqual([
+      'bronze_dragon_bar', 'bronze_dragon_bar', 'gold_dragon', 'purple_flying_dragon',
+      'red_fire_dragon', 'emerald_giant_dragon', 'diamond_flying_dragon', 'legendary_dragon',
+    ]);
+  });
   it('unknown levels have no tier', () => {
     expect(vipTier(0)).toBeNull();
     expect(vipTier(9)).toBeNull();

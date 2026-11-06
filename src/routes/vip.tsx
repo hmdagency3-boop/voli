@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import coinIcon from "@/assets/coin.webp";
 import { AppScreen } from "@/components/AppScreen";
 import { VipBadge, VipFrame } from "@/components/VipBadge";
+import { VipEntrance } from "@/components/VipEntrance";
+import { vipEntranceArt } from "@/lib/vip-art";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAccount } from "@/hooks/use-account";
@@ -124,7 +126,7 @@ function VipPage() {
         ))}
       </nav>
 
-      <TierCard tier={tier} owned={current >= tier.level} />
+      <TierCard tier={tier} owned={current >= tier.level} name={profile?.display_name || "اسمك هنا"} />
 
       {session && (
         <div className="mx-4 mt-4">
@@ -169,7 +171,7 @@ function VipPage() {
   );
 }
 
-function TierCard({ tier, owned }: { tier: VipTier; owned: boolean }) {
+function TierCard({ tier, owned, name }: { tier: VipTier; owned: boolean; name: string }) {
   // Everything from lower tiers is included too.
   const inherited = VIP_TIERS.filter((t) => t.level < tier.level);
   return (
@@ -189,6 +191,10 @@ function TierCard({ tier, owned }: { tier: VipTier; owned: boolean }) {
           </li>
         ))}
       </ul>
+      {vipEntranceArt(tier.level) && <div className="mt-4 overflow-hidden rounded-2xl bg-brand px-2 py-4">
+        <p className="mb-2 px-1 text-xs font-bold text-on-media/80">معاينة الدخولية</p>
+        <VipEntrance key={tier.level} level={tier.level} name={name} />
+      </div>}
       {inherited.length > 0 && (
         <p className="mt-4 border-t pt-3 text-xs text-muted-foreground">
           + كل مميزات {inherited.length === 1 ? inherited[0]!.nameAr : `الرتب من VIP 1 لحد VIP ${tier.level - 1}`}
