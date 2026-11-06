@@ -2,6 +2,8 @@ import vip1Badge from '@/assets/vip/vip-1-badge.webp';
 import vip1Entrance from '@/assets/vip/vip-1-entrance.webp';
 import vip2Entrance from '@/assets/vip/vip-2-entrance.webp';
 import vip1ChatBubble from '@/assets/vip/vip-1-chat-bubble.webp';
+import vip2Badge from '@/assets/vip/vip-2-badge.webp';
+import vip2ChatBubble from '@/assets/vip/vip-2-chat-bubble.webp';
 import vip1ProfileCard from '@/assets/vip/vip-1-profile-card.webp';
 import { vipTier } from '@/lib/vip';
 
@@ -17,6 +19,7 @@ export type EntranceArt = {
 
 const BADGES: Partial<Record<number, string>> = {
   1: vip1Badge,
+  2: vip2Badge,
 };
 
 const ENTRANCES: Record<string, EntranceArt> = {
@@ -44,6 +47,11 @@ const CHAT_BUBBLES: Partial<Record<number, ChatBubbleArt>> = {
   1: {
     url: vip1ChatBubble,
     slice: { top: 80, right: 57, bottom: 100, left: 180 },
+    border: { top: 12, right: 9, bottom: 15, left: 27 },
+  },
+  2: {
+    url: vip2ChatBubble,
+    slice: { top: 80, right: 60, bottom: 102, left: 180 },
     border: { top: 12, right: 9, bottom: 15, left: 27 },
   },
 };

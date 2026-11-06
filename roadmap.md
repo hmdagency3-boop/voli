@@ -51,6 +51,7 @@
 - [ ] Run supabase/003_vip.sql in the SQL Editor (needs the user).
 - [x] VIP 1 chat badge and bronze entrance bar pictures (green background removed); entrance preview on the VIP page.
 - [x] VIP 2 silver dragon entrance bar (green background removed), its own entrance key silver_dragon_bar.
+- [x] VIP 2 silver chat bubble (stretchable, see-through like VIP 1) and VIP 2 silver badge.
 - [ ] Real artwork for the other badges, frames, bubbles, entrances, ID cards (user will send).
 - [x] Upload the latest updates to GitHub (hmdagency3-boop/voli).
 - [ ] Prices, durations, monthly salary amounts, friends-list sizes (user will decide).
