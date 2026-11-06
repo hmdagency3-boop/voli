@@ -48,7 +48,13 @@
   --color-ring-offset-background: var(--background);
   --color-live: var(--live);
   --color-overlay: var(--overlay);
+  --color-vip-bubble-foreground: var(--vip-bubble-foreground);
   --color-on-media: var(--on-media);
+  --color-rank-surface: var(--rank-surface);
+  --color-rank-row: var(--rank-row);
+  --color-rank-gold: var(--rank-gold);
+  --color-rank-crystal: var(--rank-crystal);
+  --color-rank-pink: var(--rank-pink);
   --color-vip-1: var(--vip-1);
   --color-vip-2: var(--vip-2);
   --color-vip-3: var(--vip-3);
@@ -98,7 +104,15 @@
   --ring: oklch(0.72 0.17 310);
   --live: oklch(0.72 0.17 20);
   --overlay: oklch(0.12 0.035 310 / 0.65);
+  --vip-bubble-foreground: oklch(0.96 0.03 80);
+  --vip-bubble-shadow: oklch(0.15 0.03 50 / 0.8);
+  --vip-bubble-glint: oklch(0.95 0.08 85 / 0.45);
   --on-media: oklch(1 0 0);
+  --rank-surface: oklch(0.2 0.08 290);
+  --rank-row: oklch(0.27 0.06 290 / 0.85);
+  --rank-gold: oklch(0.82 0.14 85);
+  --rank-crystal: oklch(0.8 0.13 210);
+  --rank-pink: oklch(0.72 0.2 340);
   --gradient-brand: linear-gradient(135deg, oklch(0.27 0.11 310), oklch(0.39 0.16 315));
   --gradient-media: linear-gradient(to top, oklch(0.12 0.02 300 / 0.85), transparent 60%);
   --shadow-soft: 0 12px 30px -12px oklch(0.10 0.04 310 / 0.55);
@@ -197,3 +211,104 @@
 @utility bg-room-night { background-image: radial-gradient(120% 70% at 50% 30%, oklch(0.26 0.06 265), oklch(0.12 0.03 270) 65%); }
 @utility bg-room-violet { background-image: radial-gradient(120% 70% at 50% 40%, oklch(0.34 0.13 310), oklch(0.16 0.06 305) 65%); }
 @utility bg-room-gold { background-image: radial-gradient(120% 70% at 50% 40%, oklch(0.36 0.08 75), oklch(0.15 0.03 60) 65%); }
+
+/* Shine sweep across VIP chat bubbles. */
+@keyframes vip-bubble-shine {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  60%, 100% { transform: translateX(320%) skewX(-20deg); }
+}
+.vip-bubble-shine {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+}
+.vip-bubble-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 35%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--vip-bubble-glint), transparent);
+  animation: vip-bubble-shine 3.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vip-bubble-shine::after { animation: none; opacity: 0; }
+}
+
+/* Room ranking. --rank-glow is set per board by RoomRanking: gold for الدعم,
+   crystal for المدعوين. Every rank animation reads it, so each board glows in its own colour. */
+@keyframes rank-crown {
+  0%, 100% { transform: translateY(0) scale(1.02) rotate(-1.5deg); filter: brightness(1); }
+  50% { transform: translateY(-5%) scale(1.06) rotate(1.5deg); filter: brightness(1.25); }
+}
+@keyframes rank-halo {
+  0%, 100% { opacity: .3; transform: scale(.9); }
+  50% { opacity: .8; transform: scale(1.08); }
+}
+@keyframes rank-glow {
+  0%, 100% { box-shadow: 0 0 8px 1px var(--rank-glow, var(--rank-gold)); }
+  50% { box-shadow: 0 0 22px 6px var(--rank-glow, var(--rank-gold)); }
+}
+@keyframes rank-art {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50% { filter: brightness(1.12) saturate(1.18); }
+}
+@keyframes rank-sweep {
+  0% { background-position: 165% 0; }
+  55%, 100% { background-position: -65% 0; }
+}
+@keyframes rank-sparkle {
+  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.35) rotate(0deg); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(45deg); }
+}
+.rank-crown {
+  transform-origin: 50% 90%;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 60%, transparent 72%);
+  mask-image: radial-gradient(ellipse at center, black 60%, transparent 72%);
+  animation: rank-crown 2.6s ease-in-out infinite;
+}
+.rank-halo {
+  transform-origin: 50% 50%;
+  background: radial-gradient(ellipse at center,
+    color-mix(in oklab, var(--rank-glow, var(--rank-gold)) 85%, white) 0%,
+    color-mix(in oklab, var(--rank-glow, var(--rank-gold)) 45%, transparent) 45%,
+    transparent 72%);
+  animation: rank-halo 2.6s ease-in-out infinite;
+}
+.rank-glow { animation: rank-glow 2.6s ease-in-out infinite; }
+.rank-art { animation: rank-art 3.4s ease-in-out infinite; }
+.rank-sweep {
+  background-image: linear-gradient(105deg, transparent 42%,
+    color-mix(in oklab, var(--rank-glow, var(--rank-gold)) 60%, white) 50%, transparent 58%);
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  mix-blend-mode: screen;
+  animation: rank-sweep 4.6s ease-in-out infinite;
+}
+.rank-sparkle {
+  transform: translate(-50%, -50%);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  background: linear-gradient(180deg, white, color-mix(in oklab, var(--rank-glow, var(--rank-gold)) 85%, white));
+  animation: rank-sparkle 2.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rank-crown, .rank-halo, .rank-glow, .rank-art, .rank-sweep, .rank-sparkle { animation: none; }
+  .rank-halo { opacity: .45; }
+  .rank-sparkle { opacity: .75; }
+}
+
+/* Room viewers sheet: VIP rows get a soft gold sheen, the VIP button a gold gradient. */
+.viewer-vip {
+  background: linear-gradient(90deg, color-mix(in oklab, var(--rank-gold) 22%, transparent), color-mix(in oklab, var(--rank-gold) 6%, transparent) 70%);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--rank-gold) 35%, transparent);
+}
+.viewer-vip::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 40%, color-mix(in oklab, var(--rank-gold) 30%, transparent) 50%, transparent 60%);
+  background-size: 250% 100%; animation: rank-sweep 3.5s linear infinite;
+}
+.viewer-cta {
+  background: linear-gradient(135deg, var(--rank-gold), color-mix(in oklab, var(--rank-gold) 60%, var(--primary)));
+  color: var(--background);
+}
+@media (prefers-reduced-motion: reduce) { .viewer-vip::after { animation: none; opacity: 0; } }

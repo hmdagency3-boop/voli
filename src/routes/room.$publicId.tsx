@@ -1,6 +1,9 @@
+import { vipChatBubbleArt } from "@/lib/vip-art";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Crown, Gift, Loader2, Lock, Mic, MessageCircle, Power, Share2, SendHorizontal, User, Users } from "lucide-react";
+import { Crown, Gift, Loader2, Lock, Mic, MessageCircle, Power, Share2, SendHorizontal, Trophy, User, Users } from "lucide-react";
+import { RoomRanking } from "@/components/RoomRanking";
+import { RoomViewers } from "@/components/RoomViewers";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -55,6 +58,7 @@ function RoomPage() {
   const [joins, setJoins] = useState<Join[]>([]);
   const [entrances, setEntrances] = useState<Join[]>([]);
   const [listOpen, setListOpen] = useState(false);
+  const [rankOpen, setRankOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const peopleRef = useRef(people);
   peopleRef.current = people;
@@ -253,6 +257,9 @@ function RoomPage() {
                   </span>
                   <Users className="size-4" /> <span className="tabular-nums">{members.length}</span>
                 </button>
+                <button type="button" onClick={() => setRankOpen(true)} className="inline-flex items-center gap-1 rounded-full bg-overlay px-3 py-1 text-sm font-bold text-rank-gold" aria-label="ترتيب الدعم والمدعوين">
+                  <Trophy className="size-4" /> الترتيب
+                </button>
                 <span className="inline-flex items-center gap-2">
                   <span className="text-xs opacity-80">صاحب الروم</span>
                   <Avatar person={owner} className="size-9 ring-2 ring-vip-3" />
@@ -325,12 +332,12 @@ function RoomPage() {
                     return (
                       <div key={m.id} className="flex items-start gap-2">
                         {p && <Avatar person={p} className="size-8" />}
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <p className="flex items-center gap-1 text-xs">
                             <span className={`truncate font-semibold ${vipTier(lvl)?.text ?? "opacity-70"}`}>{p?.display_name ?? "…"}</span>
                             <VipBadge level={lvl} />
                           </p>
-                          <p className="mt-0.5 inline-block whitespace-pre-wrap break-words rounded-2xl rounded-ss-sm bg-overlay px-3 py-1.5 text-sm">{m.body}</p>
+                          <ChatBubble level={lvl} body={m.body} />
                         </div>
                       </div>
                     );
@@ -392,29 +399,10 @@ function RoomPage() {
         </SheetContent>
       </Sheet>
 
-      <Sheet open={listOpen} onOpenChange={setListOpen}>
-        <SheetContent side="bottom" className="mx-auto max-h-[70dvh] max-w-md overflow-y-auto rounded-t-3xl">
-          <SheetHeader><SheetTitle>اللي في الروم ({members.length})</SheetTitle></SheetHeader>
-          <ul className="grid gap-1 p-4">
-            {members.map((id) => {
-              const p = people[id];
-              if (!p) return null;
-              return (
-                <li key={id}>
-                  <button type="button" onClick={() => { setListOpen(false); setPicked(p); }} className="flex w-full items-center gap-3 rounded-2xl p-2 text-start hover:bg-muted">
-                    <Avatar person={p} className="size-10" />
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-center gap-1.5 font-semibold"><span className="truncate">{p.display_name}</span><VipBadge level={activeVipLevel(p)} /></span>
-                      <span className="block text-xs text-muted-foreground" dir="ltr">ID:{shownId(p)}</span>
-                    </span>
-                    {id === owner?.auth_id && <Crown className="size-4 text-vip-3" aria-label="صاحب الروم" />}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </SheetContent>
-      </Sheet>
+      <RoomViewers open={listOpen} onOpenChange={setListOpen} members={members} people={people} ownerId={owner?.auth_id}
+        seated={new Set(seats.map((x) => x.auth_id))} me={me} onPick={(p) => { setListOpen(false); setPicked(p); }} />
+
+      <RoomRanking open={rankOpen} onOpenChange={setRankOpen} />
 
       <Sheet open={exitOpen} onOpenChange={setExitOpen}>
         <SheetContent side="bottom" className="mx-auto max-w-md rounded-t-3xl">
@@ -481,5 +469,28 @@ function Gate({ status, isOwner, password, setPassword, onPassword }: {
       {status === "kicked" && (<><p className="font-bold">اتطردت من الروم ده، تقدر ترجع بعد شوية</p>{back}</>)}
       {status === "error" && (<><p className="font-bold">الروم مافتحش. اتأكد إن تحديث الرومات اتشغّل في قاعدة البيانات</p>{back}</>)}
     </div>
+  );
+}
+
+/** Room chat bubble: VIP tiers with their own picture get a stretchable framed bubble. */
+function ChatBubble({ level, body }: { level: number; body: string }) {
+  const art = vipChatBubbleArt(level);
+  if (!art) {
+    return <p className="mt-0.5 inline-block whitespace-pre-wrap break-words rounded-2xl rounded-ss-sm bg-overlay px-3 py-1.5 text-sm">{body}</p>;
+  }
+  const { slice: s, border: b } = art;
+  return (
+    <p
+      className="vip-bubble-shine mt-0.5 box-border inline-block min-h-11 min-w-20 max-w-full whitespace-pre-wrap [overflow-wrap:anywhere] text-sm text-vip-bubble-foreground"
+      style={{
+        borderStyle: "solid",
+        borderWidth: `${b.top}px ${b.right}px ${b.bottom}px ${b.left}px`,
+        borderImage: `url(${art.url}) ${s.top} ${s.right} ${s.bottom} ${s.left} fill / ${b.top}px ${b.right}px ${b.bottom}px ${b.left}px stretch`,
+        padding: "4px 10px",
+        textShadow: "0 1px 2px var(--vip-bubble-shadow)",
+      }}
+    >
+      {body}
+    </p>
   );
 }
