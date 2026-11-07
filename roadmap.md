@@ -76,3 +76,12 @@
 
 # VIP badge readability
 - [x] Enlarge tier tabs and add a full-art badge to tier details; review shared badge sizes and verify phone/desktop layouts in an isolated visual fixture (external-account access remains unverified).
+
+# Agencies
+- [x] Apply to open an agency; management approves; code given in order from 200.
+- [x] Hosts search by code, send a join request; agent accepts/rejects, removes hosts.
+- [x] Agent dashboard: this week / last week diamonds, members income by week, my income by month.
+- [x] Income counts only while the host is active in the agency (tests in src/test/agencies.test.ts).
+- [ ] Run supabase/008_agencies.sql in the SQL Editor (needs the user).
+- [ ] Agency share %, exit fees and leaving rules (waiting on the app policy).
+- [x] Upload to GitHub.

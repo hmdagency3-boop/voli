@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase";
 import {
   LogOut, Copy,
   Settings, ChevronLeft, Crown, Wallet, Gift, User,
-  Shield, Headphones, Video, QrCode, TrendingUp,
+  Shield, Headphones, Video, QrCode, TrendingUp, Users,
 } from "lucide-react";
 import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
@@ -204,6 +204,15 @@ function MePage() {
             <span title={Number(profile?.coins ?? 0).toLocaleString("en")} className="ms-auto min-w-0 truncate font-sans text-sm font-semibold tabular-nums">{new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(Number(profile?.coins ?? 0))}</span>
           </div>
         </section>
+
+        {/* ── وكالتي ── */}
+        <Link to="/agency" className="mx-4 mt-3 flex items-center gap-3 rounded-[1.5rem] border bg-card px-4 py-3.5 transition hover:bg-secondary">
+          <span className="grid size-9 place-items-center rounded-xl bg-primary/15">
+            <Users className="size-[18px] text-primary" />
+          </span>
+          <span className="flex-1 text-sm font-semibold">وكالتي</span>
+          <ChevronLeft className="size-4 text-muted-foreground" />
+        </Link>
 
         {/* ── القائمة ── */}
         <ul className="mx-4 mt-4 overflow-hidden rounded-[1.5rem] border bg-card">
