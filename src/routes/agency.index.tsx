@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { BadgeCheck, Copy, Search, ShieldCheck, Wallet } from "lucide-react";
+import { BadgeCheck, Copy, Search, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import {
   PersonAvatar, PersonName, useAgencyState,
 } from "@/components/agency/AgencyParts";
 import {
-  agencyCommission, agencyErrorMessage, cancelJoin, findAgency, getAgencySummary, isAdmin, parseAgencyCode, requestJoin,
+  agencyCommission, agencyErrorMessage, cancelJoin, findAgency, getAgencySummary, parseAgencyCode, requestJoin,
   type AgencyState, type AgencySummary, type FoundAgency,
 } from "@/lib/agency";
 
@@ -31,8 +31,6 @@ export const Route = createFileRoute("/agency/")({
 
 function AgencyPage() {
   const { me, state, failed, reload } = useAgencyState();
-  const [admin, setAdmin] = useState(false);
-  useEffect(() => { if (me) isAdmin(me).then(setAdmin); }, [me]);
 
   return (
     <AppScreen>
@@ -45,11 +43,6 @@ function AgencyPage() {
         : state.kind === "host" ? <HostHome state={state} />
         : <JoinOrApply state={state} reload={reload} />}
 
-      {admin && (
-        <div className="mx-4 mt-4">
-          <AgencyMenuCard to="/agency/review" icon={<ShieldCheck className="size-6" />} title="طلبات فتح الوكالات" hint="للإدارة: قبول أو رفض طلبات الوكلاء" />
-        </div>
-      )}
       </div>
     </AppScreen>
   );

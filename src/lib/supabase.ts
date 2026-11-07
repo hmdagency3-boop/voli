@@ -15,3 +15,17 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     storage: isBrowser ? window.localStorage : undefined,
   },
 });
+
+/**
+ * The management panel (/admin) keeps its own sign-in, stored under a different key, so signing in
+ * or out of the panel never touches the member app's session and the other way round.
+ */
+export const adminSupabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    persistSession: isBrowser,
+    autoRefreshToken: isBrowser,
+    detectSessionInUrl: false,
+    storageKey: 'voli-admin-auth',
+    storage: isBrowser ? window.localStorage : undefined,
+  },
+});

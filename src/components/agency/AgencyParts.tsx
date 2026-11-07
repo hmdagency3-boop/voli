@@ -90,7 +90,7 @@ export function AgentTag() {
   return <span className="shrink-0 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground">وكيل</span>;
 }
 
-type MenuTo = "/agency/members" | "/agency/requests" | "/agency/income" | "/agency/my-income" | "/agency/review" | "/agency/apply";
+type MenuTo = "/agency/members" | "/agency/requests" | "/agency/income" | "/agency/my-income" | "/agency/apply";
 export function AgencyMenuCard({ to, icon, title, hint, count }: { to: MenuTo; icon: ReactNode; title: string; hint: string; count?: number | undefined }) {
   return (
     <Link to={to} className="flex items-center gap-3 rounded-[1.5rem] border bg-card px-4 py-4 shadow-soft transition active:scale-[0.99]">
