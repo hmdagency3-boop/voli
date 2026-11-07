@@ -1,13 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { BadgeCheck, ClipboardList, Copy, Gem, Search, ShieldCheck, Users, Wallet } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
+import { BadgeCheck, Copy, Search, ShieldCheck, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAccount } from "@/hooks/use-account";
 import {
-  AgencyCrest, AgencyMenuCard, AgencyTopBar, Diamonds, Notice, PersonAvatar, PersonName, useAgencyState,
+  AGENCY_ICONS, AgencyCrest, AgencyMenuCard, AgencyTopBar, Diamonds, DragonCrest, GoldFrame, GoldMenuRow, GoldPill, Notice,
+  PersonAvatar, PersonName, useAgencyState,
 } from "@/components/agency/AgencyParts";
 import {
   agencyCommission, agencyErrorMessage, cancelJoin, findAgency, getAgencySummary, isAdmin, parseAgencyCode, requestJoin,
@@ -35,6 +36,7 @@ function AgencyPage() {
 
   return (
     <AppScreen>
+      <div className="min-h-full bg-agency">
       <AgencyTopBar title="وكالتي" />
       {failed ? <Notice>ماقدرناش نحمّل بيانات الوكالة، جرب تاني.</Notice>
         : !state ? <Notice>…</Notice>
@@ -48,6 +50,7 @@ function AgencyPage() {
           <AgencyMenuCard to="/agency/review" icon={<ShieldCheck className="size-6" />} title="طلبات فتح الوكالات" hint="للإدارة: قبول أو رفض طلبات الوكلاء" />
         </div>
       )}
+      </div>
     </AppScreen>
   );
 }
@@ -57,10 +60,10 @@ function CodeChip({ code }: { code: number }) {
     <button
       type="button"
       onClick={() => { navigator.clipboard.writeText(String(code)); toast.success("تم نسخ كود الوكالة"); }}
-      className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 text-xs font-bold text-primary"
+      className="inline-flex items-center gap-1.5 rounded-full border border-agency-gold/50 bg-agency-gold/10 px-2.5 py-1 text-[11px] font-bold text-agency-gold"
       dir="ltr"
     >
-      كود الوكالة: {code}
+      كود: {code}
       <Copy className="size-3.5" />
     </button>
   );
@@ -73,47 +76,49 @@ function AgentHome({ state }: { state: Extract<AgencyState, { kind: "agent" }> }
   const commission = sum ? agencyCommission(sum.this_week, sum.commission_percent) : null;
 
   return (
-    <>
-      <div className="relative -mt-2 flex justify-center">
-        <AgencyCrest className="w-44" />
-      </div>
-      <section className="relative mx-4 -mt-6 rounded-[2rem] border bg-card p-5 shadow-soft">
-        <div className="flex items-start gap-4">
-          <div className="flex flex-col items-center gap-2">
-            <PersonAvatar person={profile ? { auth_id: "", ...profile } : undefined} size="size-20" />
-          </div>
-          <div className="min-w-0 flex-1 space-y-3 text-end">
-            <Stat label="الماس الأسبوعي" value={sum?.this_week ?? null} />
-            <Stat label="الماس الأسبوع الماضي" value={sum?.last_week ?? null} />
-            <div>
-              <p className="text-xs text-muted-foreground">العمولة المتوقعة{sum?.commission_percent != null ? ` (${sum.commission_percent}%)` : ""}</p>
-              {commission == null
-                ? <p className="mt-0.5 text-xs font-semibold text-muted-foreground">النسبة هتتحدد في سياسة التطبيق</p>
-                : <Diamonds value={commission} className="mt-0.5 text-2xl" />}
+    <div className="px-3 pb-4">
+      {/* Dragon crest overlapping the top of the stats panel, as in the agency artwork. */}
+      <DragonCrest person={profile ? { auth_id: "", ...profile } : undefined} className="relative z-10 mx-auto w-[58%]" />
+      <GoldFrame className="relative -mt-[14%] px-3 pb-3 pt-2">
+        {/* Free corners beside the shield: agency name and code. */}
+        <div className="relative pt-[15%]">
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2">
+            <div className="w-[30%] min-w-0">
+              <p className="truncate font-display text-sm font-extrabold text-agency-gold">{state.agency.name}</p>
+              <p className="text-[10px] text-agency-gold-soft">الوكيل</p>
             </div>
+            <div className="flex w-[30%] justify-end"><CodeChip code={state.agency.code} /></div>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t pt-3">
-          <p className="truncate font-display text-base font-extrabold">{state.agency.name}</p>
-          <CodeChip code={state.agency.code} />
+        <div className="mt-2 grid grid-cols-3 gap-2">
+          <Stat label="ماس الأسبوع" value={<Diamonds value={sum?.this_week ?? null} />} />
+          <Stat label="الأسبوع الماضي" value={<Diamonds value={sum?.last_week ?? null} />} />
+          <Stat
+            label={`العمولة${sum?.commission_percent != null ? ` (${sum.commission_percent}%)` : ""}`}
+            value={commission == null ? "—" : <Diamonds value={commission} />}
+          />
         </div>
-      </section>
+      </GoldFrame>
 
-      <div className="mx-4 mt-4 space-y-3">
-        <AgencyMenuCard to="/agency/members" icon={<Users className="size-6" />} title="قائمة الأعضاء" hint={`أعضاء الوكالة${sum ? ` (${sum.members})` : ""}`} />
-        <AgencyMenuCard to="/agency/requests" icon={<ClipboardList className="size-6" />} title="قائمة الطلبات" hint="طلبات الانضمام للوكالة" count={sum?.pending_requests} />
-        <AgencyMenuCard to="/agency/income" icon={<Gem className="size-6" />} title="دخل الأعضاء" hint="عرض دخل جميع الأعضاء" />
-        <AgencyMenuCard to="/agency/my-income" icon={<Wallet className="size-6" />} title="تفاصيل دخلي" hint="عرض سجل الدخل السابق" />
+      <div className="mt-3 space-y-2.5">
+        <GoldMenuRow to="/agency/members" icon={AGENCY_ICONS.members} title="أعضاء الوكالة" value={sum ? sum.members : "—"} />
+        <GoldMenuRow
+          to="/agency/requests" icon={AGENCY_ICONS.orders} title="قائمة الطلبات"
+          value={sum ? (sum.pending_requests ? <span className="text-live">{sum.pending_requests} جديد</span> : "0") : "—"}
+        />
+        <GoldMenuRow to="/agency/income" icon={AGENCY_ICONS.memberIncome} title="دخل الأعضاء" value="عرض" />
+        <GoldMenuRow to="/agency/my-income" icon={AGENCY_ICONS.incomeDetails} title="تفاصيل الدخل" value="عرض" />
+        <GoldMenuRow icon={AGENCY_ICONS.exitFees} title="رسوم الخروج من الوكالة" value="قريباً" disabled />
       </div>
-    </>
+    </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: number | null }) {
+function Stat({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <Diamonds value={value} className="mt-0.5 text-2xl" />
+    <div className="min-w-0 text-center">
+      <p className="mb-1 truncate text-[10px] font-semibold text-agency-gold-soft">{label}</p>
+      <GoldPill className="w-full text-xs">{value}</GoldPill>
     </div>
   );
 }

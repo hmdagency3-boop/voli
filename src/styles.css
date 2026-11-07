@@ -53,6 +53,8 @@
   --color-rank-surface: var(--rank-surface);
   --color-rank-row: var(--rank-row);
   --color-rank-gold: var(--rank-gold);
+  --color-agency-gold: var(--agency-gold);
+  --color-agency-gold-soft: var(--agency-gold-soft);
   --color-rank-crystal: var(--rank-crystal);
   --color-rank-pink: var(--rank-pink);
   --color-vip-1: var(--vip-1);
@@ -111,6 +113,13 @@
   --rank-surface: oklch(0.2 0.08 290);
   --rank-row: oklch(0.27 0.06 290 / 0.85);
   --rank-gold: oklch(0.82 0.14 85);
+  /* Agent dashboard: gold-on-midnight panels cut from the agency artwork */
+  --agency-gold: oklch(0.84 0.12 85);
+  --agency-gold-soft: oklch(0.72 0.07 80);
+  --gradient-agency:
+    radial-gradient(120% 60% at 100% 0%, oklch(0.32 0.14 295 / 0.9), transparent 60%),
+    radial-gradient(90% 50% at 0% 100%, oklch(0.30 0.13 290 / 0.8), transparent 60%),
+    linear-gradient(180deg, oklch(0.16 0.06 290), oklch(0.13 0.05 285));
   --rank-crystal: oklch(0.8 0.13 210);
   --rank-pink: oklch(0.72 0.2 340);
   --gradient-brand: linear-gradient(135deg, oklch(0.27 0.11 310), oklch(0.39 0.16 315));
@@ -188,6 +197,7 @@
 }
 
 @utility bg-brand { background-image: var(--gradient-brand); }
+@utility bg-agency { background-image: var(--gradient-agency); }
 @utility bg-media-fade { background-image: var(--gradient-media); }
 @utility shadow-soft { box-shadow: var(--shadow-soft); }
 @utility no-scrollbar { scrollbar-width: none; &::-webkit-scrollbar { display: none; } }

@@ -9,9 +9,25 @@ export function isPublicPath(pathname: string) {
   return PUBLIC_PATHS.includes(pathname.replace(/\/+$/, '') || '/');
 }
 
+/**
+ * Whether the page on screen may be shown. While the router moves to a new
+ * address it keeps showing the previous page, so both the address and the page
+ * actually on screen must be allowed: signed-out visitors only ever see the
+ * sign-in pages, signed-in members never see them.
+ */
+export function canShowPage(opts: { ready: boolean; signedIn: boolean; path: string; shownPath: string }) {
+  if (!opts.ready) return false;
+  const pathOpen = isPublicPath(opts.path);
+  const shownOpen = isPublicPath(opts.shownPath);
+  return opts.signedIn ? !pathOpen && !shownOpen : pathOpen && shownOpen;
+}
+
 export function AuthGate({ children }: { children: ReactNode }) {
   const { session, ready } = useAccount();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const shownPath = useRouterState({
+    select: (s) => s.matches[s.matches.length - 1]?.pathname ?? s.location.pathname,
+  });
   const navigate = useNavigate();
   const open = isPublicPath(pathname);
 
@@ -21,8 +37,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
     if (session && open) navigate({ to: '/', replace: true });
   }, [ready, session, open, navigate]);
 
-  if (open) return <>{children}</>;
-  if (!ready || !session) {
+  if (!canShowPage({ ready, signedIn: !!session, path: pathname, shownPath })) {
     return <div className="grid h-dvh place-items-center bg-background text-sm text-muted-foreground">…</div>;
   }
   return <>{children}</>;

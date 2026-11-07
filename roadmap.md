@@ -85,3 +85,10 @@
 - [ ] Run supabase/008_agencies.sql in the SQL Editor (needs the user).
 - [ ] Agency share %, exit fees and leaving rules (waiting on the app policy).
 - [x] Upload to GitHub.
+
+# Sign-in gate flash
+- [x] No inside page may show, even for a moment, before the login page on refresh while signed out.
+
+# Agent dashboard artwork
+- [x] Cut the supplied agency artwork into dragon crest, gold panel, gold buttons and five icons; use them on the agent dashboard.
+- [ ] Exit fees row shows "soon" until the exit-fee policy is decided.

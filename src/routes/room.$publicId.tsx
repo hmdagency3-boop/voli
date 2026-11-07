@@ -1,7 +1,7 @@
 import { vipChatBubbleArt, vipProfileCardArt } from "@/lib/vip-art";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Gift, Loader2, Lock, Mic, MessageCircle, Power, Share2, SendHorizontal, User, Users, X } from "lucide-react";
+import { Gamepad2, Gift, Loader2, Lock, Mic, MessageCircle, Power, Share2, SendHorizontal, User, Users, X } from "lucide-react";
 import { RoomRanking } from "@/components/RoomRanking";
 import { RoomViewers } from "@/components/RoomViewers";
 import trophyButton from "@/assets/rank/trophy-button.webp";
@@ -9,6 +9,7 @@ import coinIcon from "@/assets/coin.webp";
 import diamondIcon from "@/assets/diamond.webp";
 import { GiftSheet, type GiftSent, type GiftTarget } from "@/components/GiftSheet";
 import { getGiftsReceived } from "@/lib/gifts";
+import { RoomGames } from "@/components/RoomGames";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -68,6 +69,7 @@ function RoomPage() {
   const [entrances, setEntrances] = useState<Join[]>([]);
   const [listOpen, setListOpen] = useState(false);
   const [rankOpen, setRankOpen] = useState(false);
+  const [gamesOpen, setGamesOpen] = useState(false);
   /** Coins thrown in this room, and the throw the member is about to make. */
   const [coins, setCoins] = useState(0);
   const [amount, setAmount] = useState<number>(COIN_AMOUNTS[0]);
@@ -456,9 +458,14 @@ function RoomPage() {
                   {sending ? <Loader2 className="animate-spin" /> : <SendHorizontal className="-scale-x-100" />}
                 </Button>
               ) : (
-                <Button type="button" size="icon" variant="ghost" aria-label="هدية" onClick={() => openGifts()} className="size-11 rounded-full bg-overlay text-on-media">
-                  <Gift className="size-5" />
-                </Button>
+                <>
+                  <Button type="button" size="icon" variant="ghost" aria-label="الألعاب" onClick={() => setGamesOpen(true)} className="size-11 rounded-full bg-overlay text-on-media">
+                    <Gamepad2 className="size-5" />
+                  </Button>
+                  <Button type="button" size="icon" variant="ghost" aria-label="هدية" onClick={() => openGifts()} className="size-11 rounded-full bg-overlay text-on-media">
+                    <Gift className="size-5" />
+                  </Button>
+                </>
               )}
             </form>
 
@@ -550,6 +557,11 @@ function RoomPage() {
       {roomId && (
         <GiftSheet open={giftOpen} onOpenChange={setGiftOpen} roomId={roomId} targets={giftTargets} preselect={giftFor}
           balance={balance} wealthPoints={Number(profile?.wealth_points ?? 0)} onSent={onGiftSent} />
+      )}
+
+      {roomId && (
+        <RoomGames open={gamesOpen} onOpenChange={setGamesOpen} roomId={roomId}
+          onPlayed={() => { getRoomState(roomId).then((s) => setMessages(s.messages)).catch(() => {}); }} />
       )}
 
       <Sheet open={exitOpen} onOpenChange={setExitOpen}>
