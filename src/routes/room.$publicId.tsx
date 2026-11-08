@@ -1,7 +1,10 @@
+import { RoomTools, SeatMenu } from '@/components/RoomTools';
+import { emptyRoomTools, getRoomTools, manageRoom, type RoomToolsState } from '@/lib/room-tools';
+import { syncRoomVoice } from '@/lib/voice.functions';
 import { vipChatBubbleArt, vipProfileCardArt } from "@/lib/vip-art";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Gamepad2, Gift, Loader2, Lock, Mic, MessageCircle, Power, Share2, SendHorizontal, User, Users, X } from "lucide-react";
+import { Gamepad2, Gift, Loader2, Lock, Mic, MicOff, Volume2, MessageCircle, Power, Share2, SendHorizontal, User, Users, X, Settings, ShieldCheck, Ban } from "lucide-react";
 import { RoomRanking } from "@/components/RoomRanking";
 import { RoomViewers } from "@/components/RoomViewers";
 import trophyButton from "@/assets/rank/trophy-button.webp";
@@ -17,6 +20,7 @@ import { VipProfileCard } from "@/components/VipProfileCard";
 import { VipBadge } from "@/components/VipBadge";
 import { VipEntrance } from "@/components/VipEntrance";
 import { useAccount } from "@/hooks/use-account";
+import { useRoomVoice } from "@/hooks/use-room-voice";
 import { activeVipLevel, vipTier } from "@/lib/vip";
 import { shownId } from "@/lib/special-id";
 import {
@@ -56,6 +60,12 @@ function RoomPage() {
   const [room, setRoom] = useState<Room | null>(null);
   const [members, setMembers] = useState<string[]>([]);
   const [seats, setSeats] = useState<Seat[]>([]);
+  const [tools, setTools] = useState<RoomToolsState>(emptyRoomTools);
+  const [toolsReady, setToolsReady] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [seatMenu, setSeatMenu] = useState<number | null>(null);
+  const [inviteSeat, setInviteSeat] = useState<number | null>(null);
+  const [seatBusy, setSeatBusy] = useState(false);
   const [messages, setMessages] = useState<RoomMessage[]>([]);
   const [people, setPeople] = useState<Record<string, RoomPerson>>({});
   const [password, setPassword] = useState("");
@@ -86,6 +96,25 @@ function RoomPage() {
   const seenRef = useRef<Set<string> | null>(null);
 
   const isOwner = !!me && owner?.auth_id === me;
+  const iAmSeated = !!me && seats.some((s) => s.auth_id === me);
+  const isManager = isOwner || (!!me && tools.admins.includes(me));
+  const mySeat = seats.find(s => s.auth_id === me);
+  const forcedMuted = tools.controls.some(c => c.seat_no === mySeat?.seat_no && c.muted);
+  const voice = useRoomVoice(room?.id, status === "inside", iAmSeated, forcedMuted);
+  async function refreshTools() {
+    if (!room?.id) return;
+    const state = await getRoomTools(room.id);
+    setTools(state); setToolsReady(true);
+    const extra = [...state.blacklist, ...state.admins, ...state.impressions.map(i => i.auth_id)].filter(id => !peopleRef.current[id]);
+    if (extra.length) {
+      const found = await getPeople({ ids: extra });
+      setPeople(prev => ({ ...prev, ...Object.fromEntries(found.map(p => [p.auth_id, p])) }));
+    }
+    const current = await getRoomState(room.id); if(current.room) setRoom(current.room); setSeats(current.seats);
+    if (session && (isOwner || state.admins.includes(session.user.id))) {
+      await syncRoomVoice({ data: { roomId: room.id, accessToken: session.access_token } }).catch(() => toast.error('إعدادات الروم اتحفظت، لكن تحديث الصوت ماوصلش؛ جرّب تاني'));
+    }
+  }
 
   const handleEnter = useCallback((res: EnterResult) => {
     if (res === "ok") { setStatus("inside"); return true; }
@@ -124,8 +153,9 @@ function RoomPage() {
     if (!inside || !roomId) return;
     let active = true;
     const load = async () => {
-      const [s, got] = await Promise.all([getRoomState(roomId).catch(() => null), getGiftsReceived(roomId)]);
+      const [s, got, t] = await Promise.all([getRoomState(roomId).catch(() => null), getGiftsReceived(roomId), getRoomTools(roomId).catch(() => null)]);
       if (!active || !s) return;
+      if (t) { setTools(t); setToolsReady(true); }
       setReceived(got);
       if (s.room && !s.room.is_live) { setStatus("offline"); return; }
       if (s.room) setRoom(s.room);
@@ -202,19 +232,33 @@ function RoomPage() {
 
   async function onSeat(no: number) {
     if (!roomId || !me) return;
+    if (isManager) { setSeatMenu(no); return; }
+    await moveToSeat(no);
+  }
+  async function moveToSeat(no: number) {
+    if (!roomId || !me || seatBusy) return;
     const sitter = seats.find((s) => s.seat_no === no);
     if (sitter) {
-      if (sitter.auth_id === me) { await leaveSeat(roomId).catch(() => {}); setSeats((s) => s.filter((x) => x.auth_id !== me)); return; }
+      if (sitter.auth_id === me) { setSeatMenu(null); await leaveSeat(roomId).catch(() => {}); setSeats((s) => s.filter((x) => x.auth_id !== me)); return; }
       const p = people[sitter.auth_id]; if (p) setPicked(p); return;
     }
     const res = await takeSeat(roomId, no).catch(() => null);
     if (res === "ok") setSeats((s) => [...s.filter((x) => x.auth_id !== me), { seat_no: no, auth_id: me }]);
-    else toast.error(res === "taken" ? "المايك ده اتاخد" : "مقدرتش تطلع على المايك");
+    else toast.error(res === "locked" ? "المقعد ده مقفول" : res === "taken" ? "المايك ده اتاخد" : "مقدرتش تطلع على المايك");
+    setSeatMenu(null);
+  }
+
+  async function seatAction(action: string, data: Record<string, unknown> = {}) {
+    if (!roomId || seatBusy) return;
+    setSeatBusy(true);
+    try { await manageRoom(roomId, action, data); await refreshTools(); setSeatMenu(null); setInviteSeat(null); }
+    catch { toast.error('الطلب ماتنفّذش؛ راجع صلاحياتك وتحديث أدوات الروم'); }
+    finally { setSeatBusy(false); }
   }
 
   async function onSend(e: React.FormEvent) {
     e.preventDefault();
-    if (!roomId || !me || !text.trim() || sending) return;
+    if (!roomId || !me || !text.trim() || sending || !tools.chat_enabled) return;
     setSending(true);
     try {
       const res = await sendRoomMessage(roomId, text);
@@ -228,7 +272,7 @@ function RoomPage() {
   async function onKick(p: RoomPerson) {
     if (!roomId) return;
     const res = await kickFromRoom(roomId, p.auth_id).catch(() => null);
-    if (res === "ok") { toast.success(`${p.display_name} اتطرد من الروم لمدة 10 دقايق`); setPicked(null); }
+    if (res === "ok") { toast.success(`${p.display_name} اتطرد من الروم لمدة 10 دقايق`); setPicked(null); await refreshTools(); }
     else toast.error("مش مسموح تطرد العضو ده");
   }
 
@@ -314,6 +358,7 @@ function RoomPage() {
                   </p>
                   <p className="text-xs opacity-80"><bdi dir="ltr">ID:{shownId(owner)}</bdi></p>
                 </div>
+                <Button variant="ghost" size="icon" aria-label="أدوات الروم" disabled={!toolsReady} onClick={() => { setToolsOpen(true); void refreshTools().catch(() => {}); }} className="rounded-full text-on-media hover:bg-overlay"><Settings className="size-5" /></Button>
                 <Button variant="ghost" size="icon" aria-label="خروج" onClick={() => (isOwner ? setExitOpen(true) : exit(false))} className="rounded-full text-on-media hover:bg-overlay">
                   <Power className="size-6" />
                 </Button>
@@ -347,22 +392,39 @@ function RoomPage() {
                 const sitter = seats.find((s) => s.seat_no === no);
                 const p = sitter ? people[sitter.auth_id] : undefined;
                 return (
-                  <button key={no} type="button" onClick={() => onSeat(no)} className="flex flex-col items-center gap-1" aria-label={p ? `${p.display_name} على مايك ${no}` : `مايك ${no} فاضي`}>
+                  <Button key={no} type="button" variant="ghost" onClick={() => onSeat(no)} className="h-auto min-w-0 flex-col gap-1 p-0 text-on-media hover:bg-transparent" aria-label={p ? `${p.display_name} على مايك ${no}` : `مايك ${no} ${tools.controls.some(c=>c.seat_no===no&&c.locked)?'مقفول':'فاضي'}`}>
                     {p ? (
-                      <Avatar person={p} className={`size-14 ring-2 ${sitter?.auth_id === me ? "ring-primary" : "ring-on-media/30"}`} />
+                      <span className="relative">
+                        {voice.speaking.has(p.auth_id) && <><span aria-hidden className="voice-ripple" /><span aria-hidden className="voice-ripple voice-ripple-late" /></>}
+                        <Avatar person={p} className={`relative size-14 ring-2 transition ${voice.speaking.has(p.auth_id) ? "ring-primary shadow-[0_0_12px_var(--color-primary)]" : sitter?.auth_id === me ? "ring-primary" : "ring-on-media/30"}`} />
+                        {(sitter?.auth_id === me && voice.muted) || tools.controls.some(c=>c.seat_no===no&&c.muted) && (
+                          <span className="absolute -bottom-0.5 -end-0.5 grid size-5 place-items-center rounded-full bg-destructive text-destructive-foreground"><MicOff className="size-3" /></span>
+                        )}
+                      </span>
                     ) : (
-                      <span className="grid size-14 place-items-center rounded-full border-2 border-on-media/15 bg-overlay"><Mic className="size-6 opacity-70" /></span>
+                      <span className="grid size-14 place-items-center rounded-full border-2 border-on-media/15 bg-overlay">{tools.controls.some(c=>c.seat_no===no&&c.locked)?<Lock className="size-6 opacity-70"/>:<Mic className="size-6 opacity-70" />}</span>
                     )}
                     <span className="w-full truncate text-center text-xs opacity-80">{p ? p.display_name : no}</span>
-                    {p && (received[p.auth_id] ?? 0) > 0 && (
+                    {p && tools.admins.includes(p.auth_id) && <ShieldCheck className="size-3 text-primary" aria-label="أدمن الروم"/>}
+                    {p && tools.show_charisma && (received[p.auth_id] ?? 0) > 0 && (
                       <span className="-mt-1 inline-flex items-center gap-0.5 text-[10px] font-bold tabular-nums opacity-90" aria-label={`استلم ${received[p.auth_id]} من الهدايا`}>
                         <img src={diamondIcon} alt="" className="size-2.5" />{shortCoins(received[p.auth_id]!)}
                       </span>
                     )}
-                  </button>
+                  </Button>
                 );
               })}
             </section>
+
+            {tools.invite && <div className="mx-4 mt-3 flex items-center gap-2 rounded-lg bg-overlay p-3 text-sm"><span className="min-w-0 flex-1">دعوة للمايك {tools.invite.seat_no}</span><Button size="sm" disabled={seatBusy} onClick={()=>seatAction('accept_invite')}>قبول</Button><Button size="icon" variant="ghost" disabled={seatBusy} aria-label="رفض الدعوة" onClick={()=>seatAction('decline_invite')}><X/></Button></div>}
+            {/* Only the mobile audio-unlock tap stays up here; the mute control lives by the games. */}
+            {voice.needsTap && (
+              <div className="mt-3 flex justify-center gap-2 px-4">
+                <button type="button" onClick={voice.startAudio} className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-bold text-primary-foreground">
+                  <Volume2 className="size-4" /> شغّل الصوت
+                </button>
+              </div>
+            )}
 
             <nav className="mt-4 flex gap-5 px-4" aria-label="الدردشة">
               {([["all", "الكل"], ["chat", "الدردشة"], ["gifts", "هدية"]] as const).map(([key, label]) => (
@@ -450,9 +512,17 @@ function RoomPage() {
             <form onSubmit={onSend} className="flex items-center gap-2 px-4 pb-4 pt-2">
               <label className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-overlay px-4 py-2.5">
                 <MessageCircle className="size-5 shrink-0 opacity-70" />
-                <input aria-label="اكتب في الروم" placeholder="قول حاجة…" value={text} maxLength={300} onChange={(e) => setText(e.target.value)}
+                <input disabled={!tools.chat_enabled} aria-label="اكتب في الروم" placeholder={tools.chat_enabled ? "قول حاجة…" : "الدردشة مقفولة"} value={text} maxLength={300} onChange={(e) => setText(e.target.value)}
                   className="w-full bg-transparent text-sm outline-none placeholder:text-on-media/50" />
               </label>
+              {/* The mic switch sits with the games and gift buttons, so it is always within thumb reach. */}
+              {iAmSeated && voice.connected && (
+                <Button type="button" size="icon" variant="ghost" aria-label={voice.muted ? "تشغيل المايك" : "إيقاف المايك"}
+                  aria-pressed={voice.muted} disabled={forcedMuted} title={forcedMuted?"المايك مقفول من إدارة الروم":undefined} onClick={voice.toggleMute}
+                  className={`size-11 shrink-0 rounded-full ${voice.muted ? "bg-destructive text-destructive-foreground hover:bg-destructive/90" : "bg-overlay text-on-media"}`}>
+                  {voice.muted ? <MicOff className="size-5" /> : <Mic className="size-5" />}
+                </Button>
+              )}
               {text.trim() ? (
                 <Button type="submit" size="icon" aria-label="إرسال" disabled={sending} className="size-11 rounded-full">
                   {sending ? <Loader2 className="animate-spin" /> : <SendHorizontal className="-scale-x-100" />}
@@ -516,10 +586,15 @@ function RoomPage() {
               {picked.auth_id !== me && (
                 <Button size="sm" onClick={() => openGifts([picked.auth_id])} className="h-9 flex-1 rounded-full"><Gift /> هدية</Button>
               )}
-              {picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
+              {isManager && picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
                 <Button size="sm" variant="destructive" onClick={() => onKick(picked)} className="h-9 flex-1 rounded-full">طرد من الروم</Button>
               )}
             </div>
+            {picked && <div className="mx-auto flex w-full max-w-md flex-wrap gap-2 bg-background px-3 pb-3">
+              {picked.auth_id !== me && <Button asChild size="sm" variant="secondary"><Link to="/chat/$publicId" params={{publicId:String(picked.public_id)}}>دردشة خاصة</Link></Button>}
+              {isOwner && picked.auth_id !== me && <Button size="sm" variant="secondary" disabled={seatBusy} onClick={()=>seatAction('admin',{target:picked.auth_id,enabled:!tools.admins.includes(picked.auth_id)})}><ShieldCheck/>{tools.admins.includes(picked.auth_id)?'سحب الأدمن':'تعيين أدمن'}</Button>}
+              {isManager && picked.auth_id !== me && picked.auth_id !== owner?.auth_id && <Button size="sm" variant="destructive" disabled={seatBusy} onClick={()=>{void seatAction('blacklist',{target:picked.auth_id});setPicked(null);}}><Ban/>حظر</Button>}
+            </div>}
           </SheetContent>
         </Sheet>
       ) : (
@@ -533,13 +608,16 @@ function RoomPage() {
                   <p className="text-xs text-muted-foreground" dir="ltr">ID:{shownId(picked)}</p>
                 </SheetHeader>
                 <div className="grid gap-2 p-4">
+                  {isOwner && picked.auth_id !== me && <Button variant="secondary" disabled={seatBusy} onClick={()=>seatAction('admin',{target:picked.auth_id,enabled:!tools.admins.includes(picked.auth_id)})}><ShieldCheck/>{tools.admins.includes(picked.auth_id)?'سحب الأدمن':'تعيين أدمن'}</Button>}
+                  {isManager && picked.auth_id !== me && picked.auth_id !== owner?.auth_id && <Button variant="destructive" disabled={seatBusy} onClick={()=>{void seatAction('blacklist',{target:picked.auth_id});setPicked(null);}}><Ban/>حظر من الروم</Button>}
+                  {picked.auth_id !== me && <Button asChild variant="secondary"><Link to="/chat/$publicId" params={{publicId:String(picked.public_id)}}>دردشة خاصة</Link></Button>}
                   <Button asChild variant="secondary" className="h-12 rounded-full">
                     <Link to="/user/$publicId" params={{ publicId: String(picked.public_id) }}>الملف الشخصي</Link>
                   </Button>
                   {picked.auth_id !== me && (
                     <Button onClick={() => openGifts([picked.auth_id])} className="h-12 rounded-full"><Gift /> ابعت هدية</Button>
                   )}
-                  {picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
+                  {isManager && picked.auth_id !== me && picked.auth_id !== owner?.auth_id && (
                     <Button variant="destructive" onClick={() => onKick(picked)} className="h-12 rounded-full">طرد من الروم</Button>
                   )}
                 </div>
@@ -548,6 +626,10 @@ function RoomPage() {
           </SheetContent>
         </Sheet>
       )}
+
+      {room && me && <RoomTools room={room} me={me} people={people} members={members} state={tools} owner={isOwner} manager={isManager} open={toolsOpen} onOpenChange={setToolsOpen} onRefresh={refreshTools} onShare={onShare} onGifts={()=>openGifts()} onPick={p=>navigate({to:'/chat/$publicId',params:{publicId:String(p.public_id)}})} voiceConnected={voice.connected} needsTap={voice.needsTap} startAudio={voice.startAudio}/>}
+      <SeatMenu seat={seatMenu} control={tools.controls.find(c=>c.seat_no===seatMenu)??{locked:false,muted:false}} occupied={seats.some(s=>s.seat_no===seatMenu)} mine={seats.some(s=>s.seat_no===seatMenu&&s.auth_id===me)} busy={seatBusy} onClose={()=>setSeatMenu(null)} onMove={()=>{if(seatMenu!==null)void moveToSeat(seatMenu);}} onInvite={()=>{setInviteSeat(seatMenu);setSeatMenu(null);}} onAction={(action,enabled)=>seatAction(action,{seat:seatMenu,enabled})} onProfile={()=>{const seat=seats.find(s=>s.seat_no===seatMenu);const person=seat?people[seat.auth_id]:undefined;if(person)setPicked(person);setSeatMenu(null);}}/>
+      <Sheet open={inviteSeat!==null} onOpenChange={o=>!o&&setInviteSeat(null)}><SheetContent side="bottom" className="mx-auto max-h-[70dvh] max-w-md overflow-y-auto rounded-t-lg" dir="rtl"><SheetTitle>دعوة للمايك {inviteSeat}</SheetTitle><div className="mt-4 grid gap-2">{members.filter(id=>id!==me).map(id=>{const p=people[id];return p?<Button key={id} variant="secondary" disabled={seatBusy} className="h-12 justify-between" onClick={()=>seatAction('invite',{seat:inviteSeat,target:id})}><span className="truncate">{p.display_name}</span><Mic/></Button>:null;})}{members.filter(id=>id!==me).length===0&&<p className="text-sm text-muted-foreground">مفيش أعضاء تانيين في الروم</p>}</div></SheetContent></Sheet>
 
       <RoomViewers open={listOpen} onOpenChange={setListOpen} members={members} people={people} ownerId={owner?.auth_id}
         seated={new Set(seats.map((x) => x.auth_id))} me={me} onPick={(p) => { setListOpen(false); setPicked(p); }} />

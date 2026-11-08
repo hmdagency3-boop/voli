@@ -32,7 +32,7 @@ export type Room = {
 };
 export type RoomPerson = {
   auth_id: string; public_id: number; display_name: string; avatar_url: string | null;
-  special_id?: string | null; vip_level?: number; vip_expires_at?: string | null;
+  charisma_points?: number; special_id?: string | null; vip_level?: number; vip_expires_at?: string | null;
 };
 export type Seat = { seat_no: number; auth_id: string };
 export type RoomMessage = { id: string; sender_id: string; body: string; created_at: string };
@@ -76,7 +76,7 @@ export async function getPeople(by: { ids: string[] } | { public_id: number }): 
     const q = supabase.from('profiles').select(cols);
     return 'ids' in by ? q.in('auth_id', by.ids) : q.eq('public_id', by.public_id);
   };
-  let res = await run('auth_id, public_id, display_name, avatar_url, special_id, vip_level, vip_expires_at');
+  let res = await run('auth_id, public_id, display_name, avatar_url, special_id, vip_level, vip_expires_at, charisma_points');
   if (res.error) res = await run('auth_id, public_id, display_name, avatar_url');
   if (res.error) throw res.error;
   return (res.data ?? []) as unknown as RoomPerson[];
