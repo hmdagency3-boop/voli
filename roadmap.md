@@ -1,4 +1,8 @@
 # Remove fictional data
+- [x] Room administration: seat menus, invites, microphone/seat locks and owner-assigned admins.
+- [x] Full room tools: mode, theme, editing, chat switch, private chat, sharing, settings, charisma display, diagnostics, lock, announcement, blacklist, gift store and room impressions.
+- [x] Verify room administration SQL (16 rules plus existing room/routing tests) and isolated phone/desktop sheets.
+- [ ] Apply supabase/011_room_tools.sql in the external SQL Editor and verify signed-in room flows and LiveKit audio on two accounts (needs the user; external authentication unavailable).
 - [x] Remove sample streams, stories, events, and notifications.
 - [x] Remove sample chats and online people.
 - [x] Remove fabricated profile identity, stats, levels, and balances.
@@ -65,7 +69,7 @@
 - [x] Live rooms listed on the home page.
 - [x] supabase/004_rooms.sql with PGlite tests.
 - [ ] Run supabase/004_rooms.sql in the SQL Editor (needs the user).
-- [ ] Real live voice/video on the mics (needs a voice service the user picks).
+- [x] Live voice on the mics through LiveKit: seated members talk, everyone inside listens (src/lib/voice.functions.ts, src/hooks/use-room-voice.ts).
 - [ ] Gifts, games, room tasks (not built yet).
 
 # Keep GitHub up to date
@@ -98,3 +102,26 @@
 - [x] Dashboard, members (search, coins, VIP, special ID, roles, name/picture, ban/unban), rooms, gifts and VIP prices, agencies, log.
 - [x] Banned screen inside the app; remove the old in-app agency review link.
 - [ ] Run supabase/009_admin.sql in the SQL Editor and make yourself admin (needs the user).
+
+# Voli Helper (management notices)
+- [x] Pinned receive-only chat for the management account (public ID 100), named Voli Helper.
+- [x] Small "V" badge beside its name in the chat list and the conversation header.
+- [x] Prepare dedicated non-login Voli Helper profile creation, link its profile from the chat, and verify ID 100 / receive-only rules with PGlite.
+- [ ] Apply the updated supabase/010_admin_notices.sql in the external SQL Editor (needs the user; earlier version was applied).
+
+# Profile identity dragon
+- [x] Clean the supplied dragon and split its placement behind the identity card with paws in front.
+- [x] Verify mascot/paws layering and unobstructed data in an isolated card fixture at 320px, 390px and desktop; real signed-in external-account view remains unverified.
+
+# Voli logo and home-screen icons
+- [x] Use the supplied mascot logo in the home header and sign-in/signup pages.
+- [x] Add manifest-only installation metadata, favicon, Apple icon and safe maskable Android icon.
+- [x] Verify logo display on the sign-in screen, manifest/icon requests on phone and desktop, correct PNG sizes and no service worker; actual phone installation remains untested.
+
+# Room voice controls
+- [x] Mic on/off switch moved into the bottom action row next to the games and gift buttons; the mobile "شغّل الصوت" tap stays above the chat.
+- [x] Verify the bottom row (input + mic + games + gift) fits with no sideways overflow at 320px, 390px and desktop; real in-room use with two signed-in devices remains unverified.
+
+# Trophy button see-through fill
+- [x] The room ranking button's dark inside is now mostly see-through (20% of its old opacity) so the room frame behind it shows; gold frame, trophy and coin stay solid.
+- [x] Verify the button over the room frame artwork in an isolated fixture; the real room header with a signed-in account remains unverified.
