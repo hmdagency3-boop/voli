@@ -31,3 +31,4 @@ use the editor.
 
 - This is Voli's standalone admin console: it talks to Voli's database only through the admin_* database functions (role-checked there), never with a secret key — rules stay in Voli's database.
 - UI is Ant Design + Pro Components, Arabic RTL, rendered client-only after hydration (private tool, avoids antd SSR styling issues).
+- Gift pictures are uploaded straight to Voli's public `gift-art` storage bucket (write policy checks the admin role in the database), then saved through admin_create_gift / admin_set_gift_art; the database change ships as sql/013_gift_uploads.sql, run by the owner in Voli's SQL Editor, because this panel cannot change Voli's schema.

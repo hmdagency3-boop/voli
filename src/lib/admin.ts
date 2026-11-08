@@ -133,13 +133,47 @@ export const closeRoom = (id: string) => rpc<void>('admin_close_room', { p_room:
 export const clearRoomChat = (id: string) => rpc<void>('admin_clear_room_chat', { p_room: id });
 
 // ---------- Gifts and VIP prices ----------
-export type AdminGift = { key: string; name: string; price: number; sort: number; active: boolean; sent_count: number; sent_value: number };
+export type AdminGift = {
+  key: string; name: string; price: number; sort: number; active: boolean;
+  /** Picture uploaded from the panel; null = the picture built into the app (original 8 gifts, or before update 013). */
+  art_url: string | null; sent_count: number; sent_value: number;
+};
 export async function getGifts() {
   const rows = await rpc<AdminGift[]>('admin_gifts');
-  return rows.map((g) => ({ ...g, price: Number(g.price), sent_count: Number(g.sent_count), sent_value: Number(g.sent_value) }));
+  return rows.map((g) => ({ ...g, art_url: g.art_url ?? null, price: Number(g.price), sent_count: Number(g.sent_count), sent_value: Number(g.sent_value) }));
 }
 export const updateGift = (g: Pick<AdminGift, 'key' | 'name' | 'price' | 'sort' | 'active'>) =>
   rpc<void>('admin_update_gift', { p_key: g.key, p_name: g.name, p_price: g.price, p_sort: g.sort, p_active: g.active });
+
+/** Gift pictures: PNG / WebP / GIF / JPEG up to 5 MB (same limits as the gift-art bucket in sql/013_gift_uploads.sql). */
+export const GIFT_ART_TYPES = ['image/png', 'image/webp', 'image/gif', 'image/jpeg'];
+export const GIFT_ART_MAX = 5 * 1024 * 1024;
+export function giftArtProblem(file: { type: string; size: number }): string | null {
+  if (!GIFT_ART_TYPES.includes(file.type)) return 'الصورة لازم تكون PNG أو WebP أو GIF أو JPG';
+  if (file.size > GIFT_ART_MAX) return 'حجم الصورة أكبر من 5 ميجا';
+  return null;
+}
+
+/** Uploads a gift picture to the public gift-art bucket and returns its link. */
+export async function uploadGiftArt(file: File): Promise<string> {
+  const problem = giftArtProblem(file);
+  if (problem) throw Object.assign(new Error(problem), { hint: 'bad_art_file' });
+  const ext = ({ 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/jpeg': 'jpg' } as Record<string, string>)[file.type];
+  const path = `${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from('gift-art').upload(path, file, { contentType: file.type, cacheControl: '31536000' });
+  if (error) throw Object.assign(error, { hint: 'upload_failed' });
+  return supabase.storage.from('gift-art').getPublicUrl(path).data.publicUrl;
+}
+
+/** Adds a new gift (shown in the app right away). Returns its key. */
+export async function createGift(g: { name: string; price: number; sort?: number | null; file: File }) {
+  const art = await uploadGiftArt(g.file);
+  return rpc<string>('admin_create_gift', { p_name: g.name, p_price: g.price, p_sort: g.sort ?? null, p_art_url: art });
+}
+export async function changeGiftArt(key: string, file: File) {
+  const art = await uploadGiftArt(file);
+  return rpc<void>('admin_set_gift_art', { p_key: key, p_art_url: art });
+}
 
 export type VipTierPrice = { level: number; name_ar: string; price_coins: number | null; duration_days: number; monthly_salary_coins: number | null };
 export async function getVipPrices(): Promise<VipTierPrice[]> {
@@ -194,7 +228,7 @@ export const getLog = (page: number) => rpc<LogRow[]>('admin_actions_log', { p_l
 export const ACTION_LABELS: Record<string, string> = {
   coins: 'عملات', vip_grant: 'منح VIP', vip_revoke: 'سحب VIP', special_id: 'ID مميز', role: 'صلاحية',
   profile: 'تعديل بيانات', ban: 'حظر', unban: 'فك حظر', room_close: 'إغلاق غرفة', room_chat_clear: 'مسح محادثة غرفة',
-  gift_update: 'تعديل هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
+  gift_update: 'تعديل هدية', gift_create: 'إضافة هدية', gift_art: 'صورة هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
   agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة',
 };
 
@@ -209,6 +243,8 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
     case 'role': return `${d['role'] === 'admin' ? 'إدارة عليا' : 'مشرف'}: ${d['enabled'] ? 'أُضيف' : 'أُزيل'}`;
     case 'ban': return `${d['days'] ? `${d['days']} يوم` : 'نهائي'}${d['reason'] ? ` — ${d['reason']}` : ''}`;
     case 'gift_update': return `${d['key']}: ${n('price')}${d['active'] === false ? ' (مخفية)' : ''}`;
+    case 'gift_create': return `${d['name']}: ${n('price')}`;
+    case 'gift_art': return String(d['key'] ?? '');
     case 'vip_tier_update': return `VIP ${d['level']}: ${d['price'] == null ? 'غير معروض للبيع' : n('price')} / ${d['days']} يوم`;
     case 'agency_update': return `${d['name']}${d['commission'] != null ? ` — ${d['commission']}%` : ''}`;
     case 'agency_approve': return `كود ${d['code']}`;
@@ -218,8 +254,11 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
 }
 
 export const adminErrorMessage = (e: unknown) => {
-  const err = e as { hint?: string; code?: string } | null;
+  const err = e as { hint?: string; code?: string; message?: string } | null;
   if (missing(err?.code)) return 'يجب تشغيل ملف الإدارة 009 في قاعدة البيانات أولاً';
+  if (err?.hint === 'bad_art_file') return err.message ?? 'الصورة غير صالحة';
+  if (err?.hint === 'upload_failed') return /bucket/i.test(err.message ?? '')
+    ? 'يجب تشغيل ملف الهدايا 013 في قاعدة البيانات أولاً' : 'تعذّر رفع الصورة، حاول مجدداً';
   return ({
     not_admin: 'هذا الإجراء متاح للإدارة العليا فقط',
     not_found: 'العنصر غير موجود',
@@ -234,6 +273,7 @@ export const adminErrorMessage = (e: unknown) => {
     target_admin: 'لا يمكن حظر أحد أعضاء الإدارة العليا',
     bad_name: 'الاسم غير صحيح',
     bad_price: 'السعر غير صحيح',
+    bad_art: 'صورة الهدية غير صحيحة، ارفع الصورة من اللوحة',
     bad_percent: 'يجب أن تكون النسبة بين 0 و100',
     is_agent: 'لا يمكن إزالة الوكيل من وكالته',
     not_pending: 'تمت معالجة هذا الطلب مسبقاً',
