@@ -8,12 +8,12 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+
+const Providers = lazy(() => import("../components/Providers"));
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Toaster } from "@/components/ui/sonner";
-import { AuthGate } from "@/components/AuthGate";
 
 function NotFoundComponent() {
   return (
@@ -77,21 +77,29 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
+    // Replace these placeholders with the app's name and description when first building the app.
+    // Each content route, / included, must still set its own head(). Never add og:image or
+    // twitter:image here: every page without its own would inherit the root's preview image.
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "لوحة إدارة فولي" },
+      { name: "description", content: "لوحة إدارة منفصلة لتطبيق فولي" },
+      { name: "robots", content: "noindex, nofollow" },
+      { property: "og:title", content: "لوحة إدارة فولي" },
+      { property: "og:description", content: "لوحة إدارة منفصلة لتطبيق فولي" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&family=Syne:wght@700;800&display=swap" },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -106,7 +114,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="font-sans antialiased">
+      <body>
         {children}
         <Scripts />
       </body>
@@ -120,10 +128,21 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <AuthGate>
+      <ClientGate>
         <Outlet />
-      </AuthGate>
-      <Toaster position="top-center" />
+      </ClientGate>
     </QueryClientProvider>
+  );
+}
+
+/** The panel is browser-only (private, signed-in tool), so it renders after hydration. */
+function ClientGate({ children }: { children: ReactNode }) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+  if (!ready) return null;
+  return (
+    <Suspense fallback={null}>
+      <Providers>{children}</Providers>
+    </Suspense>
   );
 }

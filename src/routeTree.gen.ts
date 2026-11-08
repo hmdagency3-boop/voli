@@ -9,39 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ChatRouteImport } from './routes/chat'
-import { Route as LevelsRouteImport } from './routes/levels'
+import { Route as PanelRouteImport } from './routes/_panel'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as MeRouteImport } from './routes/me'
-import { Route as SearchRouteImport } from './routes/search'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as VipRouteImport } from './routes/vip'
-import { Route as AgencyIndexRouteImport } from './routes/agency.index'
-import { Route as AgencyApplyRouteImport } from './routes/agency.apply'
-import { Route as AgencyIncomeRouteImport } from './routes/agency.income'
-import { Route as AgencyMembersRouteImport } from './routes/agency.members'
-import { Route as AgencyMyIncomeRouteImport } from './routes/agency.my-income'
-import { Route as AgencyRequestsRouteImport } from './routes/agency.requests'
-import { Route as ChatPublicIdRouteImport } from './routes/chat_.$publicId'
-import { Route as MeDetailsRouteImport } from './routes/me_.details'
-import { Route as RoomPublicIdRouteImport } from './routes/room.$publicId'
-import { Route as RoomNewRouteImport } from './routes/room.new'
-import { Route as UserPublicIdRouteImport } from './routes/user.$publicId'
+import { Route as PanelIndexRouteImport } from './routes/_panel/index'
+import { Route as PanelAgenciesRouteImport } from './routes/_panel/agencies'
+import { Route as PanelGiftsRouteImport } from './routes/_panel/gifts'
+import { Route as PanelLogRouteImport } from './routes/_panel/log'
+import { Route as PanelRoomsRouteImport } from './routes/_panel/rooms'
+import { Route as PanelMembersIndexRouteImport } from './routes/_panel/members.index'
+import { Route as PanelMembersAuthIdRouteImport } from './routes/_panel/members.$authId'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChatRoute = ChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LevelsRoute = LevelsRouteImport.update({
-  id: '/levels',
-  path: '/levels',
+const PanelRoute = PanelRouteImport.update({
+  id: '/_panel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -49,255 +28,120 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MeRoute = MeRouteImport.update({
-  id: '/me',
-  path: '/me',
-  getParentRoute: () => rootRouteImport,
+const PanelIndexRoute = PanelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PanelRoute,
 } as any)
-const SearchRoute = SearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRouteImport,
+const PanelAgenciesRoute = PanelAgenciesRouteImport.update({
+  id: '/agencies',
+  path: '/agencies',
+  getParentRoute: () => PanelRoute,
 } as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
+const PanelGiftsRoute = PanelGiftsRouteImport.update({
+  id: '/gifts',
+  path: '/gifts',
+  getParentRoute: () => PanelRoute,
 } as any)
-const VipRoute = VipRouteImport.update({
-  id: '/vip',
-  path: '/vip',
-  getParentRoute: () => rootRouteImport,
+const PanelLogRoute = PanelLogRouteImport.update({
+  id: '/log',
+  path: '/log',
+  getParentRoute: () => PanelRoute,
 } as any)
-const AgencyIndexRoute = AgencyIndexRouteImport.update({
-  id: '/agency/',
-  path: '/agency/',
-  getParentRoute: () => rootRouteImport,
+const PanelRoomsRoute = PanelRoomsRouteImport.update({
+  id: '/rooms',
+  path: '/rooms',
+  getParentRoute: () => PanelRoute,
 } as any)
-const AgencyApplyRoute = AgencyApplyRouteImport.update({
-  id: '/agency/apply',
-  path: '/agency/apply',
-  getParentRoute: () => rootRouteImport,
+const PanelMembersIndexRoute = PanelMembersIndexRouteImport.update({
+  id: '/members/',
+  path: '/members/',
+  getParentRoute: () => PanelRoute,
 } as any)
-const AgencyIncomeRoute = AgencyIncomeRouteImport.update({
-  id: '/agency/income',
-  path: '/agency/income',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgencyMembersRoute = AgencyMembersRouteImport.update({
-  id: '/agency/members',
-  path: '/agency/members',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgencyMyIncomeRoute = AgencyMyIncomeRouteImport.update({
-  id: '/agency/my-income',
-  path: '/agency/my-income',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgencyRequestsRoute = AgencyRequestsRouteImport.update({
-  id: '/agency/requests',
-  path: '/agency/requests',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChatPublicIdRoute = ChatPublicIdRouteImport.update({
-  id: '/chat_/$publicId',
-  path: '/chat/$publicId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MeDetailsRoute = MeDetailsRouteImport.update({
-  id: '/me_/details',
-  path: '/me/details',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RoomPublicIdRoute = RoomPublicIdRouteImport.update({
-  id: '/room/$publicId',
-  path: '/room/$publicId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RoomNewRoute = RoomNewRouteImport.update({
-  id: '/room/new',
-  path: '/room/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UserPublicIdRoute = UserPublicIdRouteImport.update({
-  id: '/user/$publicId',
-  path: '/user/$publicId',
-  getParentRoute: () => rootRouteImport,
+const PanelMembersAuthIdRoute = PanelMembersAuthIdRouteImport.update({
+  id: '/members/$authId',
+  path: '/members/$authId',
+  getParentRoute: () => PanelRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
-  '/levels': typeof LevelsRoute
+  '/': typeof PanelIndexRoute
   '/login': typeof LoginRoute
-  '/me': typeof MeRoute
-  '/search': typeof SearchRoute
-  '/signup': typeof SignupRoute
-  '/vip': typeof VipRoute
-  '/agency/apply': typeof AgencyApplyRoute
-  '/agency/income': typeof AgencyIncomeRoute
-  '/agency/members': typeof AgencyMembersRoute
-  '/agency/my-income': typeof AgencyMyIncomeRoute
-  '/agency/requests': typeof AgencyRequestsRoute
-  '/chat/$publicId': typeof ChatPublicIdRoute
-  '/me/details': typeof MeDetailsRoute
-  '/room/$publicId': typeof RoomPublicIdRoute
-  '/room/new': typeof RoomNewRoute
-  '/user/$publicId': typeof UserPublicIdRoute
-  '/agency/': typeof AgencyIndexRoute
+  '/agencies': typeof PanelAgenciesRoute
+  '/gifts': typeof PanelGiftsRoute
+  '/log': typeof PanelLogRoute
+  '/rooms': typeof PanelRoomsRoute
+  '/members/$authId': typeof PanelMembersAuthIdRoute
+  '/members/': typeof PanelMembersIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
-  '/levels': typeof LevelsRoute
   '/login': typeof LoginRoute
-  '/me': typeof MeRoute
-  '/search': typeof SearchRoute
-  '/signup': typeof SignupRoute
-  '/vip': typeof VipRoute
-  '/agency/apply': typeof AgencyApplyRoute
-  '/agency/income': typeof AgencyIncomeRoute
-  '/agency/members': typeof AgencyMembersRoute
-  '/agency/my-income': typeof AgencyMyIncomeRoute
-  '/agency/requests': typeof AgencyRequestsRoute
-  '/chat/$publicId': typeof ChatPublicIdRoute
-  '/me/details': typeof MeDetailsRoute
-  '/room/$publicId': typeof RoomPublicIdRoute
-  '/room/new': typeof RoomNewRoute
-  '/user/$publicId': typeof UserPublicIdRoute
-  '/agency': typeof AgencyIndexRoute
+  '/agencies': typeof PanelAgenciesRoute
+  '/gifts': typeof PanelGiftsRoute
+  '/log': typeof PanelLogRoute
+  '/rooms': typeof PanelRoomsRoute
+  '/': typeof PanelIndexRoute
+  '/members/$authId': typeof PanelMembersAuthIdRoute
+  '/members': typeof PanelMembersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
-  '/levels': typeof LevelsRoute
+  '/_panel': typeof PanelRouteWithChildren
   '/login': typeof LoginRoute
-  '/me': typeof MeRoute
-  '/search': typeof SearchRoute
-  '/signup': typeof SignupRoute
-  '/vip': typeof VipRoute
-  '/agency/apply': typeof AgencyApplyRoute
-  '/agency/income': typeof AgencyIncomeRoute
-  '/agency/members': typeof AgencyMembersRoute
-  '/agency/my-income': typeof AgencyMyIncomeRoute
-  '/agency/requests': typeof AgencyRequestsRoute
-  '/chat_/$publicId': typeof ChatPublicIdRoute
-  '/me_/details': typeof MeDetailsRoute
-  '/room/$publicId': typeof RoomPublicIdRoute
-  '/room/new': typeof RoomNewRoute
-  '/user/$publicId': typeof UserPublicIdRoute
-  '/agency/': typeof AgencyIndexRoute
+  '/_panel/agencies': typeof PanelAgenciesRoute
+  '/_panel/gifts': typeof PanelGiftsRoute
+  '/_panel/log': typeof PanelLogRoute
+  '/_panel/rooms': typeof PanelRoomsRoute
+  '/_panel/': typeof PanelIndexRoute
+  '/_panel/members/$authId': typeof PanelMembersAuthIdRoute
+  '/_panel/members/': typeof PanelMembersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/chat'
-    | '/levels'
     | '/login'
-    | '/me'
-    | '/search'
-    | '/signup'
-    | '/vip'
-    | '/agency/apply'
-    | '/agency/income'
-    | '/agency/members'
-    | '/agency/my-income'
-    | '/agency/requests'
-    | '/chat/$publicId'
-    | '/me/details'
-    | '/room/$publicId'
-    | '/room/new'
-    | '/user/$publicId'
-    | '/agency/'
+    | '/agencies'
+    | '/gifts'
+    | '/log'
+    | '/rooms'
+    | '/members/$authId'
+    | '/members/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/chat'
-    | '/levels'
     | '/login'
-    | '/me'
-    | '/search'
-    | '/signup'
-    | '/vip'
-    | '/agency/apply'
-    | '/agency/income'
-    | '/agency/members'
-    | '/agency/my-income'
-    | '/agency/requests'
-    | '/chat/$publicId'
-    | '/me/details'
-    | '/room/$publicId'
-    | '/room/new'
-    | '/user/$publicId'
-    | '/agency'
+    | '/agencies'
+    | '/gifts'
+    | '/log'
+    | '/rooms'
+    | '/'
+    | '/members/$authId'
+    | '/members'
   id:
     | '__root__'
-    | '/'
-    | '/chat'
-    | '/levels'
+    | '/_panel'
     | '/login'
-    | '/me'
-    | '/search'
-    | '/signup'
-    | '/vip'
-    | '/agency/apply'
-    | '/agency/income'
-    | '/agency/members'
-    | '/agency/my-income'
-    | '/agency/requests'
-    | '/chat_/$publicId'
-    | '/me_/details'
-    | '/room/$publicId'
-    | '/room/new'
-    | '/user/$publicId'
-    | '/agency/'
+    | '/_panel/agencies'
+    | '/_panel/gifts'
+    | '/_panel/log'
+    | '/_panel/rooms'
+    | '/_panel/'
+    | '/_panel/members/$authId'
+    | '/_panel/members/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  ChatRoute: typeof ChatRoute
-  LevelsRoute: typeof LevelsRoute
+  PanelRoute: typeof PanelRouteWithChildren
   LoginRoute: typeof LoginRoute
-  MeRoute: typeof MeRoute
-  SearchRoute: typeof SearchRoute
-  SignupRoute: typeof SignupRoute
-  VipRoute: typeof VipRoute
-  AgencyApplyRoute: typeof AgencyApplyRoute
-  AgencyIncomeRoute: typeof AgencyIncomeRoute
-  AgencyMembersRoute: typeof AgencyMembersRoute
-  AgencyMyIncomeRoute: typeof AgencyMyIncomeRoute
-  AgencyRequestsRoute: typeof AgencyRequestsRoute
-  ChatPublicIdRoute: typeof ChatPublicIdRoute
-  MeDetailsRoute: typeof MeDetailsRoute
-  RoomPublicIdRoute: typeof RoomPublicIdRoute
-  RoomNewRoute: typeof RoomNewRoute
-  UserPublicIdRoute: typeof UserPublicIdRoute
-  AgencyIndexRoute: typeof AgencyIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
+    '/_panel': {
+      id: '/_panel'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/levels': {
-      id: '/levels'
-      path: '/levels'
-      fullPath: '/levels'
-      preLoaderRoute: typeof LevelsRouteImport
+      preLoaderRoute: typeof PanelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -307,134 +151,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/me': {
-      id: '/me'
-      path: '/me'
-      fullPath: '/me'
-      preLoaderRoute: typeof MeRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_panel/': {
+      id: '/_panel/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PanelIndexRouteImport
+      parentRoute: typeof PanelRoute
     }
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_panel/agencies': {
+      id: '/_panel/agencies'
+      path: '/agencies'
+      fullPath: '/agencies'
+      preLoaderRoute: typeof PanelAgenciesRouteImport
+      parentRoute: typeof PanelRoute
     }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_panel/gifts': {
+      id: '/_panel/gifts'
+      path: '/gifts'
+      fullPath: '/gifts'
+      preLoaderRoute: typeof PanelGiftsRouteImport
+      parentRoute: typeof PanelRoute
     }
-    '/vip': {
-      id: '/vip'
-      path: '/vip'
-      fullPath: '/vip'
-      preLoaderRoute: typeof VipRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_panel/log': {
+      id: '/_panel/log'
+      path: '/log'
+      fullPath: '/log'
+      preLoaderRoute: typeof PanelLogRouteImport
+      parentRoute: typeof PanelRoute
     }
-    '/agency/': {
-      id: '/agency/'
-      path: '/agency'
-      fullPath: '/agency/'
-      preLoaderRoute: typeof AgencyIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_panel/rooms': {
+      id: '/_panel/rooms'
+      path: '/rooms'
+      fullPath: '/rooms'
+      preLoaderRoute: typeof PanelRoomsRouteImport
+      parentRoute: typeof PanelRoute
     }
-    '/agency/apply': {
-      id: '/agency/apply'
-      path: '/agency/apply'
-      fullPath: '/agency/apply'
-      preLoaderRoute: typeof AgencyApplyRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_panel/members/': {
+      id: '/_panel/members/'
+      path: '/members'
+      fullPath: '/members/'
+      preLoaderRoute: typeof PanelMembersIndexRouteImport
+      parentRoute: typeof PanelRoute
     }
-    '/agency/income': {
-      id: '/agency/income'
-      path: '/agency/income'
-      fullPath: '/agency/income'
-      preLoaderRoute: typeof AgencyIncomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agency/members': {
-      id: '/agency/members'
-      path: '/agency/members'
-      fullPath: '/agency/members'
-      preLoaderRoute: typeof AgencyMembersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agency/my-income': {
-      id: '/agency/my-income'
-      path: '/agency/my-income'
-      fullPath: '/agency/my-income'
-      preLoaderRoute: typeof AgencyMyIncomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agency/requests': {
-      id: '/agency/requests'
-      path: '/agency/requests'
-      fullPath: '/agency/requests'
-      preLoaderRoute: typeof AgencyRequestsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chat_/$publicId': {
-      id: '/chat_/$publicId'
-      path: '/chat/$publicId'
-      fullPath: '/chat/$publicId'
-      preLoaderRoute: typeof ChatPublicIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/me_/details': {
-      id: '/me_/details'
-      path: '/me/details'
-      fullPath: '/me/details'
-      preLoaderRoute: typeof MeDetailsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/room/$publicId': {
-      id: '/room/$publicId'
-      path: '/room/$publicId'
-      fullPath: '/room/$publicId'
-      preLoaderRoute: typeof RoomPublicIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/room/new': {
-      id: '/room/new'
-      path: '/room/new'
-      fullPath: '/room/new'
-      preLoaderRoute: typeof RoomNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$publicId': {
-      id: '/user/$publicId'
-      path: '/user/$publicId'
-      fullPath: '/user/$publicId'
-      preLoaderRoute: typeof UserPublicIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_panel/members/$authId': {
+      id: '/_panel/members/$authId'
+      path: '/members/$authId'
+      fullPath: '/members/$authId'
+      preLoaderRoute: typeof PanelMembersAuthIdRouteImport
+      parentRoute: typeof PanelRoute
     }
   }
 }
 
+interface PanelRouteChildren {
+  PanelAgenciesRoute: typeof PanelAgenciesRoute
+  PanelGiftsRoute: typeof PanelGiftsRoute
+  PanelLogRoute: typeof PanelLogRoute
+  PanelRoomsRoute: typeof PanelRoomsRoute
+  PanelIndexRoute: typeof PanelIndexRoute
+  PanelMembersAuthIdRoute: typeof PanelMembersAuthIdRoute
+  PanelMembersIndexRoute: typeof PanelMembersIndexRoute
+}
+
+const PanelRouteChildren: PanelRouteChildren = {
+  PanelAgenciesRoute: PanelAgenciesRoute,
+  PanelGiftsRoute: PanelGiftsRoute,
+  PanelLogRoute: PanelLogRoute,
+  PanelRoomsRoute: PanelRoomsRoute,
+  PanelIndexRoute: PanelIndexRoute,
+  PanelMembersAuthIdRoute: PanelMembersAuthIdRoute,
+  PanelMembersIndexRoute: PanelMembersIndexRoute,
+}
+
+const PanelRouteWithChildren = PanelRoute._addFileChildren(PanelRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  ChatRoute: ChatRoute,
-  LevelsRoute: LevelsRoute,
+  PanelRoute: PanelRouteWithChildren,
   LoginRoute: LoginRoute,
-  MeRoute: MeRoute,
-  SearchRoute: SearchRoute,
-  SignupRoute: SignupRoute,
-  VipRoute: VipRoute,
-  AgencyApplyRoute: AgencyApplyRoute,
-  AgencyIncomeRoute: AgencyIncomeRoute,
-  AgencyMembersRoute: AgencyMembersRoute,
-  AgencyMyIncomeRoute: AgencyMyIncomeRoute,
-  AgencyRequestsRoute: AgencyRequestsRoute,
-  ChatPublicIdRoute: ChatPublicIdRoute,
-  MeDetailsRoute: MeDetailsRoute,
-  RoomPublicIdRoute: RoomPublicIdRoute,
-  RoomNewRoute: RoomNewRoute,
-  UserPublicIdRoute: UserPublicIdRoute,
-  AgencyIndexRoute: AgencyIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
