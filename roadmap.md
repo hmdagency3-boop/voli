@@ -97,11 +97,10 @@
 - [x] Cut the supplied agency artwork into dragon crest, gold panel, gold buttons and five icons; use them on the agent dashboard.
 - [ ] Exit fees row shows "soon" until the exit-fee policy is decided.
 
-# Management panel (/admin, hidden, same project)
-- [x] Database rules for the panel (supabase/009_admin.sql) with tests.
-- [x] Dashboard, members (search, coins, VIP, special ID, roles, name/picture, ban/unban), rooms, gifts and VIP prices, agencies, log.
-- [x] Banned screen inside the app; remove the old in-app agency review link.
-- [ ] Run supabase/009_admin.sql in the SQL Editor and make yourself admin (needs the user).
+# Remove management pages
+- [x] Delete all management routes, their dedicated interface and sign-in code.
+- [x] Preserve member pages, existing bans and external database rules.
+- [x] Verify removed addresses no longer match management pages and member sign-in still opens.
 
 # Voli Helper (management notices)
 - [x] Pinned receive-only chat for the management account (public ID 100), named Voli Helper.

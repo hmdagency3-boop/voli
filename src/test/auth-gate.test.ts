@@ -1,14 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { canShowPage, isAdminPath, isPublicPath } from '@/components/AuthGate';
-
-describe('management panel is outside the member app', () => {
-  it('the member sign-in gate skips every /admin page', () => {
-    expect(isAdminPath('/admin')).toBe(true);
-    expect(isAdminPath('/admin/members')).toBe(true);
-    expect(isAdminPath('/administrator')).toBe(false);
-    expect(isAdminPath('/me')).toBe(false);
-  });
-});
+import { canShowPage, isPublicPath } from '@/components/AuthGate';
 
 describe('sign-in required', () => {
   it('only login and signup are open without an account', () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { useAccount } from '@/hooks/use-account';
-import { getMyBan, type MyBan } from '@/lib/admin';
+import { getMyBan, type MyBan } from '@/lib/member-ban';
 import { supabase } from '@/lib/supabase';
 
 /** Paths reachable without an account. Everything else requires sign-in. */
@@ -24,14 +24,7 @@ export function canShowPage(opts: { ready: boolean; signedIn: boolean; path: str
   return opts.signedIn ? !pathOpen && !shownOpen : pathOpen && shownOpen;
 }
 
-/** The management panel is its own site with its own sign-in; the member gate never applies there. */
-export function isAdminPath(pathname: string) {
-  return pathname === '/admin' || pathname.startsWith('/admin/');
-}
-
 export function AuthGate({ children }: { children: ReactNode }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  if (isAdminPath(pathname)) return <>{children}</>;
   return <MemberGate>{children}</MemberGate>;
 }
 

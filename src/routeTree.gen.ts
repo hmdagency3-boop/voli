@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as LevelsRouteImport } from './routes/levels'
 import { Route as LoginRouteImport } from './routes/login'
@@ -18,12 +17,6 @@ import { Route as MeRouteImport } from './routes/me'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as VipRouteImport } from './routes/vip'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminAgenciesRouteImport } from './routes/admin.agencies'
-import { Route as AdminGiftsRouteImport } from './routes/admin.gifts'
-import { Route as AdminLogRouteImport } from './routes/admin.log'
-import { Route as AdminMembersRouteImport } from './routes/admin.members'
-import { Route as AdminRoomsRouteImport } from './routes/admin.rooms'
 import { Route as AgencyIndexRouteImport } from './routes/agency.index'
 import { Route as AgencyApplyRouteImport } from './routes/agency.apply'
 import { Route as AgencyIncomeRouteImport } from './routes/agency.income'
@@ -35,16 +28,10 @@ import { Route as MeDetailsRouteImport } from './routes/me_.details'
 import { Route as RoomPublicIdRouteImport } from './routes/room.$publicId'
 import { Route as RoomNewRouteImport } from './routes/room.new'
 import { Route as UserPublicIdRouteImport } from './routes/user.$publicId'
-import { Route as AdminMemberAuthIdRouteImport } from './routes/admin.member.$authId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatRoute = ChatRouteImport.update({
@@ -81,36 +68,6 @@ const VipRoute = VipRouteImport.update({
   id: '/vip',
   path: '/vip',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAgenciesRoute = AdminAgenciesRouteImport.update({
-  id: '/agencies',
-  path: '/agencies',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminGiftsRoute = AdminGiftsRouteImport.update({
-  id: '/gifts',
-  path: '/gifts',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLogRoute = AdminLogRouteImport.update({
-  id: '/log',
-  path: '/log',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminMembersRoute = AdminMembersRouteImport.update({
-  id: '/members',
-  path: '/members',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminRoomsRoute = AdminRoomsRouteImport.update({
-  id: '/rooms',
-  path: '/rooms',
-  getParentRoute: () => AdminRoute,
 } as any)
 const AgencyIndexRoute = AgencyIndexRouteImport.update({
   id: '/agency/',
@@ -167,15 +124,9 @@ const UserPublicIdRoute = UserPublicIdRouteImport.update({
   path: '/user/$publicId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminMemberAuthIdRoute = AdminMemberAuthIdRouteImport.update({
-  id: '/member/$authId',
-  path: '/member/$authId',
-  getParentRoute: () => AdminRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/chat': typeof ChatRoute
   '/levels': typeof LevelsRoute
   '/login': typeof LoginRoute
@@ -183,11 +134,6 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/signup': typeof SignupRoute
   '/vip': typeof VipRoute
-  '/admin/agencies': typeof AdminAgenciesRoute
-  '/admin/gifts': typeof AdminGiftsRoute
-  '/admin/log': typeof AdminLogRoute
-  '/admin/members': typeof AdminMembersRoute
-  '/admin/rooms': typeof AdminRoomsRoute
   '/agency/apply': typeof AgencyApplyRoute
   '/agency/income': typeof AgencyIncomeRoute
   '/agency/members': typeof AgencyMembersRoute
@@ -198,9 +144,7 @@ export interface FileRoutesByFullPath {
   '/room/$publicId': typeof RoomPublicIdRoute
   '/room/new': typeof RoomNewRoute
   '/user/$publicId': typeof UserPublicIdRoute
-  '/admin/': typeof AdminIndexRoute
   '/agency/': typeof AgencyIndexRoute
-  '/admin/member/$authId': typeof AdminMemberAuthIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -211,11 +155,6 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/signup': typeof SignupRoute
   '/vip': typeof VipRoute
-  '/admin/agencies': typeof AdminAgenciesRoute
-  '/admin/gifts': typeof AdminGiftsRoute
-  '/admin/log': typeof AdminLogRoute
-  '/admin/members': typeof AdminMembersRoute
-  '/admin/rooms': typeof AdminRoomsRoute
   '/agency/apply': typeof AgencyApplyRoute
   '/agency/income': typeof AgencyIncomeRoute
   '/agency/members': typeof AgencyMembersRoute
@@ -226,14 +165,11 @@ export interface FileRoutesByTo {
   '/room/$publicId': typeof RoomPublicIdRoute
   '/room/new': typeof RoomNewRoute
   '/user/$publicId': typeof UserPublicIdRoute
-  '/admin': typeof AdminIndexRoute
   '/agency': typeof AgencyIndexRoute
-  '/admin/member/$authId': typeof AdminMemberAuthIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/chat': typeof ChatRoute
   '/levels': typeof LevelsRoute
   '/login': typeof LoginRoute
@@ -241,11 +177,6 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/signup': typeof SignupRoute
   '/vip': typeof VipRoute
-  '/admin/agencies': typeof AdminAgenciesRoute
-  '/admin/gifts': typeof AdminGiftsRoute
-  '/admin/log': typeof AdminLogRoute
-  '/admin/members': typeof AdminMembersRoute
-  '/admin/rooms': typeof AdminRoomsRoute
   '/agency/apply': typeof AgencyApplyRoute
   '/agency/income': typeof AgencyIncomeRoute
   '/agency/members': typeof AgencyMembersRoute
@@ -256,15 +187,12 @@ export interface FileRoutesById {
   '/room/$publicId': typeof RoomPublicIdRoute
   '/room/new': typeof RoomNewRoute
   '/user/$publicId': typeof UserPublicIdRoute
-  '/admin/': typeof AdminIndexRoute
   '/agency/': typeof AgencyIndexRoute
-  '/admin/member/$authId': typeof AdminMemberAuthIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
     | '/chat'
     | '/levels'
     | '/login'
@@ -272,11 +200,6 @@ export interface FileRouteTypes {
     | '/search'
     | '/signup'
     | '/vip'
-    | '/admin/agencies'
-    | '/admin/gifts'
-    | '/admin/log'
-    | '/admin/members'
-    | '/admin/rooms'
     | '/agency/apply'
     | '/agency/income'
     | '/agency/members'
@@ -287,9 +210,7 @@ export interface FileRouteTypes {
     | '/room/$publicId'
     | '/room/new'
     | '/user/$publicId'
-    | '/admin/'
     | '/agency/'
-    | '/admin/member/$authId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -300,11 +221,6 @@ export interface FileRouteTypes {
     | '/search'
     | '/signup'
     | '/vip'
-    | '/admin/agencies'
-    | '/admin/gifts'
-    | '/admin/log'
-    | '/admin/members'
-    | '/admin/rooms'
     | '/agency/apply'
     | '/agency/income'
     | '/agency/members'
@@ -315,13 +231,10 @@ export interface FileRouteTypes {
     | '/room/$publicId'
     | '/room/new'
     | '/user/$publicId'
-    | '/admin'
     | '/agency'
-    | '/admin/member/$authId'
   id:
     | '__root__'
     | '/'
-    | '/admin'
     | '/chat'
     | '/levels'
     | '/login'
@@ -329,11 +242,6 @@ export interface FileRouteTypes {
     | '/search'
     | '/signup'
     | '/vip'
-    | '/admin/agencies'
-    | '/admin/gifts'
-    | '/admin/log'
-    | '/admin/members'
-    | '/admin/rooms'
     | '/agency/apply'
     | '/agency/income'
     | '/agency/members'
@@ -344,14 +252,11 @@ export interface FileRouteTypes {
     | '/room/$publicId'
     | '/room/new'
     | '/user/$publicId'
-    | '/admin/'
     | '/agency/'
-    | '/admin/member/$authId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
   ChatRoute: typeof ChatRoute
   LevelsRoute: typeof LevelsRoute
   LoginRoute: typeof LoginRoute
@@ -379,13 +284,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -436,48 +334,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/vip'
       preLoaderRoute: typeof VipRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/agencies': {
-      id: '/admin/agencies'
-      path: '/agencies'
-      fullPath: '/admin/agencies'
-      preLoaderRoute: typeof AdminAgenciesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/gifts': {
-      id: '/admin/gifts'
-      path: '/gifts'
-      fullPath: '/admin/gifts'
-      preLoaderRoute: typeof AdminGiftsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/log': {
-      id: '/admin/log'
-      path: '/log'
-      fullPath: '/admin/log'
-      preLoaderRoute: typeof AdminLogRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/members': {
-      id: '/admin/members'
-      path: '/members'
-      fullPath: '/admin/members'
-      preLoaderRoute: typeof AdminMembersRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/rooms': {
-      id: '/admin/rooms'
-      path: '/rooms'
-      fullPath: '/admin/rooms'
-      preLoaderRoute: typeof AdminRoomsRouteImport
-      parentRoute: typeof AdminRoute
     }
     '/agency/': {
       id: '/agency/'
@@ -556,41 +412,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserPublicIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/member/$authId': {
-      id: '/admin/member/$authId'
-      path: '/member/$authId'
-      fullPath: '/admin/member/$authId'
-      preLoaderRoute: typeof AdminMemberAuthIdRouteImport
-      parentRoute: typeof AdminRoute
-    }
   }
 }
 
-interface AdminRouteChildren {
-  AdminAgenciesRoute: typeof AdminAgenciesRoute
-  AdminGiftsRoute: typeof AdminGiftsRoute
-  AdminLogRoute: typeof AdminLogRoute
-  AdminMembersRoute: typeof AdminMembersRoute
-  AdminRoomsRoute: typeof AdminRoomsRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-  AdminMemberAuthIdRoute: typeof AdminMemberAuthIdRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminAgenciesRoute: AdminAgenciesRoute,
-  AdminGiftsRoute: AdminGiftsRoute,
-  AdminLogRoute: AdminLogRoute,
-  AdminMembersRoute: AdminMembersRoute,
-  AdminRoomsRoute: AdminRoomsRoute,
-  AdminIndexRoute: AdminIndexRoute,
-  AdminMemberAuthIdRoute: AdminMemberAuthIdRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
   ChatRoute: ChatRoute,
   LevelsRoute: LevelsRoute,
   LoginRoute: LoginRoute,
