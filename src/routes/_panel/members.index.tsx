@@ -21,7 +21,7 @@ function Members() {
     <PageContainer title="الأعضاء">
       <Card>
         <Space wrap style={{ marginBottom: 16 }}>
-          <Input.Search allowClear placeholder="الاسم أو المعرّف أو البريد" style={{ width: 280 }} onSearch={(v) => { setQ(v); setPage(0); }} />
+          <Input.Search allowClear placeholder="الاسم أو ID أو البريد" style={{ width: 280 }} onSearch={(v) => { setQ(v); setPage(0); }} />
           <Segmented value={filter} onChange={(v) => { setFilter(v as MemberFilter); setPage(0); }}
             options={[{ label: "الكل", value: "all" }, { label: "VIP", value: "vip" }, { label: "المحظورون", value: "banned" }, { label: "الإدارة", value: "staff" }, { label: "الجدد", value: "new" }]} />
         </Space>
@@ -33,7 +33,7 @@ function Members() {
               <Link to="/members/$authId" params={{ authId: r.auth_id }}>
                 <Space><Avatar src={r.avatar_url}>{r.display_name?.[0]}</Avatar>{r.display_name}</Space>
               </Link>) },
-            { title: "المعرّف", render: (_, r) => r.special_id ? <Tag color="gold">{r.special_id}</Tag> : r.public_id },
+            { title: "ID", render: (_, r) => r.special_id ? <Tag color="gold">{r.special_id}</Tag> : r.public_id },
             { title: "البريد", dataIndex: "email" },
             { title: "العملات", dataIndex: "coins", render: fmt },
             { title: "الحالة", render: (_, r) => {

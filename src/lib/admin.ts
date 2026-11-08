@@ -192,7 +192,7 @@ export const LOG_PAGE = 50;
 export const getLog = (page: number) => rpc<LogRow[]>('admin_actions_log', { p_limit: LOG_PAGE, p_offset: page * LOG_PAGE });
 
 export const ACTION_LABELS: Record<string, string> = {
-  coins: 'عملات', vip_grant: 'منح VIP', vip_revoke: 'سحب VIP', special_id: 'معرّف مميز', role: 'صلاحية',
+  coins: 'عملات', vip_grant: 'منح VIP', vip_revoke: 'سحب VIP', special_id: 'ID مميز', role: 'صلاحية',
   profile: 'تعديل بيانات', ban: 'حظر', unban: 'فك حظر', room_close: 'إغلاق غرفة', room_chat_clear: 'مسح محادثة غرفة',
   gift_update: 'تعديل هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
   agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة',
@@ -228,8 +228,8 @@ export const adminErrorMessage = (e: unknown) => {
     bad_level: 'مستوى VIP غير صحيح',
     bad_days: 'عدد الأيام غير صحيح',
     bad_source: 'نوع المنح غير صحيح',
-    bad_special_id: 'المعرّف المميز أرقام فقط ولا يبدأ بصفر (حتى 10 أرقام)',
-    special_id_taken: 'هذا الرقم مستخدم معرّفاً لعضو آخر',
+    bad_special_id: 'ID المميز أرقام فقط ولا يبدأ بصفر (حتى 10 أرقام)',
+    special_id_taken: 'هذا الرقم مستخدم ID لعضو آخر',
     self: 'لا يمكنك تنفيذ هذا الإجراء على نفسك',
     target_admin: 'لا يمكن حظر أحد أعضاء الإدارة العليا',
     bad_name: 'الاسم غير صحيح',

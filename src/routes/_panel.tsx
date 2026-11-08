@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { ProLayout } from "@ant-design/pro-components";
-import { AppstoreOutlined, BankOutlined, DashboardOutlined, GiftOutlined, HistoryOutlined, LogoutOutlined, SoundOutlined, TeamOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, BankOutlined, CrownOutlined, DashboardOutlined, GiftOutlined, HistoryOutlined, LogoutOutlined, SoundOutlined, TeamOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Result, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { adminSignOut, getAdminAccess, getAdminName, useAdminSession, type AdminAccess } from "@/lib/admin";
@@ -10,6 +10,7 @@ export const Route = createFileRoute("/_panel")({ component: PanelLayout });
 const menu = [
   { path: "/", name: "الرئيسية", icon: <DashboardOutlined /> },
   { path: "/members", name: "الأعضاء", icon: <TeamOutlined /> },
+  { path: "/vip", name: "إدارة VIP", icon: <CrownOutlined /> },
   { path: "/rooms", name: "الغرف الصوتية", icon: <SoundOutlined /> },
   { path: "/gifts", name: "الهدايا والأسعار", icon: <GiftOutlined /> },
   { path: "/agencies", name: "الوكالات", icon: <BankOutlined /> },

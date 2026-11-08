@@ -16,6 +16,7 @@ import { Route as PanelAgenciesRouteImport } from './routes/_panel/agencies'
 import { Route as PanelGiftsRouteImport } from './routes/_panel/gifts'
 import { Route as PanelLogRouteImport } from './routes/_panel/log'
 import { Route as PanelRoomsRouteImport } from './routes/_panel/rooms'
+import { Route as PanelVipRouteImport } from './routes/_panel/vip'
 import { Route as PanelMembersIndexRouteImport } from './routes/_panel/members.index'
 import { Route as PanelMembersAuthIdRouteImport } from './routes/_panel/members.$authId'
 
@@ -53,6 +54,11 @@ const PanelRoomsRoute = PanelRoomsRouteImport.update({
   path: '/rooms',
   getParentRoute: () => PanelRoute,
 } as any)
+const PanelVipRoute = PanelVipRouteImport.update({
+  id: '/vip',
+  path: '/vip',
+  getParentRoute: () => PanelRoute,
+} as any)
 const PanelMembersIndexRoute = PanelMembersIndexRouteImport.update({
   id: '/members/',
   path: '/members/',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
   '/rooms': typeof PanelRoomsRoute
+  '/vip': typeof PanelVipRoute
   '/members/$authId': typeof PanelMembersAuthIdRoute
   '/members/': typeof PanelMembersIndexRoute
 }
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
   '/rooms': typeof PanelRoomsRoute
+  '/vip': typeof PanelVipRoute
   '/': typeof PanelIndexRoute
   '/members/$authId': typeof PanelMembersAuthIdRoute
   '/members': typeof PanelMembersIndexRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/_panel/gifts': typeof PanelGiftsRoute
   '/_panel/log': typeof PanelLogRoute
   '/_panel/rooms': typeof PanelRoomsRoute
+  '/_panel/vip': typeof PanelVipRoute
   '/_panel/': typeof PanelIndexRoute
   '/_panel/members/$authId': typeof PanelMembersAuthIdRoute
   '/_panel/members/': typeof PanelMembersIndexRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/gifts'
     | '/log'
     | '/rooms'
+    | '/vip'
     | '/members/$authId'
     | '/members/'
   fileRoutesByTo: FileRoutesByTo
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
     | '/gifts'
     | '/log'
     | '/rooms'
+    | '/vip'
     | '/'
     | '/members/$authId'
     | '/members'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/_panel/gifts'
     | '/_panel/log'
     | '/_panel/rooms'
+    | '/_panel/vip'
     | '/_panel/'
     | '/_panel/members/$authId'
     | '/_panel/members/'
@@ -186,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelRoomsRouteImport
       parentRoute: typeof PanelRoute
     }
+    '/_panel/vip': {
+      id: '/_panel/vip'
+      path: '/vip'
+      fullPath: '/vip'
+      preLoaderRoute: typeof PanelVipRouteImport
+      parentRoute: typeof PanelRoute
+    }
     '/_panel/members/': {
       id: '/_panel/members/'
       path: '/members'
@@ -208,6 +227,7 @@ interface PanelRouteChildren {
   PanelGiftsRoute: typeof PanelGiftsRoute
   PanelLogRoute: typeof PanelLogRoute
   PanelRoomsRoute: typeof PanelRoomsRoute
+  PanelVipRoute: typeof PanelVipRoute
   PanelIndexRoute: typeof PanelIndexRoute
   PanelMembersAuthIdRoute: typeof PanelMembersAuthIdRoute
   PanelMembersIndexRoute: typeof PanelMembersIndexRoute
@@ -218,6 +238,7 @@ const PanelRouteChildren: PanelRouteChildren = {
   PanelGiftsRoute: PanelGiftsRoute,
   PanelLogRoute: PanelLogRoute,
   PanelRoomsRoute: PanelRoomsRoute,
+  PanelVipRoute: PanelVipRoute,
   PanelIndexRoute: PanelIndexRoute,
   PanelMembersAuthIdRoute: PanelMembersAuthIdRoute,
   PanelMembersIndexRoute: PanelMembersIndexRoute,
