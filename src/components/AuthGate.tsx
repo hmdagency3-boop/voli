@@ -5,7 +5,7 @@ import { getMyBan, type MyBan } from '@/lib/member-ban';
 import { supabase } from '@/lib/supabase';
 import { deviceCheckIn, type DeviceBan } from '@/lib/device-check.functions';
 import { getDeviceDetails, getDeviceId } from '@/lib/device-info';
-import { reportMemberDevice } from '@/lib/device-report';
+import { reportDevice } from '@/lib/device-report';
 import { useServerFn } from '@tanstack/react-start';
 import { BanNotice } from '@/components/BanNotice';
 
@@ -43,6 +43,9 @@ function MemberGate({ children }: { children: ReactNode }) {
     if (userId) getMyBan().then((result) => { if (alive) setBan(result); });
     return () => { alive = false; };
   }, [userId]);
+  useEffect(() => {
+    if (userId) void reportDevice();
+  }, [userId]);
   const [deviceBan, setDeviceBan] = useState<DeviceBan | null>(null);
   const [checkedIdentity, setCheckedIdentity] = useState<string | null>(null);
   const checkDevice = useServerFn(deviceCheckIn);
@@ -53,37 +56,17 @@ function MemberGate({ children }: { children: ReactNode }) {
     let alive = true;
     (async () => {
       try {
-        // Report device and network directly to member_devices when signed in
-        if (session) {
-          const reportBan = await reportMemberDevice();
-          if (alive && reportBan) {
-            setDeviceBan({
-              kind: reportBan.kind,
-              until: reportBan.until ?? null,
-              reason: reportBan.reason ?? null,
-              ban_code: reportBan.ban_code ?? null,
-            });
-            return;
-          }
-        }
         const details = await getDeviceDetails();
         const result = await checkDevice({
-          data: {
-            deviceId: getDeviceId(),
-            platform: details.platform,
-            model: details.model,
-            brand: details.brand,
-            osVersion: details.osVersion,
-            connection: details.network || details.connection,
-          },
+          data: { deviceId: getDeviceId(), ...details },
           ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
         });
-        if (alive && result) setDeviceBan(result);
+        if (alive) setDeviceBan(result);
       } catch { /* never block the app on a failed check */ }
       finally { if (alive) setCheckedIdentity(identity); }
     })();
     return () => { alive = false; };
-  }, [ready, identity, token, session, checkDevice]);
+  }, [ready, identity, token, checkDevice]);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const shownPath = useRouterState({
     select: (s) => s.matches[s.matches.length - 1]?.pathname ?? s.location.pathname,
