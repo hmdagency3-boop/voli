@@ -121,7 +121,9 @@ function ConversationPage() {
               return (
                 <div
                   key={m.id}
-                  className={`max-w-[80%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2 text-sm ${mine ? "self-start" : "self-end"} ${bubble}`}
+                  // dir="auto": English messages/notices read left-to-right, Arabic right-to-left.
+                  dir="auto"
+                  className={`max-w-[80%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2 text-start text-sm ${mine ? "self-start" : "self-end"} ${bubble}`}
                   style={vipBubble?.chatBubble === "neon" ? { boxShadow: `0 0 12px ${vipBubble.color}` } : undefined}
                 >
                   {m.body}
