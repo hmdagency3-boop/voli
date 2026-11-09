@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ModalForm, PageContainer, ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-components";
+import { ModalForm, PageContainer, ProFormDependency, ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-components";
+import { NoticePreview, SendNoticeForm, VipNoticePreview } from "@/components/notices";
 import { Alert, Button, Card, Col, Descriptions, Popconfirm, Row, Space, Table, Tag } from "antd";
 import { pageHead } from "@/components/meta";
 import { useAction, useLoad } from "@/components/hooks";
 import {
-  ACTION_LABELS, banMember, changeCoins, describeAction, editProfile, fmt, fmtDate, getMember, grantVip, revokeVip,
-  setRole, setSpecialId, unbanMember,
+  ACTION_LABELS, banMember, changeCoins, coinsNotice, describeAction, editProfile, fmt, fmtDate, getMember, grantVip, revokeVip,
+  roleNotice, setRole, setSpecialId, specialIdNotice, unbanMember,
 } from "@/lib/admin";
 import { activeVipLevel, VIP_LEVELS } from "@/lib/vip";
 
@@ -32,13 +33,15 @@ function Member() {
           onFinish={async (v: { amount: number; note?: string }) => act(() => changeCoins(authId, v.amount, v.note), "تم تعديل الرصيد", reload)}>
           <ProFormDigit name="amount" label="المبلغ (سالب للخصم)" min={-1e12} fieldProps={{ precision: 0 }} rules={[{ required: true }]} />
           <ProFormText name="note" label="ملاحظة" />
+          <ProFormDependency name={["amount"]}>{({ amount }: { amount?: number }) => <NoticePreview lines={[amount ? coinsNotice(amount) : null]} />}</ProFormDependency>
         </ModalForm>,
         <ModalForm key="v" title="منح VIP" trigger={<Button>منح VIP</Button>}
-          onFinish={async (v: { level: number; days?: number; source: "admin" | "gift" | "event"; note?: string }) => act(() => grantVip(authId, v.level, v.days ?? null, v.source, v.note), "تم منح VIP", reload)}>
+          onFinish={async (v: { level: number; days?: number; source: "admin" | "gift" | "event"; note?: string }) => act(() => grantVip(authId, v.level, v.days ?? null, v.source, v.note), "تم منح VIP وإرسال التهنئة", reload)}>
           <ProFormSelect name="level" label="المستوى" options={VIP_LEVELS.map((l) => ({ label: `VIP ${l}`, value: l }))} rules={[{ required: true }]} />
           <ProFormDigit name="days" label="عدد الأيام (فارغ = دائم)" min={1} fieldProps={{ precision: 0 }} />
           <ProFormSelect name="source" label="النوع" initialValue="admin" options={[{ label: "إدارة", value: "admin" }, { label: "هدية", value: "gift" }, { label: "فعالية", value: "event" }]} />
           <ProFormText name="note" label="ملاحظة" />
+          <VipNoticePreview />
         </ModalForm>,
         m?.ban
           ? <Popconfirm key="u" title="فك الحظر؟" onConfirm={() => act(() => unbanMember(authId), "تم فك الحظر", reload)}><Button>فك الحظر</Button></Popconfirm>
@@ -74,7 +77,10 @@ function Member() {
               <ModalForm title="المعرّف المميز" trigger={<Button block>تغيير المعرّف المميز</Button>} initialValues={{ special: p.special_id ?? "" }}
                 onFinish={async (v: { special?: string }) => act(() => setSpecialId(authId, v.special?.trim() || null), "تم الحفظ", reload)}>
                 <ProFormText name="special" label="الرقم (اتركه فارغاً لإزالته)" />
+                <ProFormDependency name={["special"]}>{({ special }: { special?: string }) =>
+                  <NoticePreview lines={[special?.trim() && special.trim() !== (p.special_id ?? "") ? specialIdNotice(special) : null]} />}</ProFormDependency>
               </ModalForm>
+              <SendNoticeForm authId={authId} name={p.display_name} act={act} after={reload} />
               <ModalForm title="تعديل البيانات" trigger={<Button block>تعديل الاسم</Button>} initialValues={{ name: p.display_name }}
                 onFinish={async (v: { name: string }) => act(() => editProfile(authId, { name: v.name }), "تم الحفظ", reload)}>
                 <ProFormText name="name" label="الاسم" rules={[{ required: true }]} />
@@ -82,8 +88,10 @@ function Member() {
               <Popconfirm title="مسح الصورة؟" onConfirm={() => act(() => editProfile(authId, { clearAvatar: true }), "تم المسح", reload)}><Button block>مسح الصورة</Button></Popconfirm>
               <Popconfirm title="مسح النبذة؟" onConfirm={() => act(() => editProfile(authId, { clearBio: true }), "تم المسح", reload)}><Button block>مسح النبذة</Button></Popconfirm>
               {vip > 0 && <Popconfirm title="سحب VIP؟" onConfirm={() => act(() => revokeVip(authId), "تم سحب VIP", reload)}><Button block danger>سحب VIP</Button></Popconfirm>}
-              <Popconfirm title={isMod ? "إزالة صلاحية المشرف؟" : "تعيينه مشرفاً؟"} onConfirm={() => act(() => setRole(authId, "moderator", !isMod), "تم الحفظ", reload)}><Button block>{isMod ? "إزالة صلاحية المشرف" : "تعيينه مشرفاً"}</Button></Popconfirm>
-              <Popconfirm title={isAdmin ? "إزالة صلاحية الإدارة العليا؟" : "تعيينه في الإدارة العليا؟"} onConfirm={() => act(() => setRole(authId, "admin", !isAdmin), "تم الحفظ", reload)}><Button block danger={!!isAdmin}>{isAdmin ? "إزالة صلاحية الإدارة العليا" : "تعيينه في الإدارة العليا"}</Button></Popconfirm>
+              <Popconfirm title={isMod ? "إزالة صلاحية المشرف؟" : "تعيينه مشرفاً؟"} description={isMod ? undefined : <span dir="ltr">{roleNotice("moderator")}</span>}
+                onConfirm={() => act(() => setRole(authId, "moderator", !isMod), isMod ? "تم الحفظ" : "تم الحفظ وإرسال التهنئة", reload)}><Button block>{isMod ? "إزالة صلاحية المشرف" : "تعيينه مشرفاً"}</Button></Popconfirm>
+              <Popconfirm title={isAdmin ? "إزالة صلاحية الإدارة العليا؟" : "تعيينه في الإدارة العليا؟"} description={isAdmin ? undefined : <span dir="ltr">{roleNotice("admin")}</span>}
+                onConfirm={() => act(() => setRole(authId, "admin", !isAdmin), isAdmin ? "تم الحفظ" : "تم الحفظ وإرسال التهنئة", reload)}><Button block danger={!!isAdmin}>{isAdmin ? "إزالة صلاحية الإدارة العليا" : "تعيينه في الإدارة العليا"}</Button></Popconfirm>
             </Space>
           </Card>
         </Col>

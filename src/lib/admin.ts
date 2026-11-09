@@ -217,6 +217,48 @@ export const getApplications = (status: ApplicationStatus) => rpc<AgencyApplicat
 export const reviewApplication = (id: string, approve: boolean, reason?: string) =>
   rpc<number | null>('admin_review_application', { p_id: id, p_approve: approve, p_reason: reason || null });
 
+// ---------- Official notices (Voli Helper chat, ID 100 — sql/014_admin_grant_notices.sql) ----------
+// The database sends these automatically when VIP, a role, coins or a special ID is given;
+// the same wording is built here for previews and for notices sent by hand.
+const GIFT_PREFIX = 'Congratulations on receiving the official gift of ';
+const validity = (days?: number | null) => (days && days > 0 ? ` ,valid for ${days} days.` : '.');
+
+/** "Congratulations on receiving the official gift of {what}[ ,valid for N days]." */
+export const giftNotice = (what: string, days?: number | null) => `${GIFT_PREFIX}${what.trim()}${validity(days)}`;
+export const headwearNotice = (name: string, days?: number | null) => giftNotice(`Headwear ${name.trim()}`, days);
+export const vipHeadwearNotice = (level: number, days?: number | null) => headwearNotice(`vip ${level}`, days);
+export const vipUpgradeNotice = (level: number, days?: number | null) => `Congratulations on your upgrade to VIP${level}${validity(days)}`;
+/** Both messages a member receives when given VIP, in the order they arrive. */
+export const vipGrantNotices = (level: number, days?: number | null) => [vipUpgradeNotice(level, days), vipHeadwearNotice(level, days)];
+export const roleNotice = (role: 'admin' | 'moderator') => headwearNotice(role === 'admin' ? 'Super Admin' : 'Moderator');
+/** Only added coins get a message (removing coins sends nothing). */
+export const coinsNotice = (amount: number) => (amount > 0 ? giftNotice(`${Math.trunc(amount)} Coins`) : null);
+export const specialIdNotice = (id: string) => `Congratulations on receiving your Special ID: ${id.trim()}.`;
+
+export type NoticeTemplate = 'super_admin' | 'moderator' | 'vip_headwear' | 'vip_upgrade' | 'headwear' | 'gift' | 'custom';
+export type NoticeInput = { template?: NoticeTemplate; level?: number; days?: number | null; name?: string; text?: string };
+/** The message a hand-sent notice will carry, or null while the form is incomplete. */
+export function buildNotice(v: NoticeInput): string | null {
+  const days = v.days ?? null, name = v.name?.trim() ?? '';
+  switch (v.template) {
+    case 'super_admin': return roleNotice('admin');
+    case 'moderator': return roleNotice('moderator');
+    case 'vip_headwear': return v.level ? vipHeadwearNotice(v.level, days) : null;
+    case 'vip_upgrade': return v.level ? vipUpgradeNotice(v.level, days) : null;
+    case 'headwear': return name ? headwearNotice(name, days) : null;
+    case 'gift': return name ? giftNotice(name, days) : null;
+    case 'custom': return v.text?.trim() || null;
+    default: return null;
+  }
+}
+
+/** Sends an official notice from Voli Helper to the member's chat. */
+export async function sendAdminNotice(authId: string, body: string): Promise<string> {
+  const { data, error } = await supabase.rpc('admin_send_notice', { p_recipient: authId, p_body: body });
+  if (error) throw missing(error.code) ? { hint: 'notice_missing' } : error;
+  return data as string;
+}
+
 // ---------- Log ----------
 export type LogRow = {
   id: string; created_at: string; action: string; details: Record<string, unknown>;
@@ -229,7 +271,7 @@ export const ACTION_LABELS: Record<string, string> = {
   coins: 'عملات', vip_grant: 'منح VIP', vip_revoke: 'سحب VIP', special_id: 'ID مميز', role: 'صلاحية',
   profile: 'تعديل بيانات', ban: 'حظر', unban: 'فك حظر', room_close: 'إغلاق غرفة', room_chat_clear: 'مسح محادثة غرفة',
   gift_update: 'تعديل هدية', gift_create: 'إضافة هدية', gift_art: 'صورة هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
-  agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة',
+  agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة', notice: 'إشعار رسمي',
 };
 
 /** One-line Arabic summary of what an action changed. */
@@ -249,12 +291,14 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
     case 'agency_update': return `${d['name']}${d['commission'] != null ? ` — ${d['commission']}%` : ''}`;
     case 'agency_approve': return `كود ${d['code']}`;
     case 'agency_reject': return d['reason'] ? String(d['reason']) : '';
+    case 'notice': return String(d['body'] ?? '');
     default: return '';
   }
 }
 
 export const adminErrorMessage = (e: unknown) => {
   const err = e as { hint?: string; code?: string; message?: string } | null;
+  if (err?.hint === 'notice_missing') return 'يجب تشغيل ملف الإشعارات 014 في قاعدة البيانات أولاً';
   if (missing(err?.code)) return 'يجب تشغيل ملف الإدارة 009 في قاعدة البيانات أولاً';
   if (err?.hint === 'bad_art_file') return err.message ?? 'الصورة غير صالحة';
   if (err?.hint === 'upload_failed') return /bucket/i.test(err.message ?? '')
@@ -272,6 +316,7 @@ export const adminErrorMessage = (e: unknown) => {
     self: 'لا يمكنك تنفيذ هذا الإجراء على نفسك',
     target_admin: 'لا يمكن حظر أحد أعضاء الإدارة العليا',
     bad_name: 'الاسم غير صحيح',
+    bad_notice: 'نص الإشعار مطلوب (حتى 1000 حرف)',
     bad_price: 'السعر غير صحيح',
     bad_art: 'صورة الهدية غير صحيحة، ارفع الصورة من اللوحة',
     bad_percent: 'يجب أن تكون النسبة بين 0 و100',

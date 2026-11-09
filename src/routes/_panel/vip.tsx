@@ -6,6 +6,7 @@ import { pageHead } from "@/components/meta";
 import { useAction, useLoad } from "@/components/hooks";
 import { fmtDate, getMembers, grantVip, revokeVip, type AdminMemberRow } from "@/lib/admin";
 import { activeVipLevel, VIP_LEVELS } from "@/lib/vip";
+import { VipNoticePreview } from "@/components/notices";
 
 export const Route = createFileRoute("/_panel/vip")({
   head: pageHead("إدارة VIP", "منح عضوية VIP وسحبها من أعضاء فولي"),
@@ -16,12 +17,13 @@ function GrantForm({ m, act, reload }: { m: AdminMemberRow; act: ReturnType<type
   return (
     <ModalForm title={`منح VIP — ${m.display_name}`} trigger={<Button size="small" type="primary">منح VIP</Button>}
       onFinish={async (v: { level: number; days?: number; source: "admin" | "gift" | "event"; note?: string }) =>
-        act(() => grantVip(m.auth_id, v.level, v.days ?? null, v.source, v.note), "تم منح VIP", reload)}>
+        act(() => grantVip(m.auth_id, v.level, v.days ?? null, v.source, v.note), "تم منح VIP وإرسال التهنئة", reload)}>
       <ProFormSelect name="level" label="المستوى" options={VIP_LEVELS.map((l) => ({ label: `VIP ${l}`, value: l }))} rules={[{ required: true }]} />
       <ProFormDigit name="days" label="عدد الأيام (فارغ = دائم)" min={1} fieldProps={{ precision: 0 }} />
       <ProFormSelect name="source" label="النوع" initialValue="admin"
         options={[{ label: "إدارة", value: "admin" }, { label: "هدية", value: "gift" }, { label: "فعالية", value: "event" }]} />
       <ProFormText name="note" label="ملاحظة" />
+      <VipNoticePreview />
     </ModalForm>
   );
 }
