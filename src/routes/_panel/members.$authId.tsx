@@ -6,7 +6,8 @@ import { pageHead } from "@/components/meta";
 import { useAction, useLoad } from "@/components/hooks";
 import {
   ACTION_LABELS, changeCoins, coinsNotice, describeAction, editProfile, fmt, fmtDate, getMember, grantVip, revokeVip,
-  roleNotice, setRole, setSpecialId, specialIdNotice,
+  getProfileLocks, removeViolation, roleNotice, setProfileLock, setRole, setSpecialId, specialIdNotice, violationName, violationNotice,
+  type ProfileField,
 } from "@/lib/admin";
 import { activeVipLevel, VIP_LEVELS } from "@/lib/vip";
 
@@ -19,6 +20,8 @@ function Member() {
   const { authId } = Route.useParams();
   const { data: m, loading, error, reload } = useLoad(() => getMember(authId), [authId]);
   const act = useAction();
+  const { data: locks, reload: reloadLocks } = useLoad(() => getProfileLocks(authId), [authId]);
+  const after = () => { reload(); reloadLocks(); };
   if (error) return <PageContainer><Alert type="error" message={error} showIcon /></PageContainer>;
   const p = m?.profile;
   const vip = activeVipLevel(p);
@@ -80,6 +83,14 @@ function Member() {
                 onFinish={async (v: { name: string }) => act(() => editProfile(authId, { name: v.name }), "تم الحفظ", reload)}>
                 <ProFormText name="name" label="الاسم" rules={[{ required: true }]} />
               </ModalForm>
+              <ViolationForm field="name" publicId={p.public_id} act={act} after={after} authId={authId} />
+              <ViolationForm field="avatar" publicId={p.public_id} act={act} after={after} authId={authId} />
+              {(["name", "avatar"] as const).map((f) => {
+                const until = f === "name" ? locks?.name_until : locks?.avatar_until;
+                return until ? <Popconfirm key={f} title="رفع المنع؟" onConfirm={() => act(() => setProfileLock(authId, f, null, false), "تم رفع المنع", after)}>
+                  <Button block>رفع منع تغيير {f === "name" ? "الاسم" : "الصورة"} ({new Date(until).getFullYear() > 9000 ? "نهائي" : `حتى ${fmtDate(until)}`})</Button>
+                </Popconfirm> : null;
+              })}
               <Popconfirm title="مسح الصورة؟" onConfirm={() => act(() => editProfile(authId, { clearAvatar: true }), "تم المسح", reload)}><Button block>مسح الصورة</Button></Popconfirm>
               <Popconfirm title="مسح النبذة؟" onConfirm={() => act(() => editProfile(authId, { clearBio: true }), "تم المسح", reload)}><Button block>مسح النبذة</Button></Popconfirm>
               {vip > 0 && <Popconfirm title="سحب VIP؟" onConfirm={() => act(() => revokeVip(authId), "تم سحب VIP", reload)}><Button block danger>سحب VIP</Button></Popconfirm>}
@@ -112,5 +123,25 @@ function Member() {
       </Row>}
       <div style={{ marginTop: 16 }}><Link to="/members">← العودة إلى الأعضاء</Link></div>
     </PageContainer>
+  );
+}
+
+type LockChoice = "none" | "days" | "forever";
+function ViolationForm({ field, publicId, authId, act, after }: {
+  field: ProfileField; publicId: number; authId: string; act: ReturnType<typeof useAction>; after: () => void;
+}) {
+  const label = field === "name" ? "الاسم" : "الصورة";
+  return (
+    <ModalForm title={`إزالة ${label} المخالف`} trigger={<Button block danger>إزالة {label} المخالف</Button>} initialValues={{ lock: "none" }}
+      onFinish={async (v: { lock: LockChoice; days?: number }) =>
+        act(() => removeViolation(authId, field, v.lock === "days" ? v.days ?? null : null, v.lock === "forever"), `تمت إزالة ${label} وإرسال الإنذار`, after)}>
+      {field === "name" && <Alert type="info" showIcon style={{ marginBottom: 16 }} message={<>سيصبح الاسم: <b dir="ltr">{violationName(publicId)}</b></>} />}
+      <ProFormSelect name="lock" label={`منع تغيير ${label}`} options={[
+        { label: "بدون منع", value: "none" }, { label: "لعدد أيام", value: "days" }, { label: "نهائي", value: "forever" }]} />
+      <ProFormDependency name={["lock", "days"]}>{({ lock, days }: { lock?: LockChoice; days?: number }) => <>
+        {lock === "days" && <ProFormDigit name="days" label="عدد الأيام" min={1} fieldProps={{ precision: 0 }} rules={[{ required: true }]} />}
+        <NoticePreview lines={[violationNotice(field, lock === "days" ? days ?? null : null, lock === "forever")]} />
+      </>}</ProFormDependency>
+    </ModalForm>
   );
 }

@@ -115,6 +115,28 @@ export const setRole = (id: string, role: 'admin' | 'moderator', enabled: boolea
   rpc<void>('admin_member_role', { p_auth: id, p_role: role, p_enabled: enabled });
 export const editProfile = (id: string, p: { name?: string; clearAvatar?: boolean; clearBio?: boolean }) =>
   rpc<void>('admin_member_profile', { p_auth: id, p_display_name: p.name || null, p_clear_avatar: !!p.clearAvatar, p_clear_bio: !!p.clearBio });
+// ---------- Rule-breaking name / picture (sql/017) ----------
+export type ProfileField = 'name' | 'avatar';
+export type ProfileLocks = { name_until: string | null; avatar_until: string | null };
+export const violationName = (publicId: number | string) => `voli${publicId}`;
+/** Mirrors the warning written by admin_profile_violation (preview only). */
+export function violationNotice(field: ProfileField, days: number | null, forever: boolean): string {
+  const what = field === 'name' ? 'name' : 'profile picture';
+  const lock = forever ? ' You can no longer change it.' : days && days > 0 ? ` You cannot change it for ${days} days.` : '';
+  return `Warning: your ${what} violates Voli community rules and has been removed.${lock}`;
+}
+async function rpc017<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+  const { data, error } = await supabase.rpc(fn, args);
+  if (error) throw missing(error.code) ? { hint: 'moderation_missing' } : error;
+  return data as T;
+}
+export const removeViolation = (id: string, field: ProfileField, days: number | null, forever: boolean) =>
+  rpc017<string>('admin_profile_violation', { p_auth: id, p_field: field, p_days: days, p_forever: forever });
+export const setProfileLock = (id: string, field: ProfileField, days: number | null, forever: boolean) =>
+  rpc017<string | null>('admin_profile_lock', { p_auth: id, p_field: field, p_days: days, p_forever: forever });
+export const getProfileLocks = (id: string) =>
+  rpc017<ProfileLocks>('admin_profile_locks', { p_auth: id }).catch(() => null);
+
 /** Returns whether new sign-ins are blocked too. */
 export const banMember = (id: string, days: number | null, reason?: string) =>
   rpc<boolean>('admin_member_ban', { p_auth: id, p_days: days, p_reason: reason || null });
@@ -326,6 +348,7 @@ export const ACTION_LABELS: Record<string, string> = {
   profile: 'تعديل بيانات', ban: 'حظر', unban: 'فك حظر', room_close: 'إغلاق غرفة', room_chat_clear: 'مسح محادثة غرفة',
   gift_update: 'تعديل هدية', gift_create: 'إضافة هدية', gift_art: 'صورة هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
   agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة', notice: 'إشعار رسمي',
+  profile_violation: 'إزالة مخالفة', profile_lock: 'منع تغيير الاسم/الصورة',
   device_ban: 'حظر جهاز/شبكة', device_unban: 'فك حظر جهاز/شبكة',
 };
 
@@ -346,6 +369,7 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
     case 'agency_update': return `${d['name']}${d['commission'] != null ? ` — ${d['commission']}%` : ''}`;
     case 'agency_approve': return `كود ${d['code']}`;
     case 'agency_reject': return d['reason'] ? String(d['reason']) : '';
+    case 'profile_violation': case 'profile_lock': return `${d['field'] === 'name' ? 'الاسم' : 'الصورة'}${d['forever'] ? ' — منع نهائي' : d['days'] ? ` — منع ${d['days']} يوم` : action === 'profile_lock' ? ' — رفع المنع' : ''}`;
     case 'notice': return String(d['body'] ?? '');
     case 'device_ban': case 'device_unban': return `${BAN_KIND_LABELS[String(d['kind']) as BanKind] ?? ''}: ${d['value'] ?? ''}`;
     default: return '';
@@ -356,6 +380,7 @@ export const adminErrorMessage = (e: unknown) => {
   const err = e as { hint?: string; code?: string; message?: string } | null;
   if (err?.hint === 'bans_missing') return 'يجب تشغيل تحديث الحظر الموحد 016 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'devices_missing') return 'يجب تشغيل ملف الأجهزة 015 في قاعدة البيانات أولاً';
+  if (err?.hint === 'moderation_missing') return 'يجب تشغيل ملف المخالفات 017 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'notice_missing') return 'يجب تشغيل ملف الإشعارات 014 في قاعدة البيانات أولاً';
   if (missing(err?.code)) return 'يجب تشغيل ملف الإدارة 009 في قاعدة البيانات أولاً';
   if (err?.hint === 'bad_art_file') return err.message ?? 'الصورة غير صالحة';
