@@ -3,6 +3,10 @@ import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { useAccount } from '@/hooks/use-account';
 import { getMyBan, type MyBan } from '@/lib/member-ban';
 import { supabase } from '@/lib/supabase';
+import { deviceCheckIn, type DeviceBan } from '@/lib/device-check.functions';
+import { getDeviceDetails, getDeviceId } from '@/lib/device-info';
+import { useServerFn } from '@tanstack/react-start';
+import { BanNotice } from '@/components/BanNotice';
 
 /** Paths reachable without an account. Everything else requires sign-in. */
 export const PUBLIC_PATHS = ['/login', '/signup'];
@@ -34,8 +38,31 @@ function MemberGate({ children }: { children: ReactNode }) {
   const [ban, setBan] = useState<MyBan | null>(null);
   useEffect(() => {
     setBan(null);
-    if (userId) getMyBan().then(setBan);
+    let alive = true;
+    if (userId) getMyBan().then((result) => { if (alive) setBan(result); });
+    return () => { alive = false; };
   }, [userId]);
+  const [deviceBan, setDeviceBan] = useState<DeviceBan | null>(null);
+  const [checkedIdentity, setCheckedIdentity] = useState<string | null>(null);
+  const checkDevice = useServerFn(deviceCheckIn);
+  const token = session?.access_token;
+  const identity = userId ?? 'signed-out';
+  useEffect(() => {
+    if (!ready) return;
+    let alive = true;
+    (async () => {
+      try {
+        const details = await getDeviceDetails();
+        const result = await checkDevice({
+          data: { deviceId: getDeviceId(), ...details },
+          ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+        });
+        if (alive) setDeviceBan(result);
+      } catch { /* never block the app on a failed check */ }
+      finally { if (alive) setCheckedIdentity(identity); }
+    })();
+    return () => { alive = false; };
+  }, [ready, identity, token, checkDevice]);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const shownPath = useRouterState({
     select: (s) => s.matches[s.matches.length - 1]?.pathname ?? s.location.pathname,
@@ -49,30 +76,10 @@ function MemberGate({ children }: { children: ReactNode }) {
     if (session && open) navigate({ to: '/', replace: true });
   }, [ready, session, open, navigate]);
 
-  if (!canShowPage({ ready, signedIn: !!session, path: pathname, shownPath })) {
+  if (checkedIdentity !== identity || !canShowPage({ ready, signedIn: !!session, path: pathname, shownPath })) {
     return <div className="grid h-dvh place-items-center bg-background text-sm text-muted-foreground">…</div>;
   }
-  if (session && ban) return <BannedScreen ban={ban} />;
+  if (deviceBan) return <BanNotice title={deviceBan.kind === 'account' ? 'حسابك محظور' : deviceBan.kind === 'device' ? 'هذا الجهاز محظور' : 'هذه الشبكة محظورة'} ban={deviceBan} onSignOut={session ? () => { void supabase.auth.signOut(); } : undefined} />;
+  if (session && ban) return <BanNotice title="حسابك محظور" ban={ban} onSignOut={() => { void supabase.auth.signOut(); }} />;
   return <>{children}</>;
-}
-
-/** Shown instead of every page while the signed-in member is banned. */
-function BannedScreen({ ban }: { ban: MyBan }) {
-  return (
-    <div className="grid h-dvh place-items-center bg-background px-6 text-center">
-      <div className="max-w-sm space-y-3">
-        <h1 className="text-xl font-bold">حسابك محظور</h1>
-        <p className="text-sm text-muted-foreground">
-          {ban.until ? `الحظر لحد ${new Date(ban.until).toLocaleString("ar-EG", { dateStyle: "medium", timeStyle: "short" })}` : "الحظر نهائي"}
-        </p>
-        {ban.reason && <p className="text-sm">السبب: {ban.reason}</p>}
-        <button
-          onClick={() => supabase.auth.signOut()}
-          className="mt-2 inline-flex items-center justify-center rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-secondary-foreground"
-        >
-          تسجيل الخروج
-        </button>
-      </div>
-    </div>
-  );
 }
