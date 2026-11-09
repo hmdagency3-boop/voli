@@ -21,6 +21,50 @@ describe.skipIf(!enabled)('unified bans in isolated PostgreSQL', () => {
     sql(`set test.uid='${a}'; select public.voli_report_device('shared'); select public.voli_report_device('other-a');
       set test.uid='${b}'; select public.voli_report_device('shared'); select public.voli_report_device('other-b');`);
   });
+  describe.each(['015_device_bans', '016_unified_bans'])('%s device IP fallback', (version) => {
+    function report(text: string) {
+      // Exercise each actual owner script, rolling back all changes so ban fixtures stay intact.
+      const script = readFileSync(`sql/${version}.sql`, 'utf8')
+        .replace(/^begin;$/m, '').replace(/^commit;$/m, '');
+      // Owner scripts also emit setup SELECTs (e.g. setval); assert the final query result only.
+      return sql(`begin; ${script} set test.uid='${admin}'; ${text} rollback;`).split('\n').at(-1) ?? '';
+    }
+    const call = (ip: string) => `select public.voli_report_device('ip-test',null,null,null,null,null,${ip});`;
+    const storedIP = "select host(ip) from public.member_devices where device_id='ip-test';";
+    it('uses the client IP when request headers are missing', () => {
+      expect(report(`set request.headers='{}'; ${call("' 203.0.113.9 '")} ${storedIP}`)).toBe('203.0.113.9');
+    });
+    it('prefers the server-header IP over the client IP', () => {
+      expect(report(`set request.headers='{"x-forwarded-for":"198.51.100.7, 198.51.100.8"}'; ${call("'203.0.113.9'")} ${storedIP}`)).toBe('198.51.100.7');
+    });
+    it('falls back to a valid IPv6 client IP when the header IP is invalid', () => {
+      expect(report(`set request.headers='{"x-real-ip":"invalid"}'; ${call("'2001:db8::9'")} ${storedIP}`)).toBe('2001:db8::9');
+    });
+    it('ignores invalid client IP without losing the previously stored IP', () => {
+      expect(report(`set request.headers='{}'; ${call("'203.0.113.9'")} ${call("'invalid'")} ${storedIP}`)).toBe('203.0.113.9');
+    });
+    it('accepts null and blank client IPs', () => {
+      expect(report(`set request.headers='{}'; ${call('null')} ${call("' '")} select ip is null from public.member_devices where device_id='ip-test';`)).toBe('t');
+    });
+    it('preserves positional calls with one through six arguments and named legacy calls', () => {
+      const calls = Array.from({ length: 6 }, (_, i) => `select public.voli_report_device('legacy-${i}',${Array(i).fill('null').join(',')});`.replace(',);', ');')).join('\n');
+      expect(report(`set request.headers='{}'; ${calls}
+        select public.voli_report_device(p_device_id=>'legacy-named',p_carrier=>'carrier');
+        select count(*) from public.member_devices where device_id like 'legacy-%';`)).toBe('7');
+    });
+    it('matches IP bans using the fallback client IP', () => {
+      const ban = version === '015_device_bans'
+        ? "select public.admin_device_ban('ip','203.0.113.9');"
+        : "select public.admin_create_ban('ip','203.0.113.9');";
+      expect(report(`set request.headers='{}'; do $$ begin ${ban.replace('select ', 'perform ')} end $$;
+        select public.voli_report_device('ip-test',null,null,null,null,null,'203.0.113.9')->>'kind';`)).toBe('ip');
+    });
+    it('retains authenticated-only execution for both overloads', () => {
+      expect(report(`select bool_and(has_function_privilege('authenticated', oid, 'EXECUTE')
+        and not has_function_privilege('anon', oid, 'EXECUTE'))
+        from pg_proc where pronamespace='public'::regnamespace and proname='voli_report_device';`)).toBe('t');
+    });
+  });
   it('allocates globally unique codes starting at 200', () => {
     expect(asAdmin("select public.admin_create_ban('device','shared');")).toBe('200');
     expect(asAdmin("select public.admin_create_ban('account','101');")).toBe('201');

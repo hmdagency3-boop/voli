@@ -35,3 +35,4 @@ use the editor.
 - Official English congratulation notices (Voli Helper, ID 100) are written inside the admin_* grant functions in Voli's database (sql/014_admin_grant_notices.sql), never sent again from the panel, so each grant produces exactly one set of messages; src/lib/admin.ts mirrors the same wording only for previews and hand-sent notices (admin_send_notice).
 - Unified bans use an owner-run registry upgrade with independent account-source links and an effective member_bans projection; this preserves original Voli sign-in enforcement and legacy read contracts while preventing one unban from clearing other sources.
 - Ban mutations live on the dedicated bans page; device/member views link there so every mutation uses the same role-checked registry RPCs.
+- Device-report SQL keeps defaults only on the legacy six-argument wrapper and requires all seven arguments on the client-IP implementation, because overlapping defaults make PostgreSQL calls ambiguous.

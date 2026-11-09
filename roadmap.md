@@ -1,4 +1,5 @@
 # Unified bans
+- [x] Update both device-report SQL definitions with client IP fallback and a compatible six-argument overload; all 25 isolated PostgreSQL tests passed.
 - [x] Add owner-run SQL for unified codes, existing account bans, device-linked account enforcement and ID/device history lookup.
 - [x] Add dedicated bans page; keep device history separate and link member actions to bans.
 - [x] Add and run rule tests; 21 tests passed, isolated SQL and UI fixtures verified. Real signed-out redirect verified.

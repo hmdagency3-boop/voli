@@ -209,37 +209,40 @@ revoke all on function public.voli_link_reported_device() from public, anon, aut
 drop trigger if exists voli_device_ban_link on public.member_devices;
 create trigger voli_device_ban_link after insert or update on public.member_devices for each row execute function public.voli_link_reported_device();
 
-create or replace function public.voli_report_device(p_device_id text,p_brand text default null,p_model text default null,
-  p_os text default null,p_network text default null,p_carrier text default null,p_client_ip text default null) returns jsonb
+-- Header IP takes priority; client fallback is untrusted. No defaults here: a default seventh
+-- argument would make calls to the preserved six-argument overload ambiguous in PostgreSQL.
+create or replace function public.voli_report_device(p_device_id text,p_brand text,p_model text,
+  p_os text,p_network text,p_carrier text,p_client_ip text) returns jsonb
 language plpgsql security definer set search_path = '' as $$
-declare
-  me uuid := auth.uid();
-  parsed_client_ip inet;
-  ip inet;
-  d text := left(btrim(coalesce(p_device_id,'')),200);
-  account_ban jsonb;
+declare me uuid := auth.uid(); ip inet := public.voli_request_ip(); d text := left(btrim(coalesce(p_device_id,'')),200); account_ban jsonb;
 begin
   if me is null then raise exception 'Not signed in' using hint = 'not_signed_in'; end if;
   if d = '' then raise exception 'Missing device' using hint = 'bad_device'; end if;
-  begin parsed_client_ip := nullif(btrim(coalesce(p_client_ip, '')), '')::inet; exception when others then parsed_client_ip := null; end;
-  ip := coalesce(public.voli_request_ip(), parsed_client_ip);
-
+  if ip is null then
+    begin ip := nullif(btrim(p_client_ip), '')::inet;
+    exception when invalid_text_representation then ip := null; end;
+  end if;
   perform pg_catalog.pg_advisory_xact_lock(160016);
   insert into public.member_devices(auth_id,device_id,ip,brand,model,os,network,carrier)
   values(me,d,ip,left(p_brand,80),left(p_model,80),left(p_os,80),left(p_network,40),left(p_carrier,80))
-  on conflict(auth_id,device_id) do update set
-    ip = coalesce(excluded.ip,member_devices.ip),
-    brand = coalesce(nullif(excluded.brand, ''),member_devices.brand),
-    model = coalesce(nullif(excluded.model, ''),member_devices.model),
-    os = coalesce(nullif(excluded.os, ''),member_devices.os),
-    network = coalesce(nullif(excluded.network, ''),member_devices.network),
-    carrier = coalesce(nullif(excluded.carrier, ''),member_devices.carrier),
-    last_seen = now();
+  on conflict(auth_id,device_id) do update set ip = coalesce(excluded.ip,member_devices.ip),
+    brand = coalesce(excluded.brand,member_devices.brand),model = coalesce(excluded.model,member_devices.model),
+    os = coalesce(excluded.os,member_devices.os),network = coalesce(excluded.network,member_devices.network),
+    carrier = coalesce(excluded.carrier,member_devices.carrier),last_seen = now();
   account_ban := public.voli_account_ban_json(me);
   return coalesce(account_ban,public.voli_find_device_ban(ip,d,p_carrier));
 end; $$;
 revoke all on function public.voli_report_device(text,text,text,text,text,text,text) from public, anon;
 grant execute on function public.voli_report_device(text,text,text,text,text,text,text) to authenticated;
+
+-- Existing callers retain the original signature, defaults, and unified-ban enforcement.
+create or replace function public.voli_report_device(p_device_id text,p_brand text default null,p_model text default null,
+  p_os text default null,p_network text default null,p_carrier text default null) returns jsonb
+language sql security definer set search_path = '' as $$
+  select public.voli_report_device(p_device_id,p_brand,p_model,p_os,p_network,p_carrier,null::text);
+$$;
+revoke all on function public.voli_report_device(text,text,text,text,text,text) from public, anon;
+grant execute on function public.voli_report_device(text,text,text,text,text,text) to authenticated;
 
 create or replace function public.admin_list_bans(p_q text default null,p_kind text default null,p_status text default 'active',p_limit integer default 50,p_offset integer default 0)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
