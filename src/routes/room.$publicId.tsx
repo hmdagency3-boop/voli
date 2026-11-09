@@ -11,7 +11,8 @@ import trophyButton from "@/assets/rank/trophy-button.webp";
 import coinIcon from "@/assets/coin.webp";
 import diamondIcon from "@/assets/diamond.webp";
 import { GiftSheet, type GiftSent, type GiftTarget } from "@/components/GiftSheet";
-import { getGiftsReceived } from "@/lib/gifts";
+import { getGiftShows, getGiftsReceived, nextGiftShows, type GiftShow } from "@/lib/gifts";
+import { GiftVideo } from "@/components/GiftVideo";
 import { RoomGames } from "@/components/RoomGames";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -89,6 +90,10 @@ function RoomPage() {
   const [giftFor, setGiftFor] = useState<string[]>([]);
   const [received, setReceived] = useState<Record<string, number>>({});
   const [flying, setFlying] = useState<(GiftSent & { key: number }) | null>(null);
+  /** Video gifts waiting to play for everyone inside, one after another. */
+  const [videoQueue, setVideoQueue] = useState<GiftShow[]>([]);
+  const showsCursor = useRef<number | null>(null);
+  const pollShows = useRef<() => void>(() => {});
   const balance = Number(profile?.coins ?? 0);
   const endRef = useRef<HTMLDivElement>(null);
   const peopleRef = useRef(people);
@@ -199,6 +204,30 @@ function RoomPage() {
     return () => { active = false; clearInterval(poll); clearInterval(beat); window.removeEventListener("pagehide", bye); };
   }, [inside, roomId, me, handleEnter]);
 
+  // Video gifts: everyone inside checks for new ones; videos sent before you came in never replay.
+  useEffect(() => {
+    if (!inside || !roomId) return;
+    let active = true;
+    let busy = false;
+    showsCursor.current = null;
+    const check = async () => {
+      if (busy) return;
+      busy = true;
+      try {
+        const rows = await getGiftShows(roomId, showsCursor.current);
+        if (!active) return;
+        const { cursor, play } = nextGiftShows(showsCursor.current, rows);
+        showsCursor.current = cursor;
+        if (play.length) setVideoQueue((q) => [...q, ...play].slice(-10));
+      } finally { busy = false; }
+    };
+    pollShows.current = () => { void check(); };
+    void check();
+    const t = setInterval(check, 2000);
+    return () => { active = false; clearInterval(t); pollShows.current = () => {}; setVideoQueue([]); };
+  }, [inside, roomId]);
+  const shownVideo = videoQueue[0];
+
   // Leaving the page inside the app also leaves the room.
   useEffect(() => {
     if (!roomId) return;
@@ -307,7 +336,9 @@ function RoomPage() {
   function onGiftSent(sent: GiftSent) {
     setCoins(sent.total);
     setGiftOpen(false);
-    setFlying({ ...sent, key: Date.now() });
+    // A video gift plays for everyone (me included) through the room check; others fly the picture.
+    if (sent.gift.video) pollShows.current();
+    else setFlying({ ...sent, key: Date.now() });
     reload();
     if (roomId) getGiftsReceived(roomId).then(setReceived);
     const names = sent.to.length > 2 ? `${sent.to.length} أشخاص` : sent.to.map((p) => p.display_name).join(" و ");
@@ -551,6 +582,12 @@ function RoomPage() {
                   <p className="mt-1 rounded-full bg-overlay px-3 py-1 text-sm font-bold">{flying.gift.name} ×{flying.quantity}</p>
                 </div>
               </div>
+            )}
+
+            {shownVideo && (
+              <GiftVideo key={shownVideo.id} show={shownVideo}
+                sender={shownVideo.sender_id ? (shownVideo.sender_id === me ? profile?.display_name : people[shownVideo.sender_id]?.display_name) ?? undefined : undefined}
+                onDone={() => setVideoQueue((q) => q.filter((x) => x.id !== shownVideo.id))} />
             )}
 
             {shownEntrance && (() => {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDown, Loader2, Users } from "lucide-react";
+import { ChevronDown, Loader2, Play, Users } from "lucide-react";
 import { toast } from "sonner";
 import coinIcon from "@/assets/coin.webp";
 import { Button } from "@/components/ui/button";
@@ -135,7 +135,13 @@ export function GiftSheet({ open, onOpenChange, roomId, targets, preselect, bala
             <div className="grid grid-cols-4 gap-2">
               {gifts.map((g) => (
                 <button key={g.key} type="button" onClick={() => setGiftKey(g.key)} aria-pressed={giftKey === g.key}
-                  className={`flex flex-col items-center rounded-2xl border-2 p-1.5 transition ${giftKey === g.key ? "border-rank-crystal bg-secondary/60" : "border-transparent"}`}>
+                  aria-label={g.video ? `${g.name} — هدية فيديو` : undefined}
+                  className={`relative flex flex-col items-center rounded-2xl border-2 p-1.5 transition ${giftKey === g.key ? "border-rank-crystal bg-secondary/60" : "border-transparent"}`}>
+                  {g.video && (
+                    <span className="absolute end-1 top-1 grid size-5 place-items-center rounded-full bg-rank-crystal text-vip-on" title="هدية فيديو">
+                      <Play className="size-3 fill-current" />
+                    </span>
+                  )}
                   <img src={g.art} alt="" loading="lazy" width={256} height={256} className="aspect-square w-full object-contain" />
                   <span className="mt-1 w-full truncate text-center text-xs">{g.name}</span>
                   <span className="mt-0.5 inline-flex items-center gap-0.5 text-xs font-bold tabular-nums text-muted-foreground">

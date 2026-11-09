@@ -129,3 +129,9 @@
 - [x] Link account bans to historical device visits, even on another device, and assign ban codes starting at 200.
 - [x] Show the applicable ban code and reason; verified 25 tests including SQL fresh, rerun and upgrade, and isolated ban screen at desktop/320px/390px.
 - [ ] Apply updated supabase/015_device_bans.sql and verify real signed-in external-account bans (needs external SQL access).
+
+# Video gifts
+- [x] Database: gift video link, management function to set it, one show per send for everyone inside (supabase/019_video_gifts.sql), tested.
+- [x] Room: play the video for everyone inside, one after another; mark video gifts in the gift box.
+- [ ] Run supabase/019_video_gifts.sql in the SQL Editor (needs the user).
+- [ ] Add video upload to the Voli Admin Dashboard gifts page (separate project; needs the user to ask there).

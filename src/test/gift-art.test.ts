@@ -15,7 +15,12 @@ describe('gift pictures', () => {
 
   it('keeps a gift with art_url even without a built-in picture', () => {
     expect(toGifts([{ key: 'castle', name: 'قلعة', price: 500, art_url: 'https://cdn.example/castle.webp' }]))
-      .toEqual([{ key: 'castle', name: 'قلعة', price: 500, art: 'https://cdn.example/castle.webp' }]);
+      .toEqual([{ key: 'castle', name: 'قلعة', price: 500, art: 'https://cdn.example/castle.webp', video: null }]);
+  });
+
+  it('keeps the video link of a video gift', () => {
+    const video = 'https://res.cloudinary.com/zsxxjkqg/video/upload/v1/voli/gifts/lion.mp4';
+    expect(toGifts([{ key: 'lion', name: 'الأسد', price: 30000, video_url: video }])[0]!.video).toBe(video);
   });
 
   it('hides a gift with neither art_url nor a built-in picture', () => {
