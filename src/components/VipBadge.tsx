@@ -5,7 +5,7 @@ import { vipBadgeArt } from "@/lib/vip-art";
 import { cn } from "@/lib/utils";
 
 const badgeSizes = {
-  compact: "h-9 w-16",
+  compact: "h-6 w-11",
   tab: "h-20 w-28",
   showcase: "h-48 w-72 max-w-full vip-badge-showcase",
 };
@@ -32,9 +32,9 @@ export function VipBadge({ level, size = "compact", className = "" }: { level: n
       role="img"
       aria-label={`VIP ${tier.level} — ${tier.nameAr}`}
       title={tier.nameAr}
-      className={cn("inline-flex shrink-0 items-center justify-center gap-1 rounded-full px-1.5 font-extrabold leading-none text-vip-on", size === "compact" ? "text-xs" : size === "tab" ? "text-xl" : "text-4xl", tier.bg, badgeSizes[size], className)}
+      className={cn("inline-flex shrink-0 items-center justify-center gap-1 rounded-full px-1.5 font-extrabold leading-none text-vip-on", size === "compact" ? "text-[10px]" : size === "tab" ? "text-xl" : "text-4xl", tier.bg, badgeSizes[size], className)}
     >
-      <Crown className={size === "compact" ? "size-3" : size === "tab" ? "size-6" : "size-10"} aria-hidden="true" />V{tier.level}
+      <Crown className={size === "compact" ? "size-2.5" : size === "tab" ? "size-6" : "size-10"} aria-hidden="true" />V{tier.level}
     </span>
   );
 }

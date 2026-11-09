@@ -5,9 +5,10 @@ import { toast } from "sonner";
 import { AppScreen } from "@/components/AppScreen";
 import { Button } from "@/components/ui/button";
 import { useAccount } from "@/hooks/use-account";
-import { VipBadge } from "@/components/VipBadge";
 import { activeVipLevel, vipTier } from "@/lib/vip";
-import { getConversation, getPartnerByPublicId, markRead, sendMessage, type ChatPartner, type Message } from "@/lib/messages";
+import { getConversation, getPartnerByPublicId, isAdminNotice, markRead, sendMessage, type ChatPartner, type Message } from "@/lib/messages";
+import { VoliHelperAvatar } from "@/components/VoliHelperAvatar";
+import { VoliHelperBadge } from "@/components/VoliHelperBadge";
 
 export const Route = createFileRoute("/chat_/$publicId")({
   head: () => ({
@@ -28,6 +29,8 @@ function ConversationPage() {
   const { session, ready, profile } = useAccount();
   const me = session?.user.id;
   const myVip = activeVipLevel(profile);
+  // Voli Helper (ID 100) is the official management account: read-only notices, nobody can reply.
+  const official = isAdminNotice(publicId);
   const [partner, setPartner] = useState<ChatPartner | null | undefined>(undefined);
   const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
@@ -78,17 +81,17 @@ function ConversationPage() {
         <Button asChild variant="ghost" size="icon" aria-label="رجوع" className="rounded-full">
           <Link to="/chat"><ChevronRight className="size-5" /></Link>
         </Button>
-        {partner?.avatar_url ? (
+        {official ? <VoliHelperAvatar className="size-10" /> : partner?.avatar_url ? (
           <img src={partner.avatar_url} alt="" className="size-10 rounded-full object-cover" />
         ) : (
           <span className="grid size-10 place-items-center rounded-full bg-secondary text-muted-foreground"><User className="size-5" /></span>
         )}
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 font-semibold">
-            <span className={`truncate ${vipTier(partnerVip)?.text ?? ""}`}>{partner?.display_name ?? "…"}</span>
-            <VipBadge level={partnerVip} />
+            <span className={`truncate ${official ? "" : vipTier(partnerVip)?.text ?? ""}`}>{official ? "Voli Helper" : partner?.display_name ?? "…"}</span>
+            {official && <VoliHelperBadge />}
           </p>
-          <p className="text-xs text-muted-foreground" dir="ltr">ID: {publicId}</p>
+          <p className="text-xs text-muted-foreground">{official ? "حساب الإدارة الرسمي" : <span dir="ltr">ID: {publicId}</span>}</p>
         </div>
       </header>
 
@@ -100,17 +103,17 @@ function ConversationPage() {
       ) : partner === undefined ? (
         <p className="flex items-center justify-center gap-2 p-8 text-muted-foreground"><Loader2 className="size-4 animate-spin" /> جاري التحميل…</p>
       ) : partner === null ? (
-        <p className="p-8 text-center text-muted-foreground">مفيش مستخدم بالـ ID ده</p>
+        <p className="p-8 text-center text-muted-foreground">{official ? "مفيش إشعارات من الإدارة لسه" : "مفيش مستخدم بالـ ID ده"}</p>
       ) : partner.auth_id === me ? (
         <p className="p-8 text-center text-muted-foreground">مينفعش تراسل نفسك</p>
       ) : (
         <>
           <div className="flex flex-1 flex-col gap-2 px-4 py-4">
-            {messages.length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">ابدأ المحادثة بأول رسالة</p>}
+            {messages.length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">{official ? "مفيش إشعارات من الإدارة لسه" : "ابدأ المحادثة بأول رسالة"}</p>}
             {messages.map((m) => {
               const mine = m.sender_id === me;
               // VIP 2+ senders get their tier's bubble (VIP 4+ neon glow).
-              const tier = vipTier(mine ? myVip : partnerVip);
+              const tier = official ? undefined : vipTier(mine ? myVip : partnerVip);
               const vipBubble = tier?.chatBubble ? tier : null;
               const bubble = vipBubble
                 ? `border-2 ${vipBubble.border} bg-card text-card-foreground`
@@ -130,6 +133,9 @@ function ConversationPage() {
             })}
             <div ref={endRef} />
           </div>
+          {official ? (
+            <p className="sticky bottom-0 border-t bg-background px-4 py-3 text-center text-xs text-muted-foreground">دي رسائل رسمية من إدارة voli، ومينفعش الرد عليها هنا</p>
+          ) : (
           <form onSubmit={onSend} className="sticky bottom-0 flex items-center gap-2 border-t bg-background px-4 py-3">
             <input
               aria-label="اكتب رسالة"
@@ -143,6 +149,7 @@ function ConversationPage() {
               {sending ? <Loader2 className="animate-spin" /> : <SendHorizontal className="rotate-180" />}
             </Button>
           </form>
+          )}
         </>
       )}
       </div>

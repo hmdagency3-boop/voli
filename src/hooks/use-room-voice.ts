@@ -11,12 +11,16 @@ export function useRoomVoice(roomId: string | undefined, inside: boolean, seated
   const [muted, setMuted] = useState(false);
   const [needsTap, setNeedsTap] = useState(false);
   const [connected, setConnected] = useState(false);
+  const [speakerOff, setSpeakerOff] = useState(false);
   const roomRef = useRef<import("livekit-client").Room | null>(null);
+  // Every voice playing in the room, so the room-sound switch can silence all of them at once.
+  const audiosRef = useRef(new Map<string, HTMLMediaElement>());
+  const speakerOffRef = useRef(false);
 
   useEffect(() => {
     if (!roomId || !inside) return;
     let cancelled = false;
-    const audios = new Map<string, HTMLMediaElement>();
+    const audios = audiosRef.current;
     (async () => {
       const lk = await import("livekit-client");
       const { data } = await supabase.auth.getSession();
@@ -32,6 +36,7 @@ export function useRoomVoice(roomId: string | undefined, inside: boolean, seated
           if (track.kind !== lk.Track.Kind.Audio) return;
           const el = track.attach();
           el.style.display = "none";
+          el.muted = speakerOffRef.current;
           document.body.appendChild(el);
           audios.set(`${participant.identity}:${track.sid}`, el);
         })
@@ -59,6 +64,7 @@ export function useRoomVoice(roomId: string | undefined, inside: boolean, seated
       roomRef.current?.disconnect();
       roomRef.current = null;
       audios.forEach((e) => e.remove());
+      audios.clear();
       setConnected(false);
       setSpeaking(new Set());
     };
@@ -72,10 +78,18 @@ export function useRoomVoice(roomId: string | undefined, inside: boolean, seated
     setMuted(next);
   }, [muted, forcedMuted]);
 
+  /** Silences (or brings back) everything heard from the room, for this listener only. */
+  const toggleSpeaker = useCallback(() => {
+    const next = !speakerOffRef.current;
+    speakerOffRef.current = next;
+    audiosRef.current.forEach((e) => { e.muted = next; });
+    setSpeakerOff(next);
+  }, []);
+
   const startAudio = useCallback(async () => {
     await roomRef.current?.startAudio().catch(() => {});
     setNeedsTap(!(roomRef.current?.canPlaybackAudio ?? true));
   }, []);
 
-  return { speaking, muted: muted || forcedMuted, toggleMute, needsTap, startAudio, connected };
+  return { speaking, muted: muted || forcedMuted, toggleMute, speakerOff, toggleSpeaker, needsTap, startAudio, connected };
 }

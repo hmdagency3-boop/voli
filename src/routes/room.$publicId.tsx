@@ -4,7 +4,7 @@ import { syncRoomVoice } from '@/lib/voice.functions';
 import { vipChatBubbleArt, vipProfileCardArt } from "@/lib/vip-art";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Gamepad2, Gift, Loader2, Lock, Mic, MicOff, Volume2, MessageCircle, Power, Share2, SendHorizontal, User, Users, X, Settings, ShieldCheck, Ban } from "lucide-react";
+import { Gamepad2, Gift, Loader2, Lock, Mic, MicOff, Volume2, VolumeX, MessageCircle, Power, Share2, SendHorizontal, User, Users, X, Settings, ShieldCheck, Ban } from "lucide-react";
 import { RoomRanking } from "@/components/RoomRanking";
 import { RoomViewers } from "@/components/RoomViewers";
 import trophyButton from "@/assets/rank/trophy-button.webp";
@@ -529,6 +529,11 @@ function RoomPage() {
                 </Button>
               ) : (
                 <>
+                  <Button type="button" size="icon" variant="ghost" aria-label={voice.speakerOff ? "تشغيل صوت الروم" : "كتم صوت الروم"}
+                    aria-pressed={voice.speakerOff} onClick={voice.toggleSpeaker}
+                    className={`size-11 shrink-0 rounded-full ${voice.speakerOff ? "bg-destructive text-destructive-foreground hover:bg-destructive/90" : "bg-overlay text-on-media"}`}>
+                    {voice.speakerOff ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
+                  </Button>
                   <Button type="button" size="icon" variant="ghost" aria-label="الألعاب" onClick={() => setGamesOpen(true)} className="size-11 rounded-full bg-overlay text-on-media">
                     <Gamepad2 className="size-5" />
                   </Button>
