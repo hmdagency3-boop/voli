@@ -176,15 +176,26 @@ export function giftArtProblem(file: { type: string; size: number }): string | n
   return null;
 }
 
-/** Uploads a gift picture to the public gift-art bucket and returns its link. */
+/** Cloudinary (unsigned upload preset — public by design, no secret in the browser). */
+export const CLOUDINARY_CLOUD = 'zsxxjkqg';
+export const CLOUDINARY_PRESET = 'voli_uploads';
+export const CLOUDINARY_GIFT_FOLDER = 'voli/gifts';
+
+/** Uploads a gift picture to Cloudinary (folder voli/gifts) and returns its https link. */
 export async function uploadGiftArt(file: File): Promise<string> {
   const problem = giftArtProblem(file);
   if (problem) throw Object.assign(new Error(problem), { hint: 'bad_art_file' });
-  const ext = ({ 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/jpeg': 'jpg' } as Record<string, string>)[file.type];
-  const path = `${crypto.randomUUID()}.${ext}`;
-  const { error } = await supabase.storage.from('gift-art').upload(path, file, { contentType: file.type, cacheControl: '31536000' });
-  if (error) throw Object.assign(error, { hint: 'upload_failed' });
-  return supabase.storage.from('gift-art').getPublicUrl(path).data.publicUrl;
+  const form = new FormData();
+  form.append('file', file);
+  form.append('upload_preset', CLOUDINARY_PRESET);
+  form.append('folder', CLOUDINARY_GIFT_FOLDER);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: form });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.secure_url) {
+    const msg = body?.error?.message ?? `HTTP ${res.status}`;
+    throw Object.assign(new Error(`فشل رفع الصورة إلى Cloudinary: ${msg}`), { hint: 'upload_failed' });
+  }
+  return body.secure_url as string;
 }
 
 /** Adds a new gift (shown in the app right away). Returns its key. */
