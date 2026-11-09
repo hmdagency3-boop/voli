@@ -143,11 +143,17 @@ export async function throwRoomCoins(roomId: string, amount: number): Promise<nu
   return Number(data ?? 0) || 0;
 }
 
-/** Uploads a cover picture into the member's own folder and returns its public address. */
-export async function uploadRoomCover(me: string, file: File): Promise<string> {
-  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
-  const path = `${me}/cover-${Date.now()}.${ext}`;
-  const { error } = await supabase.storage.from('room-covers').upload(path, file, { upsert: true, contentType: file.type });
+/** Uploads a room cover to Cloudinary (voli/rooms) and returns its public address. */
+export async function uploadRoomCover(_me: string, file: File): Promise<string> {
+  const { uploadToCloudinary } = await import('@/lib/cloudinary');
+  return uploadToCloudinary(file, 'voli/rooms');
+}
+
+/** Uploads a new profile picture to Cloudinary (voli/avatars) and saves it on the member's profile. */
+export async function updateMyAvatar(me: string, file: File): Promise<string> {
+  const { uploadToCloudinary } = await import('@/lib/cloudinary');
+  const url = await uploadToCloudinary(file, 'voli/avatars');
+  const { error } = await supabase.from('profiles').update({ avatar_url: url }).eq('auth_id', me);
   if (error) throw error;
-  return supabase.storage.from('room-covers').getPublicUrl(path).data.publicUrl;
+  return url;
 }

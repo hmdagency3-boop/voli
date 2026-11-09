@@ -19,10 +19,10 @@ export const Route = createFileRoute("/me_/details")({
 });
 
 function DetailsPage() {
-  const { session, profile, ready } = useAccount();
+  const { session, profile, ready, reload } = useAccount();
   return (
     <AppScreen navigation={false}>
-      <ProfileDetails profile={profile} userId={session?.user.id} ready={ready} signedIn={!!session} isSelf
+      <ProfileDetails profile={profile} userId={session?.user.id} ready={ready} signedIn={!!session} isSelf onAvatarChanged={reload}
         back={<Button asChild variant="ghost" size="icon" aria-label="رجوع" className="rounded-full bg-overlay text-on-media backdrop-blur"><Link to="/me"><ArrowRight className="size-5" /></Link></Button>} />
     </AppScreen>
   );
