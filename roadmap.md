@@ -10,3 +10,8 @@
 - [x] SQL 017: remove name (voli+ID) or picture, Voli Helper warning, timed/permanent change locks enforced by trigger.
 - [x] Member page buttons, lock removal, log labels, tests.
 - [ ] Activate on Voli database: requires owner to run sql/017_profile_moderation.sql.
+# Video gifts
+- [x] SQL 019: video_url on gifts, admin_set_gift_video, 5-argument admin_create_gift, admin_gifts returns video.
+- [x] Panel: add gift with video, add/change/link/remove video, preview, filter, log labels, tests.
+- [ ] Activate on Voli database: requires owner to run sql/019_gift_videos.sql.
+- [ ] Play the video after sending a gift: requires the separate Voli app to read video_url.

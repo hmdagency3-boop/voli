@@ -158,11 +158,14 @@ export const clearRoomChat = (id: string) => rpc<void>('admin_clear_room_chat', 
 export type AdminGift = {
   key: string; name: string; price: number; sort: number; active: boolean;
   /** Picture uploaded from the panel; null = the picture built into the app (original 8 gifts, or before update 013). */
-  art_url: string | null; sent_count: number; sent_value: number;
+  art_url: string | null;
+  /** Video played in the app after the gift is sent; null = normal gift (or before update 019). */
+  video_url: string | null;
+  sent_count: number; sent_value: number;
 };
 export async function getGifts() {
   const rows = await rpc<AdminGift[]>('admin_gifts');
-  return rows.map((g) => ({ ...g, art_url: g.art_url ?? null, price: Number(g.price), sent_count: Number(g.sent_count), sent_value: Number(g.sent_value) }));
+  return rows.map((g) => ({ ...g, art_url: g.art_url ?? null, video_url: g.video_url ?? null, price: Number(g.price), sent_count: Number(g.sent_count), sent_value: Number(g.sent_value) }));
 }
 export const updateGift = (g: Pick<AdminGift, 'key' | 'name' | 'price' | 'sort' | 'active'>) =>
   rpc<void>('admin_update_gift', { p_key: g.key, p_name: g.name, p_price: g.price, p_sort: g.sort, p_active: g.active });
@@ -181,32 +184,156 @@ export const CLOUDINARY_CLOUD = 'zsxxjkqg';
 export const CLOUDINARY_PRESET = 'voli_uploads';
 export const CLOUDINARY_GIFT_FOLDER = 'voli/gifts';
 
-/** Uploads a gift picture to Cloudinary (folder voli/gifts) and returns its https link. */
-export async function uploadGiftArt(file: File): Promise<string> {
-  const problem = giftArtProblem(file);
-  if (problem) throw Object.assign(new Error(problem), { hint: 'bad_art_file' });
-  const form = new FormData();
-  form.append('file', file);
-  form.append('upload_preset', CLOUDINARY_PRESET);
-  form.append('folder', CLOUDINARY_GIFT_FOLDER);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: form });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.secure_url) {
-    const msg = body?.error?.message ?? `HTTP ${res.status}`;
-    throw Object.assign(new Error(`فشل رفع الصورة إلى Cloudinary: ${msg}`), { hint: 'upload_failed' });
-  }
-  return body.secure_url as string;
+export const CLOUDINARY_VIDEO_FOLDER = 'voli/gift-videos';
+
+/** Gift videos (played in the app after the gift is sent): MP4 / WebM / MOV up to 50 MB. */
+export const GIFT_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/quicktime'];
+export const GIFT_VIDEO_MAX = 50 * 1024 * 1024;
+export function giftVideoProblem(file: { type: string; size: number }): string | null {
+  if (!GIFT_VIDEO_TYPES.includes(file.type)) return 'الفيديو لازم يكون MP4 أو WebM أو MOV';
+  if (file.size > GIFT_VIDEO_MAX) return 'حجم الفيديو أكبر من 50 ميجا';
+  return null;
+}
+/**
+ * Only video links from Voli's Cloudinary cloud (same rule as gift_video_ok in sql/019_gift_videos.sql).
+ * File names may contain spaces, Arabic or other special letters and %-encoding; only control
+ * characters, quotes, <, > and backslashes are refused.
+ */
+// eslint-disable-next-line no-control-regex
+const GIFT_VIDEO_URL = /^https:\/\/res\.cloudinary\.com\/zsxxjkqg\/video\/upload\/[^\u0000-\u001f\u007f"'<>\\]+$/;
+export const giftVideoUrlOk = (url: string) => GIFT_VIDEO_URL.test(url);
+/** Link as it is saved: trimmed, with raw spaces written as %20 so the app can play it. */
+export const normalizeGiftVideoUrl = (url: string) => url.trim().replace(/ /g, '%20');
+
+/** Clean ASCII file name for Cloudinary, so names with spaces or special letters never end up in the link. */
+export function cloudFileName(original: string, prefix: string, now = Date.now()): string {
+  const dot = original.lastIndexOf('.');
+  const ext = dot > 0 ? original.slice(dot + 1).toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+  const base = (dot > 0 ? original.slice(0, dot) : original)
+    .normalize('NFKD').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase().slice(0, 40);
+  return `${prefix}-${base ? `${base}-` : ''}${now}${ext ? `.${ext}` : ''}`;
 }
 
-/** Adds a new gift (shown in the app right away). Returns its key. */
-export async function createGift(g: { name: string; price: number; sort?: number | null; file: File }) {
-  const art = await uploadGiftArt(g.file);
-  return rpc<string>('admin_create_gift', { p_name: g.name, p_price: g.price, p_sort: g.sort ?? null, p_art_url: art });
+/** Upload stages: sending bytes, Cloudinary processing after 100%, then saving in Voli's database. */
+export type UploadStatus =
+  | { stage: 'uploading'; percent: number; loaded: number; total: number; what?: string }
+  | { stage: 'processing' }
+  | { stage: 'saving' };
+export type UploadProgress = (status: UploadStatus) => void;
+
+const mb = (n: number) => (n / (1024 * 1024)).toFixed(1);
+/** Text shown to the admin for each upload stage. */
+export function uploadStatusText(s: UploadStatus): string {
+  if (s.stage === 'uploading') {
+    if (s.percent >= 100) return 'تم الإرسال (100%)، جارٍ المعالجة في السحابة وحفظ الهدية…';
+    return `جارٍ رفع ${s.what ?? 'الفيديو'}… ${s.percent}% (${mb(s.loaded)} من ${mb(s.total)} ميجا)`;
+  }
+  if (s.stage === 'processing') return 'تم الإرسال (100%)، جارٍ المعالجة في السحابة وحفظ الهدية…';
+  return 'جارٍ حفظ الهدية في فولي…';
+}
+
+/** Unsigned upload to Cloudinary with progress; returns the https link. */
+function cloudinaryUpload(file: File, kind: 'image' | 'video', folder: string, onProgress?: UploadProgress): Promise<string> {
+  const what = kind === 'video' ? 'الفيديو' : 'الصورة';
+  return new Promise((resolve, reject) => {
+    const form = new FormData();
+    form.append('file', file, cloudFileName(file.name, kind === 'video' ? 'gift-video' : 'gift'));
+    form.append('upload_preset', CLOUDINARY_PRESET);
+    form.append('folder', folder);
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${kind}/upload`);
+    let sent = false;
+    xhr.upload.onprogress = (e) => {
+      if (sent || !e.lengthComputable || !e.total) return;
+      // floor: 100% only once every byte has really been sent
+      const percent = Math.min(100, Math.floor((e.loaded / e.total) * 100));
+      onProgress?.({ stage: 'uploading', percent, loaded: e.loaded, total: e.total, what });
+    };
+    xhr.upload.onload = () => { sent = true; onProgress?.({ stage: 'processing' }); };
+    const fail = (msg: string) => reject(Object.assign(new Error(`فشل رفع ${what} إلى Cloudinary: ${msg}`), { hint: 'upload_failed', kind }));
+    xhr.onerror = () => fail('تعذّر الاتصال');
+    xhr.onload = () => {
+      let body: { secure_url?: string; error?: { message?: string } } = {};
+      try { body = JSON.parse(xhr.responseText); } catch { /* not JSON */ }
+      if (xhr.status >= 200 && xhr.status < 300 && body.secure_url) resolve(body.secure_url);
+      else fail(body.error?.message ?? `HTTP ${xhr.status}`);
+    };
+    xhr.send(form);
+  });
+}
+
+/** Uploads a gift picture to Cloudinary (folder voli/gifts) and returns its https link. */
+export async function uploadGiftArt(file: File, onProgress?: UploadProgress): Promise<string> {
+  const problem = giftArtProblem(file);
+  if (problem) throw Object.assign(new Error(problem), { hint: 'bad_art_file' });
+  return cloudinaryUpload(file, 'image', CLOUDINARY_GIFT_FOLDER, onProgress);
+}
+
+/** Uploads a gift video to Cloudinary (folder voli/gift-videos) and returns its https link. */
+export async function uploadGiftVideo(file: File, onProgress?: UploadProgress): Promise<string> {
+  const problem = giftVideoProblem(file);
+  if (problem) throw Object.assign(new Error(problem), { hint: 'bad_video_file' });
+  return normalizeGiftVideoUrl(await cloudinaryUpload(file, 'video', CLOUDINARY_VIDEO_FOLDER, onProgress));
+}
+
+/**
+ * True only when PostgREST says the function itself is unknown (not run yet, or its schema cache is stale) —
+ * not for other errors raised while the function runs.
+ */
+export function isMissingFunction(e: unknown, fn: string): boolean {
+  const err = e as { code?: string; message?: string } | null;
+  if (err?.code === 'PGRST202') return true;
+  return err?.code === '42883' && (err.message ?? '').includes(fn);
+}
+
+/** Video calls need update 019; turn "function not found" into a clear message. */
+async function videoRpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+  try { return await rpc<T>(fn, args); }
+  catch (e) {
+    console.error(`[gifts] ${fn} failed`, e);
+    if (isMissingFunction(e, fn)) throw Object.assign(new Error('video_missing'), { hint: 'video_missing', cause: e });
+    throw e;
+  }
+}
+
+/**
+ * Adds a new gift (shown in the app right away), optionally with a video. Returns its key.
+ * Files are uploaded first; the gift is then created with the original 4-argument admin_create_gift
+ * and the video attached with admin_set_gift_video, so it works whichever admin_create_gift versions exist.
+ */
+export async function createGift(g: { name: string; price: number; sort?: number | null; file: File; video?: File | null }, onProgress?: UploadProgress) {
+  // picture progress is shown only while sending; its processing step is quick
+  const art = await uploadGiftArt(g.file, (st) => { if (st.stage === 'uploading' && st.percent < 100) onProgress?.(st); });
+  const video = g.video ? await uploadGiftVideo(g.video, onProgress) : null;
+  onProgress?.({ stage: 'saving' });
+  const key = await rpc<string>('admin_create_gift', { p_name: g.name, p_price: g.price, p_sort: g.sort ?? null, p_art_url: art });
+  if (!video) return key;
+  try {
+    await videoRpc<void>('admin_set_gift_video', { p_key: key, p_video_url: video });
+  } catch (e) {
+    const reason = adminErrorMessage(e);
+    throw Object.assign(new Error('video_link_failed'), { hint: 'video_link_failed', reason, key, video, cause: e });
+  }
+  return key;
 }
 export async function changeGiftArt(key: string, file: File) {
   const art = await uploadGiftArt(file);
   return rpc<void>('admin_set_gift_art', { p_key: key, p_art_url: art });
 }
+/** Adds or replaces a gift's video. */
+export async function changeGiftVideo(key: string, file: File, onProgress?: UploadProgress) {
+  const video = await uploadGiftVideo(file, onProgress);
+  onProgress?.({ stage: 'saving' });
+  return videoRpc<void>('admin_set_gift_video', { p_key: key, p_video_url: video });
+}
+/** Uses a video already in Voli's Cloudinary (pasted link). */
+export async function setGiftVideoUrl(key: string, url: string) {
+  const u = normalizeGiftVideoUrl(url);
+  if (!giftVideoUrlOk(u)) throw Object.assign(new Error('bad_video'), { hint: 'bad_video' });
+  return videoRpc<void>('admin_set_gift_video', { p_key: key, p_video_url: u });
+}
+/** Removes the video from the gift (it goes back to a normal gift). The file stays in Cloudinary. */
+export const removeGiftVideo = (key: string) => videoRpc<void>('admin_set_gift_video', { p_key: key, p_video_url: null });
 
 export type VipTierPrice = { level: number; name_ar: string; price_coins: number | null; duration_days: number; monthly_salary_coins: number | null };
 export async function getVipPrices(): Promise<VipTierPrice[]> {
@@ -357,7 +484,7 @@ export const getLog = (page: number) => rpc<LogRow[]>('admin_actions_log', { p_l
 export const ACTION_LABELS: Record<string, string> = {
   coins: 'عملات', vip_grant: 'منح VIP', vip_revoke: 'سحب VIP', special_id: 'ID مميز', role: 'صلاحية',
   profile: 'تعديل بيانات', ban: 'حظر', unban: 'فك حظر', room_close: 'إغلاق غرفة', room_chat_clear: 'مسح محادثة غرفة',
-  gift_update: 'تعديل هدية', gift_create: 'إضافة هدية', gift_art: 'صورة هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
+  gift_update: 'تعديل هدية', gift_create: 'إضافة هدية', gift_art: 'صورة هدية', gift_video: 'فيديو هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
   agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة', notice: 'إشعار رسمي',
   profile_violation: 'إزالة مخالفة', profile_lock: 'منع تغيير الاسم/الصورة',
   device_ban: 'حظر جهاز/شبكة', device_unban: 'فك حظر جهاز/شبكة',
@@ -374,8 +501,9 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
     case 'role': return `${d['role'] === 'admin' ? 'إدارة عليا' : 'مشرف'}: ${d['enabled'] ? 'أُضيف' : 'أُزيل'}`;
     case 'ban': return `${d['days'] ? `${d['days']} يوم` : 'نهائي'}${d['reason'] ? ` — ${d['reason']}` : ''}`;
     case 'gift_update': return `${d['key']}: ${n('price')}${d['active'] === false ? ' (مخفية)' : ''}`;
-    case 'gift_create': return `${d['name']}: ${n('price')}`;
+    case 'gift_create': return `${d['name']}: ${n('price')}${d['video'] ? ' (هدية فيديو)' : ''}`;
     case 'gift_art': return String(d['key'] ?? '');
+    case 'gift_video': return `${d['key'] ?? ''}${d['removed'] ? ' — حُذف الفيديو' : ''}`;
     case 'vip_tier_update': return `VIP ${d['level']}: ${d['price'] == null ? 'غير معروض للبيع' : n('price')} / ${d['days']} يوم`;
     case 'agency_update': return `${d['name']}${d['commission'] != null ? ` — ${d['commission']}%` : ''}`;
     case 'agency_approve': return `كود ${d['code']}`;
@@ -393,10 +521,15 @@ export const adminErrorMessage = (e: unknown) => {
   if (err?.hint === 'devices_missing') return 'يجب تشغيل ملف الأجهزة 015 في قاعدة البيانات أولاً';
   if (err?.hint === 'moderation_missing') return 'يجب تشغيل ملف المخالفات 017 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'notice_missing') return 'يجب تشغيل ملف الإشعارات 014 في قاعدة البيانات أولاً';
+  if (err?.hint === 'video_missing') return 'دوال هدايا الفيديو غير ظاهرة في قاعدة بيانات فولي: شغّل ملف 019 (المحدّث) مرة أخرى في محرر SQL، فهو يحدّث كاش الدوال فوراً';
+  if (err?.hint === 'video_link_failed') return `أُضيفت الهدية والفيديو اترفع على Cloudinary، لكن تعذّر ربطه بالهدية (${(err as { reason?: string }).reason ?? 'خطأ غير معروف'}). استخدم «ربط فيديو موجود برابط» في سطر الهدية`;
   if (missing(err?.code)) return 'يجب تشغيل ملف الإدارة 009 في قاعدة البيانات أولاً';
-  if (err?.hint === 'bad_art_file') return err.message ?? 'الصورة غير صالحة';
-  if (err?.hint === 'upload_failed') return /bucket/i.test(err.message ?? '')
-    ? 'يجب تشغيل ملف الهدايا 013 في قاعدة البيانات أولاً' : 'تعذّر رفع الصورة، حاول مجدداً';
+  if (err?.hint === 'bad_art_file' || err?.hint === 'bad_video_file') return err.message ?? 'الملف غير صالح';
+  if (err?.hint === 'upload_failed') {
+    if ((err as { kind?: string }).kind === 'video') return /size|large/i.test(err.message ?? '')
+      ? 'الفيديو أكبر من المسموح في حساب Cloudinary' : 'تعذّر رفع الفيديو، تحقق من الإنترنت وحاول مجدداً';
+    return /bucket/i.test(err.message ?? '') ? 'يجب تشغيل ملف الهدايا 013 في قاعدة البيانات أولاً' : 'تعذّر رفع الصورة، حاول مجدداً';
+  }
   return ({
     not_admin: 'هذا الإجراء متاح للإدارة العليا فقط',
     not_found: 'العنصر غير موجود',
@@ -417,6 +550,7 @@ export const adminErrorMessage = (e: unknown) => {
     bad_notice: 'نص الإشعار مطلوب (حتى 1000 حرف)',
     bad_price: 'السعر غير صحيح',
     bad_art: 'صورة الهدية غير صحيحة، ارفع الصورة من اللوحة',
+    bad_video: 'رابط الفيديو غير مقبول — لازم يكون فيديو مرفوع على Cloudinary الخاص بفولي',
     bad_percent: 'يجب أن تكون النسبة بين 0 و100',
     is_agent: 'لا يمكن إزالة الوكيل من وكالته',
     not_pending: 'تمت معالجة هذا الطلب مسبقاً',
