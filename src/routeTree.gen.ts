@@ -13,6 +13,8 @@ import { Route as PanelRouteImport } from './routes/_panel'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PanelIndexRouteImport } from './routes/_panel/index'
 import { Route as PanelAgenciesRouteImport } from './routes/_panel/agencies'
+import { Route as PanelBansRouteImport } from './routes/_panel/bans'
+import { Route as PanelDevicesRouteImport } from './routes/_panel/devices'
 import { Route as PanelGiftsRouteImport } from './routes/_panel/gifts'
 import { Route as PanelLogRouteImport } from './routes/_panel/log'
 import { Route as PanelRoomsRouteImport } from './routes/_panel/rooms'
@@ -37,6 +39,16 @@ const PanelIndexRoute = PanelIndexRouteImport.update({
 const PanelAgenciesRoute = PanelAgenciesRouteImport.update({
   id: '/agencies',
   path: '/agencies',
+  getParentRoute: () => PanelRoute,
+} as any)
+const PanelBansRoute = PanelBansRouteImport.update({
+  id: '/bans',
+  path: '/bans',
+  getParentRoute: () => PanelRoute,
+} as any)
+const PanelDevicesRoute = PanelDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
   getParentRoute: () => PanelRoute,
 } as any)
 const PanelGiftsRoute = PanelGiftsRouteImport.update({
@@ -74,6 +86,8 @@ export interface FileRoutesByFullPath {
   '/': typeof PanelIndexRoute
   '/login': typeof LoginRoute
   '/agencies': typeof PanelAgenciesRoute
+  '/bans': typeof PanelBansRoute
+  '/devices': typeof PanelDevicesRoute
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
   '/rooms': typeof PanelRoomsRoute
@@ -84,6 +98,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/agencies': typeof PanelAgenciesRoute
+  '/bans': typeof PanelBansRoute
+  '/devices': typeof PanelDevicesRoute
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
   '/rooms': typeof PanelRoomsRoute
@@ -97,6 +113,8 @@ export interface FileRoutesById {
   '/_panel': typeof PanelRouteWithChildren
   '/login': typeof LoginRoute
   '/_panel/agencies': typeof PanelAgenciesRoute
+  '/_panel/bans': typeof PanelBansRoute
+  '/_panel/devices': typeof PanelDevicesRoute
   '/_panel/gifts': typeof PanelGiftsRoute
   '/_panel/log': typeof PanelLogRoute
   '/_panel/rooms': typeof PanelRoomsRoute
@@ -111,6 +129,8 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/agencies'
+    | '/bans'
+    | '/devices'
     | '/gifts'
     | '/log'
     | '/rooms'
@@ -121,6 +141,8 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/agencies'
+    | '/bans'
+    | '/devices'
     | '/gifts'
     | '/log'
     | '/rooms'
@@ -133,6 +155,8 @@ export interface FileRouteTypes {
     | '/_panel'
     | '/login'
     | '/_panel/agencies'
+    | '/_panel/bans'
+    | '/_panel/devices'
     | '/_panel/gifts'
     | '/_panel/log'
     | '/_panel/rooms'
@@ -175,6 +199,20 @@ declare module '@tanstack/react-router' {
       path: '/agencies'
       fullPath: '/agencies'
       preLoaderRoute: typeof PanelAgenciesRouteImport
+      parentRoute: typeof PanelRoute
+    }
+    '/_panel/bans': {
+      id: '/_panel/bans'
+      path: '/bans'
+      fullPath: '/bans'
+      preLoaderRoute: typeof PanelBansRouteImport
+      parentRoute: typeof PanelRoute
+    }
+    '/_panel/devices': {
+      id: '/_panel/devices'
+      path: '/devices'
+      fullPath: '/devices'
+      preLoaderRoute: typeof PanelDevicesRouteImport
       parentRoute: typeof PanelRoute
     }
     '/_panel/gifts': {
@@ -224,6 +262,8 @@ declare module '@tanstack/react-router' {
 
 interface PanelRouteChildren {
   PanelAgenciesRoute: typeof PanelAgenciesRoute
+  PanelBansRoute: typeof PanelBansRoute
+  PanelDevicesRoute: typeof PanelDevicesRoute
   PanelGiftsRoute: typeof PanelGiftsRoute
   PanelLogRoute: typeof PanelLogRoute
   PanelRoomsRoute: typeof PanelRoomsRoute
@@ -235,6 +275,8 @@ interface PanelRouteChildren {
 
 const PanelRouteChildren: PanelRouteChildren = {
   PanelAgenciesRoute: PanelAgenciesRoute,
+  PanelBansRoute: PanelBansRoute,
+  PanelDevicesRoute: PanelDevicesRoute,
   PanelGiftsRoute: PanelGiftsRoute,
   PanelLogRoute: PanelLogRoute,
   PanelRoomsRoute: PanelRoomsRoute,
