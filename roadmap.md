@@ -139,4 +139,4 @@
 # Profile pictures
 - [x] Crop (drag, zoom, turn) every avatar and album picture before upload on the edit page.
 - [x] Profile cover shows the album pictures, sliding between them; falls back to the avatar when the album is empty.
-- [ ] ارفع كل تحديث على فرع لوحده على جيت هب (hmdagency3-boop/voli)
+- [x] تصحيح الرفع: جميع تحديثات التطبيق على main؛ فرع لوحة-الادارة بقي دون تغيير ويخصص لتحديثات لوحة الإدارة فقط.
