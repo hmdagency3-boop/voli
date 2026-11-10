@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import diamondIcon from '@/assets/diamond.webp';
 import coinIcon from '@/assets/coin.webp';
 import vipClubCard from '@/assets/vip-club-card.webp';
+import profileWallpaper from '@/assets/profile-wallpaper.jpg.asset.json';
 import { useAccount } from "@/hooks/use-account";
 import { supabase } from "@/lib/supabase";
 import {
@@ -72,6 +73,14 @@ export const Route = createFileRoute("/me")({
   component: MePage,
 });
 
+/** خلفية صفحة "أنا": صورة التنانين، وتحتها طبقة تعتيم تخلي الكلام مقروء. */
+const meBackground = (
+  <>
+    <img src={profileWallpaper.url} alt="" draggable={false} className="size-full object-cover object-center" />
+    <div className="absolute inset-0 bg-gradient-to-b from-background/25 via-background/50 to-background/85" />
+  </>
+);
+
 const stats = [
   { label: "متابَعين", value: "—" },
   { label: "متابِعين", value: "—" },
@@ -100,15 +109,10 @@ function MePage() {
   const navigate = useNavigate();
   const thresholds = useThresholds();
   return (
-    <AppScreen>
+    <AppScreen background={meBackground}>
         {/* ── الغلاف ── */}
         <div className="relative h-44">
-          <div className="absolute inset-0 bg-brand" />
-          <div className="absolute inset-0 overflow-hidden" aria-hidden>
-            <span className="absolute -top-10 -left-10 size-40 rounded-full bg-primary-foreground/15" />
-            <span className="absolute top-16 -right-8 size-28 rounded-full bg-accent/40 blur-2xl" />
-            <span className="absolute -bottom-14 right-1/3 size-32 rounded-full bg-primary-foreground/10" />
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/45 to-transparent" />
 
           <div className="absolute top-5 left-5 flex gap-2">
             <Button variant="ghost" size="icon" disabled aria-label="رمز QR" className="grid size-10 place-items-center rounded-full bg-overlay text-on-media backdrop-blur transition hover:opacity-80">
