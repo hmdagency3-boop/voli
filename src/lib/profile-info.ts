@@ -62,6 +62,15 @@ export function countryOptions(): { code: string; name: string }[] {
   return [...ARAB.map((code) => ({ code, name: countryName(code) })), ...rest];
 }
 
+/** Pictures behind the profile's big cover: the album, or the avatar when the album is empty. */
+export function coverPictures(album: readonly string[], avatar: string | null | undefined): string[] {
+  if (album.length) return album.slice(0, ALBUM_MAX);
+  return avatar ? [avatar] : [];
+}
+
+/** How long each album picture stays on the cover before the next one slides in. */
+export const COVER_SLIDE_MS = 4000;
+
 /** Whole years from a YYYY-MM-DD birthday to today (or the given day); null for a bad or future date. */
 export function ageFrom(birthday: string, today: Date = new Date()): number | null {
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(birthday);

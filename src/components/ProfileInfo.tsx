@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
-  GENDER_LABEL, countryFlagUrl, countryFlag, countryName, countryOptions, loadProfileInfo,
+  COVER_SLIDE_MS, GENDER_LABEL, countryFlagUrl, coverPictures, countryFlag, countryName, countryOptions, loadProfileInfo,
   type Gender, type ProfileInfo,
 } from "@/lib/profile-info";
 
@@ -51,16 +51,49 @@ export function CountryFlag({ code, className = "" }: { code: string; className?
   return <img src={url} alt={label} title={label} draggable={false} className={`shrink-0 rounded-full object-cover ring-1 ring-border ${className}`} />;
 }
 
-/** The member's album pictures on their profile. */
-export function ProfileAlbumStrip({ album }: { album: string[] }) {
-  if (!album.length) return null;
+/**
+ * The big picture at the top of a profile: the album pictures taking turns (auto, swipe or dots),
+ * or the avatar when there is no album, or the brand colour when there is neither.
+ */
+export function ProfileCover({ album, avatar }: { album: string[]; avatar: string | null | undefined }) {
+  const pictures = useMemo(() => coverPictures(album, avatar), [album, avatar]);
+  const [index, setIndex] = useState(0);
+  const [startX, setStartX] = useState<number | null>(null);
+  const count = pictures.length;
+  const current = count ? index % count : 0;
+
+  useEffect(() => { setIndex(0); }, [pictures]);
+  useEffect(() => {
+    if (count < 2) return;
+    const t = setTimeout(() => setIndex((i) => (i + 1) % count), COVER_SLIDE_MS);
+    return () => clearTimeout(t);
+  }, [count, current]);
+
+  if (!count) return <div className="absolute inset-0 bg-brand" />;
   return (
-    <div className="mt-3 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none]">
-      {album.map((url, i) => (
-        <a key={url} href={url} target="_blank" rel="noreferrer" className="shrink-0 overflow-hidden rounded-xl bg-secondary">
-          <img src={url} alt={`صورة ${i + 1} من الألبوم`} loading="lazy" className="size-20 object-cover" />
-        </a>
+    <div className="absolute inset-0 touch-pan-y"
+      onPointerDown={(e) => setStartX(e.clientX)}
+      onPointerUp={(e) => {
+        if (startX == null || count < 2) return;
+        const dx = e.clientX - startX;
+        setStartX(null);
+        // In right-to-left reading, swiping right shows the next picture.
+        if (Math.abs(dx) > 40) setIndex((i) => (i + (dx > 0 ? 1 : count - 1)) % count);
+      }}>
+      {pictures.map((url, i) => (
+        <img key={url} src={url} alt={i === current ? "صورة الغلاف" : ""} aria-hidden={i !== current} draggable={false}
+          loading={i === 0 ? "eager" : "lazy"}
+          className={`absolute inset-0 size-full select-none object-cover transition-opacity duration-700 ${i === current ? "opacity-100" : "opacity-0"}`} />
       ))}
+      {count > 1 && (
+        <div className="absolute inset-x-0 top-16 z-10 flex justify-center gap-1.5" dir="ltr">
+          {pictures.map((url, i) => (
+            <button key={url} type="button" aria-label={`صورة ${i + 1} من الألبوم`} aria-current={i === current}
+              onClick={() => setIndex(i)}
+              className={`h-1.5 rounded-full bg-on-media transition-all ${i === current ? "w-5" : "w-1.5 opacity-50"}`} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

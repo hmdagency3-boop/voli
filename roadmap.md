@@ -135,3 +135,7 @@
 - [x] Room: play the video for everyone inside, one after another; mark video gifts in the gift box.
 - [ ] Run supabase/019_video_gifts.sql in the SQL Editor (needs the user).
 - [ ] Add video upload to the Voli Admin Dashboard gifts page (separate project; needs the user to ask there).
+
+# Profile pictures
+- [x] Crop (drag, zoom, turn) every avatar and album picture before upload on the edit page.
+- [x] Profile cover shows the album pictures, sliding between them; falls back to the avatar when the album is empty.

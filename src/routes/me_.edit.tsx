@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { ImageCropDialog } from "@/components/ImageCropDialog";
 import { CountryFlag, CountrySheet, GenderSheet, useProfileInfo } from "@/components/ProfileInfo";
 import { useAccount } from "@/hooks/use-account";
 import { updateMyAvatar } from "@/lib/rooms";
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/me_/edit")({
 type Field = "name" | "gender" | "birthday" | "country" | "bio" | null;
 const EMPTY: ProfileInfo = { gender: null, country: null, country_hidden: false, birthday: null, age: null, album: [] };
 const MAX_PICTURE = 5 * 1024 * 1024;
-const okPicture = (f: File) => f.type.startsWith("image/") && f.size <= MAX_PICTURE;
+const isPicture = (f: File) => f.type.startsWith("image/");
 
 function EditProfilePage() {
   const { session, profile, reload } = useAccount();
@@ -46,6 +47,7 @@ function EditProfilePage() {
   const [albumBusy, setAlbumBusy] = useState(false);
   const avatarInput = useRef<HTMLInputElement>(null);
   const albumInput = useRef<HTMLInputElement>(null);
+  const [cropping, setCropping] = useState<{ kind: "avatar" | "album"; files: File[] } | null>(null);
 
   useEffect(() => { if (userId) loadMyBio(userId).then(setBio); }, [userId]);
 
@@ -56,29 +58,42 @@ function EditProfilePage() {
     finally { setSaving(false); }
   }
 
-  async function changeAvatar(f: File) {
+  // Every picked picture goes through the crop dialog first, one at a time.
+  function pickAvatar(f: File) {
     if (!userId) return;
-    if (!okPicture(f)) { toast.error("اختار صورة أقل من 5 ميجا"); return; }
-    setAvatarBusy(true);
-    try { await updateMyAvatar(userId, f); reload(); toast.success("تم تحديث الصورة"); }
-    catch (e) { toast.error((e as { hint?: string }).hint === "avatar_locked" ? "تغيير الصورة متوقف لحسابك حالياً" : "الصورة ماترفعتش"); }
-    finally { setAvatarBusy(false); }
+    if (!isPicture(f)) { toast.error("اختار صورة"); return; }
+    setCropping({ kind: "avatar", files: [f] });
   }
 
-  async function addAlbum(files: File[]) {
+  function pickAlbum(files: File[]) {
     const room = ALBUM_MAX - info.album.length;
     if (room <= 0) { toast.error(`الألبوم بياخد ${ALBUM_MAX} صور بس`); return; }
-    const picked = files.filter(okPicture).slice(0, room);
-    if (picked.length < Math.min(files.length, room)) toast.error("في صور أكبر من 5 ميجا ماتضافتش");
-    if (!picked.length) return;
+    const picked = files.filter(isPicture).slice(0, room);
+    if (picked.length < Math.min(files.length, room)) toast.error("في ملفات مش صور ماتضافتش");
+    if (picked.length) setCropping({ kind: "album", files: picked });
+  }
+
+  const nextCrop = () => setCropping((c) => (c && c.files.length > 1 ? { ...c, files: c.files.slice(1) } : null));
+
+  async function saveCropped(f: File) {
+    if (!userId || !cropping) return;
+    if (f.size > MAX_PICTURE) { toast.error("الصورة كبيرة، صغّرها شوية"); return; }
+    if (cropping.kind === "avatar") {
+      setAvatarBusy(true);
+      try { await updateMyAvatar(userId, f); reload(); toast.success("تم تحديث الصورة"); nextCrop(); }
+      catch (e) { toast.error((e as { hint?: string }).hint === "avatar_locked" ? "تغيير الصورة متوقف لحسابك حالياً" : "الصورة ماترفعتش"); }
+      finally { setAvatarBusy(false); }
+      return;
+    }
     setAlbumBusy(true);
     try {
-      const urls = await Promise.all(picked.map(uploadAlbumPicture));
-      const next = [...info.album, ...urls].slice(0, ALBUM_MAX);
+      const url = await uploadAlbumPicture(f);
+      const next = [...info.album, url].slice(0, ALBUM_MAX);
       await saveMyAlbum(next);
       setInfo({ ...info, album: next });
-      toast.success("تمت إضافة الصور");
-    } catch { toast.error("الصور ماترفعتش، جرّب تاني"); }
+      toast.success("تمت إضافة الصورة");
+      nextCrop();
+    } catch { toast.error("الصورة ماترفعتش، جرّب تاني"); }
     finally { setAlbumBusy(false); }
   }
 
@@ -111,7 +126,7 @@ function EditProfilePage() {
               {avatarBusy && <span className="absolute inset-0 grid place-items-center bg-overlay text-on-media"><Loader2 className="size-5 animate-spin" /></span>}
             </span>
           </Row>
-          <input ref={avatarInput} hidden type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) changeAvatar(f); }} />
+          <input ref={avatarInput} hidden type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) pickAvatar(f); }} />
         </section>
 
         {/* الألبوم */}
@@ -136,8 +151,12 @@ function EditProfilePage() {
               </button>
             )}
           </div>
-          <input ref={albumInput} hidden type="file" accept="image/*" multiple onChange={(e) => { const fs = [...(e.target.files ?? [])]; e.target.value = ""; if (fs.length) addAlbum(fs); }} />
+          <input ref={albumInput} hidden type="file" accept="image/*" multiple onChange={(e) => { const fs = [...(e.target.files ?? [])]; e.target.value = ""; if (fs.length) pickAlbum(fs); }} />
         </section>
+
+        <ImageCropDialog file={cropping?.files[0] ?? null} round={cropping?.kind === "avatar"}
+          title={cropping?.kind === "avatar" ? "قص الصورة الشخصية" : `قص صورة الألبوم${cropping && cropping.files.length > 1 ? ` (فاضل ${cropping.files.length})` : ""}`}
+          onDone={saveCropped} onCancel={nextCrop} />
 
         {/* باقي البيانات */}
         <section className="mx-4 mt-3 divide-y rounded-2xl bg-card shadow-soft">

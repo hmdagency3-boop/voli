@@ -13,7 +13,7 @@ import { badgeTier, charismaBadge, wealthBadge } from "@/lib/badges";
 import { shownId } from "@/lib/special-id";
 import { activeVipLevel } from "@/lib/vip";
 import { VipBadge, VipFrame } from "@/components/VipBadge";
-import { ProfileAlbumStrip, ProfileIdTags, useProfileInfo } from "@/components/ProfileInfo";
+import { ProfileCover, ProfileIdTags, useProfileInfo } from "@/components/ProfileInfo";
 
 const tabs = ["هدية", "اطار", "مركبة", "شارة"] as const;
 
@@ -76,12 +76,8 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back 
     <>
       {/* الغلاف */}
       <div className="relative h-80 overflow-hidden">
-        {profile?.avatar_url ? (
-          <img src={profile.avatar_url} alt="" className="absolute inset-0 size-full object-cover" />
-        ) : (
-          <div className="absolute inset-0 bg-brand" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+        <ProfileCover album={info?.album ?? []} avatar={profile?.avatar_url} />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
           {back}
           {isSelf && userId ? (
@@ -132,9 +128,6 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back 
           <p className="mt-3 flex items-center gap-2 px-5 text-sm text-muted-foreground">
             <Feather className="size-4 shrink-0" /> {bio || (isSelf ? "قول شيئاً لجعل الآخرين يعرفون لك ." : "لا توجد نبذة")}
           </p>
-
-          {/* الجنس والدولة */}
-          <ProfileAlbumStrip album={info?.album ?? []} />
 
           {/* الإحصائيات */}
           <section className="mx-4 mt-5 grid grid-cols-3 rounded-2xl border border-primary/40 bg-card py-4 shadow-soft">
