@@ -1,25 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
-import { Check, EyeOff, Globe, Mars, PenLine, Search, Venus } from "lucide-react";
-import { toast } from "sonner";
+import { Check, EyeOff, Mars, Search, Venus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
-  GENDER_LABEL, countryFlagUrl, countryFlag, countryName, countryOptions, loadProfileInfo, saveMyProfileInfo,
+  GENDER_LABEL, countryFlagUrl, countryFlag, countryName, countryOptions, loadProfileInfo,
   type Gender, type ProfileInfo,
 } from "@/lib/profile-info";
 
-/** Loads a member's gender and country; null until loaded or when the database update is missing. */
+/** Loads a member's gender, country, birthday and album; null until loaded or when the database update is missing. */
 export function useProfileInfo(userId: string | undefined) {
   const [info, setInfo] = useState<ProfileInfo | null>(null);
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     if (!userId) return;
     let active = true;
-    setInfo(null);
-    loadProfileInfo(userId).then((r) => { if (active) setInfo(r); });
+    setInfo(null); setLoaded(false);
+    loadProfileInfo(userId).then((r) => { if (active) { setInfo(r); setLoaded(true); } });
     return () => { active = false; };
   }, [userId]);
-  return [info, setInfo] as const;
+  return [info, setInfo, loaded] as const;
 }
 
 /** Small gender sign and country flag shown next to the ID. */
@@ -48,65 +48,34 @@ export function CountryFlag({ code, className = "" }: { code: string; className?
   return <img src={url} alt={label} title={label} draggable={false} className={`shrink-0 rounded-full object-cover ring-1 ring-border ${className}`} />;
 }
 
-/** The owner's button for choosing gender and country. */
-export function ProfileInfoEdit({ info, onSaved }: {
-  info: ProfileInfo | null; onSaved: (next: { gender: Gender | null; country: string | null }) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  if (!info) return null;
-  const empty = !info.gender && !info.country;
+/** The member's album pictures on their profile. */
+export function ProfileAlbumStrip({ album }: { album: string[] }) {
+  if (!album.length) return null;
   return (
-    <div className="mt-2 flex flex-wrap items-center gap-2 px-5">
-      <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(true)} className="h-7 rounded-full px-3 text-xs text-primary">
-        <PenLine className="size-3.5" /> {empty ? "أضف الجنس والدولة" : "تعديل الجنس والدولة"}
-      </Button>
-      {info.country_hidden && (
-        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><EyeOff className="size-3.5" /> دولتك مخفية عن الآخرين</span>
-      )}
-      <ProfileInfoSheet open={open} onOpenChange={setOpen} info={info} onSaved={onSaved} />
+    <div className="mt-3 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none]">
+      {album.map((url, i) => (
+        <a key={url} href={url} target="_blank" rel="noreferrer" className="shrink-0 overflow-hidden rounded-xl bg-secondary">
+          <img src={url} alt={`صورة ${i + 1} من الألبوم`} loading="lazy" className="size-20 object-cover" />
+        </a>
+      ))}
     </div>
   );
 }
 
-function ProfileInfoSheet({ open, onOpenChange, info, onSaved }: {
-  open: boolean; onOpenChange: (v: boolean) => void; info: ProfileInfo;
-  onSaved: (next: { gender: Gender | null; country: string | null }) => void;
+/** Pick male or female. */
+export function GenderSheet({ open, onOpenChange, value, saving, onSave }: {
+  open: boolean; onOpenChange: (v: boolean) => void; value: Gender | null; saving: boolean; onSave: (g: Gender) => void;
 }) {
-  const [gender, setGender] = useState<Gender | null>(info.gender);
-  const [country, setCountry] = useState<string | null>(info.country);
-  const [query, setQuery] = useState("");
-  const [saving, setSaving] = useState(false);
-  const all = useMemo(() => (open ? countryOptions() : []), [open]);
-  const shown = query.trim() ? all.filter((c) => c.name.includes(query.trim()) || c.code.toLowerCase() === query.trim().toLowerCase()) : all;
-
-  useEffect(() => {
-    if (open) { setGender(info.gender); setCountry(info.country); setQuery(""); }
-  }, [open, info.gender, info.country]);
-
-  async function save() {
-    setSaving(true);
-    try {
-      await saveMyProfileInfo(gender, country);
-      onSaved({ gender, country });
-      toast.success("تم الحفظ");
-      onOpenChange(false);
-    } catch {
-      toast.error("ماقدرناش نحفظ، جرّب تاني");
-    } finally {
-      setSaving(false);
-    }
-  }
-
+  const [gender, setGender] = useState<Gender | null>(value);
+  useEffect(() => { if (open) setGender(value); }, [open, value]);
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" dir="rtl" className="mx-auto flex max-h-[85dvh] max-w-md flex-col rounded-t-[2rem]">
+      <SheetContent side="bottom" dir="rtl" className="mx-auto max-w-md rounded-t-[2rem]">
         <SheetHeader className="text-start">
-          <SheetTitle>الجنس والدولة</SheetTitle>
-          <SheetDescription>بيظهروا في بروفايلك لكل الناس.</SheetDescription>
+          <SheetTitle>الجنس</SheetTitle>
+          <SheetDescription>بيظهر جنب الـ ID في بروفايلك.</SheetDescription>
         </SheetHeader>
-
-        <p className="mt-2 text-sm font-semibold">الجنس</p>
-        <div className="mt-2 grid grid-cols-2 gap-3">
+        <div className="mt-4 grid grid-cols-2 gap-3">
           {(["male", "female"] as const).map((g) => (
             <button key={g} type="button" aria-pressed={gender === g} onClick={() => setGender(g)}
               className={`flex items-center justify-center gap-2 rounded-2xl border-2 py-3 font-bold transition ${gender === g
@@ -116,8 +85,31 @@ function ProfileInfoSheet({ open, onOpenChange, info, onSaved }: {
             </button>
           ))}
         </div>
+        <Button type="button" onClick={() => gender && onSave(gender)} disabled={saving || !gender || gender === value} className="mt-5 w-full rounded-full">
+          {saving ? "جارٍ الحفظ…" : "حفظ"}
+        </Button>
+      </SheetContent>
+    </Sheet>
+  );
+}
 
-        <p className="mt-5 flex items-center gap-1.5 text-sm font-semibold"><Globe className="size-4" /> الدولة</p>
+/** Searchable country list with round flags. */
+export function CountrySheet({ open, onOpenChange, value, hidden, saving, onSave }: {
+  open: boolean; onOpenChange: (v: boolean) => void; value: string | null; hidden: boolean; saving: boolean; onSave: (code: string) => void;
+}) {
+  const [country, setCountry] = useState<string | null>(value);
+  const [query, setQuery] = useState("");
+  const all = useMemo(() => (open ? countryOptions() : []), [open]);
+  const q = query.trim();
+  const shown = q ? all.filter((c) => c.name.includes(q) || c.code.toLowerCase() === q.toLowerCase()) : all;
+  useEffect(() => { if (open) { setCountry(value); setQuery(""); } }, [open, value]);
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="bottom" dir="rtl" className="mx-auto flex max-h-[85dvh] max-w-md flex-col rounded-t-[2rem]">
+        <SheetHeader className="text-start">
+          <SheetTitle>الدولة</SheetTitle>
+          <SheetDescription>علمها بيظهر جنب الـ ID في بروفايلك.</SheetDescription>
+        </SheetHeader>
         <div className="relative mt-2">
           <Search className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="ابحث عن دولتك" className="rounded-full pr-9" />
@@ -135,11 +127,10 @@ function ProfileInfoSheet({ open, onOpenChange, info, onSaved }: {
           ))}
           {shown.length === 0 && <li className="p-4 text-center text-sm text-muted-foreground">مفيش دولة بالاسم ده</li>}
         </ul>
-        {info.country_hidden && (
+        {hidden && (
           <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground"><EyeOff className="size-3.5" /> دولتك مخفية عن الآخرين لأنك مفعّل إخفاء الموقع.</p>
         )}
-
-        <Button type="button" onClick={save} disabled={saving || (gender === info.gender && country === info.country)} className="mt-4 w-full rounded-full">
+        <Button type="button" onClick={() => country && onSave(country)} disabled={saving || !country || country === value} className="mt-4 w-full rounded-full">
           {saving ? "جارٍ الحفظ…" : "حفظ"}
         </Button>
       </SheetContent>

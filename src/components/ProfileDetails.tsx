@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { updateMyAvatar } from "@/lib/rooms";
+import { useEffect, useState, type ReactNode } from "react";
 import { Armchair, Copy, Feather, PenSquare, User } from "lucide-react";
 import cpCard from "@/assets/cp-relationship-card.webp";
 import { toast } from "sonner";
@@ -14,7 +13,7 @@ import { badgeTier, charismaBadge, wealthBadge } from "@/lib/badges";
 import { shownId } from "@/lib/special-id";
 import { activeVipLevel } from "@/lib/vip";
 import { VipBadge, VipFrame } from "@/components/VipBadge";
-import { ProfileIdTags, ProfileInfoEdit, useProfileInfo } from "@/components/ProfileInfo";
+import { ProfileAlbumStrip, ProfileIdTags, useProfileInfo } from "@/components/ProfileInfo";
 
 const tabs = ["هدية", "اطار", "مركبة", "شارة"] as const;
 
@@ -55,11 +54,9 @@ function useBio(userId: string | undefined) {
 
 export type DetailsProfile = Profile & { auth_id?: string };
 
-export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back, onAvatarChanged }: {
-  profile: DetailsProfile | null; userId: string | undefined; ready: boolean; signedIn: boolean; isSelf: boolean; back: ReactNode; onAvatarChanged?: () => void;
+export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back }: {
+  profile: DetailsProfile | null; userId: string | undefined; ready: boolean; signedIn: boolean; isSelf: boolean; back: ReactNode;
 }) {
-  const avatarInput = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
   const session = signedIn ? { user: { user_metadata: {} as Record<string, unknown> } } : null;
   const counts = useCounts(userId);
   const thresholds = useThresholds();
@@ -73,7 +70,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
   const avatar = profile?.avatar_url && !avatarBroken ? profile.avatar_url : null;
   const initial = (name.trim().charAt(0) || "؟").toUpperCase();
   const vipLevel = activeVipLevel(profile);
-  const [info, setInfo] = useProfileInfo(userId);
+  const [info] = useProfileInfo(userId);
 
   return (
     <>
@@ -87,20 +84,11 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
           {back}
-          {isSelf && userId ? <>
-            <Button variant="ghost" size="icon" disabled={uploading} aria-label="تغيير الصورة الشخصية" onClick={() => avatarInput.current?.click()} className="rounded-full bg-overlay text-on-media backdrop-blur">
-              <PenSquare className="size-5" />
+          {isSelf && userId ? (
+            <Button asChild variant="ghost" size="icon" className="rounded-full bg-overlay text-on-media backdrop-blur">
+              <Link to="/me/edit" aria-label="تعديل البيانات"><PenSquare className="size-5" /></Link>
             </Button>
-            <input ref={avatarInput} hidden type="file" accept="image/*" onChange={async (e) => {
-              const f = e.target.files?.[0]; e.target.value = "";
-              if (!f) return;
-              if (!f.type.startsWith("image/") || f.size > 5 * 1024 * 1024) { toast.error("اختار صورة أقل من 5 ميجا"); return; }
-              setUploading(true);
-              try { await updateMyAvatar(userId, f); toast.success("تم تحديث الصورة"); onAvatarChanged?.(); }
-              catch { toast.error("الصورة ماترفعتش"); }
-              finally { setUploading(false); }
-            }} />
-          </> : <span />}
+          ) : <span />}
         </div>
 
         <div className="absolute inset-x-0 bottom-3 flex items-end gap-3 px-5">
@@ -146,7 +134,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
           </p>
 
           {/* الجنس والدولة */}
-          {isSelf && <ProfileInfoEdit info={info} onSaved={(next) => setInfo((cur) => (cur ? { ...cur, ...next } : cur))} />}
+          <ProfileAlbumStrip album={info?.album ?? []} />
 
           {/* الإحصائيات */}
           <section className="mx-4 mt-5 grid grid-cols-3 rounded-2xl border border-primary/40 bg-card py-4 shadow-soft">

@@ -1,8 +1,18 @@
 import { supabase } from '@/lib/supabase';
 
-/** Gender and country of a member (supabase/020_gender_country.sql). */
+/** Gender, country (supabase/020), birthday and album (supabase/021) of a member. */
 export type Gender = 'male' | 'female';
-export type ProfileInfo = { gender: Gender | null; country: string | null; country_hidden: boolean };
+export type ProfileInfo = {
+  gender: Gender | null; country: string | null; country_hidden: boolean;
+  /** YYYY-MM-DD, only ever returned to the member themself. */
+  birthday: string | null;
+  /** Up to ALBUM_MAX picture addresses, in display order. */
+  album: string[];
+};
+
+export const ALBUM_MAX = 5;
+export const NAME_MAX = 60;
+export const BIO_MAX = 300;
 
 export const GENDER_LABEL: Record<Gender, string> = { male: 'ذكر', female: 'أنثى' };
 
@@ -59,6 +69,8 @@ export async function loadProfileInfo(authId: string): Promise<ProfileInfo | nul
     gender: d.gender === 'male' || d.gender === 'female' ? d.gender : null,
     country: typeof d.country === 'string' ? d.country : null,
     country_hidden: !!d.country_hidden,
+    birthday: typeof d.birthday === 'string' ? d.birthday.slice(0, 10) : null,
+    album: Array.isArray(d.album) ? d.album.filter((u): u is string => typeof u === 'string').slice(0, ALBUM_MAX) : [],
   };
 }
 
@@ -66,4 +78,51 @@ export async function loadProfileInfo(authId: string): Promise<ProfileInfo | nul
 export async function saveMyProfileInfo(gender: Gender | null, country: string | null) {
   const { error } = await supabase.rpc('set_my_profile_info', { p_gender: gender, p_country: country });
   if (error) throw error;
+}
+
+/** Save my own birthday (YYYY-MM-DD, or null to clear). */
+export async function saveMyBirthday(birthday: string | null) {
+  const { error } = await supabase.rpc('set_my_birthday', { p_birthday: birthday });
+  if (error) throw error;
+}
+
+/** Replace my album with these picture addresses (at most ALBUM_MAX). */
+export async function saveMyAlbum(urls: string[]) {
+  const { error } = await supabase.rpc('set_my_album', { p_urls: urls.slice(0, ALBUM_MAX) });
+  if (error) throw error;
+}
+
+/** Upload one album picture and return its address. */
+export async function uploadAlbumPicture(file: File): Promise<string> {
+  const { uploadToCloudinary } = await import('@/lib/cloudinary');
+  return uploadToCloudinary(file, 'voli/album');
+}
+
+/** Trimmed name, or an Arabic reason it can't be saved. */
+export function checkName(name: string): { ok: true; value: string } | { ok: false; reason: string } {
+  const value = name.trim();
+  if (!value) return { ok: false, reason: 'اكتب اسمك' };
+  if (value.length > NAME_MAX) return { ok: false, reason: `الاسم لازم يكون ${NAME_MAX} حرف أو أقل` };
+  return { ok: true, value };
+}
+
+/** Save my own name; a management lock comes back as 'locked'. */
+export async function saveMyName(authId: string, name: string): Promise<'ok' | 'locked'> {
+  const { error } = await supabase.from('profiles').update({ display_name: name }).eq('auth_id', authId);
+  if (error && (error as { hint?: string }).hint === 'name_locked') return 'locked';
+  if (error) throw error;
+  return 'ok';
+}
+
+/** Save my own bio (empty clears it). */
+export async function saveMyBio(authId: string, bio: string) {
+  const value = bio.trim().slice(0, BIO_MAX);
+  const { error } = await supabase.from('profiles').update({ bio: value || null }).eq('auth_id', authId);
+  if (error) throw error;
+}
+
+/** My current bio. */
+export async function loadMyBio(authId: string): Promise<string> {
+  const { data } = await supabase.from('profiles').select('bio').eq('auth_id', authId).maybeSingle();
+  return (data as { bio: string | null } | null)?.bio ?? '';
 }
