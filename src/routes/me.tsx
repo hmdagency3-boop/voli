@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import diamondIcon from '@/assets/diamond.webp';
 import coinIcon from '@/assets/coin.webp';
 import vipClubCard from '@/assets/vip-club-card.webp';
-import profileWallpaper from '@/assets/profile-wallpaper.jpg.asset.json';
+import profileWallpaper from '@/assets/profile-wallpaper.jpg';
 import { useAccount } from "@/hooks/use-account";
 import { supabase } from "@/lib/supabase";
 import {
@@ -76,7 +76,7 @@ export const Route = createFileRoute("/me")({
 /** خلفية صفحة "أنا": صورة التنانين، وتحتها طبقة تعتيم تخلي الكلام مقروء. */
 const meBackground = (
   <>
-    <img src={profileWallpaper.url} alt="" draggable={false} className="size-full object-cover object-center" />
+    <img src={profileWallpaper} alt="" draggable={false} className="size-full object-cover object-center" />
     <div className="absolute inset-0 bg-gradient-to-b from-background/25 via-background/50 to-background/85" />
   </>
 );
