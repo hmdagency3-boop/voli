@@ -178,16 +178,16 @@ function MePage() {
               )}
             </div>
           </div>
-        </section>
 
-        {/* ── الإحصائيات ── */}
-        <section className="mx-4 mt-3 grid grid-cols-3 rounded-[1.5rem] border bg-card py-4">
-          {stats.map((s, i) => (
-            <div key={s.label} className={`text-center ${i ? "border-r" : ""}`}>
-              <p className="font-display text-lg font-bold">{s.value}</p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">{s.label}</p>
-            </div>
-          ))}
+          {/* ── الإحصائيات (جزء من بطاقة الملف) ── */}
+          <div className="mt-4 grid grid-cols-3 border-t pt-4">
+            {stats.map((s, i) => (
+              <div key={s.label} className={`text-center ${i ? "border-r" : ""}`}>
+                <p className="font-display text-lg font-bold">{s.value}</p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* ── بانر VIP ── */}
