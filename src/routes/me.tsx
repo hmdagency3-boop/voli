@@ -180,9 +180,9 @@ function MePage() {
           </div>
 
           {/* ── الإحصائيات (جزء من بطاقة الملف) ── */}
-          <div className="mt-4 grid grid-cols-3 border-t pt-4">
-            {stats.map((s, i) => (
-              <div key={s.label} className={`text-center ${i ? "border-r" : ""}`}>
+          <div className="mt-4 grid grid-cols-3">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center">
                 <p className="font-display text-lg font-bold">{s.value}</p>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">{s.label}</p>
               </div>
