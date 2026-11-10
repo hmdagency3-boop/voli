@@ -33,6 +33,17 @@ export function countryFlag(code: string): string {
   return String.fromCodePoint(...[...code].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
 }
 
+/** Round (1:1) flag pictures bundled with the app, keyed by lower-case country code. */
+const FLAG_FILES = import.meta.glob('/node_modules/flag-icons/flags/1x1/*.svg', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+const FLAGS: Record<string, string> = Object.fromEntries(
+  Object.entries(FLAG_FILES).map(([path, url]) => [path.slice(path.lastIndexOf('/') + 1, -4), url]),
+);
+
+/** Picture of a country's flag, or null when none is bundled. */
+export function countryFlagUrl(code: string): string | null {
+  return FLAGS[code.toLowerCase()] ?? null;
+}
+
 /** All countries for the picker: Arab countries first, then the rest by Arabic name. */
 export function countryOptions(): { code: string; name: string }[] {
   const rest = OTHERS.map((code) => ({ code, name: countryName(code) })).sort((a, b) => a.name.localeCompare(b.name, 'ar'));

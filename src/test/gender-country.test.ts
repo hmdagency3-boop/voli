@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import type { PGlite } from '@electric-sql/pglite';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 import { supabaseLike, addUser, asUser } from './supabase-like';
-import { countryFlag, countryOptions } from '@/lib/profile-info';
+import { countryFlag, countryFlagUrl, countryOptions } from '@/lib/profile-info';
 
 const files = ['sql/voli-starter.sql', 'supabase/001_levels.sql', 'supabase/002_special_id.sql', 'supabase/003_vip.sql', 'supabase/020_gender_country.sql']
   .map((f) => readFileSync(f, 'utf8'));
@@ -61,5 +61,10 @@ describe('gender and country on profiles', () => {
     expect(list[0]!.code).toBe('EG');
     expect(new Set(list.map((c) => c.code)).size).toBe(list.length);
     expect(countryFlag('EG')).toBe('🇪🇬');
+  });
+
+  it('every country in the picker has a round flag picture', () => {
+    const missing = countryOptions().filter((c) => !countryFlagUrl(c.code)).map((c) => c.code);
+    expect(missing).toEqual([]);
   });
 });

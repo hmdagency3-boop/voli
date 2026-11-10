@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
-  GENDER_LABEL, countryFlag, countryName, countryOptions, loadProfileInfo, saveMyProfileInfo,
+  GENDER_LABEL, countryFlagUrl, countryFlag, countryName, countryOptions, loadProfileInfo, saveMyProfileInfo,
   type Gender, type ProfileInfo,
 } from "@/lib/profile-info";
 
@@ -34,13 +34,18 @@ export function ProfileIdTags({ info, isSelf }: { info: ProfileInfo | null; isSe
         </span>
       )}
       {info.country && (
-        <span role="img" aria-label={countryName(info.country)} title={countryName(info.country)}
-          className={`relative shrink-0 text-base leading-none ${isSelf && info.country_hidden ? "opacity-50" : ""}`}>
-          {countryFlag(info.country)}
-        </span>
+        <CountryFlag code={info.country} className={`size-5 ${isSelf && info.country_hidden ? "opacity-50" : ""}`} />
       )}
     </>
   );
+}
+
+/** Round country flag picture; falls back to the emoji when no picture exists. */
+export function CountryFlag({ code, className = "" }: { code: string; className?: string }) {
+  const url = countryFlagUrl(code);
+  const label = countryName(code);
+  if (!url) return <span role="img" aria-label={label} title={label} className="shrink-0 text-base leading-none">{countryFlag(code)}</span>;
+  return <img src={url} alt={label} title={label} draggable={false} className={`shrink-0 rounded-full object-cover ring-1 ring-border ${className}`} />;
 }
 
 /** The owner's button for choosing gender and country. */
@@ -122,7 +127,7 @@ function ProfileInfoSheet({ open, onOpenChange, info, onSaved }: {
             <li key={c.code}>
               <button type="button" role="option" aria-selected={country === c.code} onClick={() => setCountry(c.code)}
                 className={`flex w-full items-center gap-3 px-4 py-2.5 text-start text-sm transition hover:bg-secondary ${country === c.code ? "bg-secondary font-bold" : ""}`}>
-                <span aria-hidden className="text-lg leading-none">{countryFlag(c.code)}</span>
+                <CountryFlag code={c.code} className="size-6" />
                 <span className="flex-1">{c.name}</span>
                 {country === c.code && <Check className="size-4 text-primary" />}
               </button>

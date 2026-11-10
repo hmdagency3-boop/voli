@@ -103,7 +103,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
           </> : <span />}
         </div>
 
-        <div className="absolute inset-x-0 bottom-3 flex items-end gap-4 px-5">
+        <div className="absolute inset-x-0 bottom-3 flex items-end gap-3 px-5">
           <VipFrame level={vipLevel}>
             <span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-full border-4 border-background bg-secondary text-muted-foreground">
               {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="size-full object-cover" /> : <User className="size-10" />}
@@ -112,7 +112,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
           <div className="min-w-0 flex-1 pb-1">
             <h1 className="truncate font-display text-2xl font-extrabold">{session && (profile || isSelf) ? name : ready ? (isSelf ? "لم يتم تسجيل الدخول" : "المستخدم غير موجود") : "…"}</h1>
             {profile && (
-              <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground" dir="ltr">
+              <div className="mt-0.5 flex items-center justify-end gap-1.5 text-sm text-muted-foreground" dir="ltr">
                 {profile.special_id ? (
                   <SpecialIdBadge id={profile.special_id} vipLevel={vipLevel} className="w-20" />
                 ) : (
@@ -125,7 +125,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
               </div>
             )}
             {profile && (
-              <div dir="rtl" className="mt-2 flex flex-wrap items-center gap-2">
+              <div dir="rtl" className="mt-2.5 flex flex-wrap items-center gap-2">
                 <VipBadge level={vipLevel} />
                 <LevelBadge badge={wealthBadge(wl)} level={wl} locked={badgeTier(wl) === null} height={22} />
                 <LevelBadge badge={charismaBadge(cl)} level={cl} locked={badgeTier(cl) === null} height={22} />
