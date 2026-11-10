@@ -87,6 +87,14 @@ const menu = [
   { icon: Headphones, label: "المساعدة والدعم", hint: "" },
 ];
 
+/** The member's picture, or the person icon when there is none or it fails to load. */
+function MeAvatar({ url }: { url: string | null }) {
+  const [broken, setBroken] = useState(false);
+  useEffect(() => setBroken(false), [url]);
+  if (!url || broken) return <User className="size-10" aria-hidden="true" />;
+  return <img src={url} alt="صورتك الشخصية" onError={() => setBroken(true)} className="size-full object-cover" draggable={false} />;
+}
+
 function MePage() {
   const { session, profile, ready } = useAccount();
   const navigate = useNavigate();
@@ -120,8 +128,8 @@ function MePage() {
           {session && <ChevronLeft className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />}
           <div className="flex items-start gap-4">
             <VipFrame level={activeVipLevel(profile)}>
-              <span className="grid size-20 shrink-0 place-items-center rounded-full bg-secondary text-muted-foreground">
-                <User className="size-10" aria-hidden="true" />
+              <span className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full bg-secondary text-muted-foreground">
+                <MeAvatar url={profile?.avatar_url ?? null} />
               </span>
             </VipFrame>
             <div className="min-w-0 flex-1 pt-1">
