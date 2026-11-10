@@ -14,6 +14,7 @@ import { badgeTier, charismaBadge, wealthBadge } from "@/lib/badges";
 import { shownId } from "@/lib/special-id";
 import { activeVipLevel } from "@/lib/vip";
 import { VipBadge, VipFrame } from "@/components/VipBadge";
+import { ProfileInfoRow } from "@/components/ProfileInfo";
 
 const tabs = ["هدية", "اطار", "مركبة", "شارة"] as const;
 
@@ -141,6 +142,9 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
           <p className="mt-3 flex items-center gap-2 px-5 text-sm text-muted-foreground">
             <Feather className="size-4 shrink-0" /> {bio || (isSelf ? "قول شيئاً لجعل الآخرين يعرفون لك ." : "لا توجد نبذة")}
           </p>
+
+          {/* الجنس والدولة */}
+          <ProfileInfoRow userId={userId} isSelf={isSelf} />
 
           {/* الإحصائيات */}
           <section className="mx-4 mt-5 grid grid-cols-3 rounded-2xl border border-primary/40 bg-card py-4 shadow-soft">
