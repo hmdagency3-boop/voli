@@ -21,7 +21,6 @@ import { SpecialIdBadge } from "@/components/SpecialIdBadge";
 import { shownId } from "@/lib/special-id";
 import { activeVipLevel } from "@/lib/vip";
 import { VipBadge, VipFrame } from "@/components/VipBadge";
-import { ProfileIdTags, useProfileInfo } from "@/components/ProfileInfo";
 
 function useThresholds() {
   const [data, setData] = useState<Record<LevelKind, Threshold[]>>({ charisma: [], wealth: [] });
@@ -100,7 +99,6 @@ function MePage() {
   const { session, profile, ready } = useAccount();
   const navigate = useNavigate();
   const thresholds = useThresholds();
-  const [info] = useProfileInfo(session?.user.id);
   return (
     <AppScreen>
         {/* ── الغلاف ── */}
@@ -156,7 +154,6 @@ function MePage() {
                         ) : (
                           <>ID: <span className="font-semibold text-foreground">{profile.public_id}</span></>
                         )}
-                        <ProfileIdTags info={info} isSelf />
                       </span>
                     ) : 'ID غير متوفر بعد'}
                   </div>
