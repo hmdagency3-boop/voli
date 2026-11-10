@@ -97,14 +97,14 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back 
             <h1 className="truncate font-display text-2xl font-extrabold">{session && (profile || isSelf) ? name : ready ? (isSelf ? "لم يتم تسجيل الدخول" : "المستخدم غير موجود") : "…"}</h1>
             {profile && (
               <div className="mt-0.5 flex items-center justify-end gap-1.5 text-sm text-muted-foreground" dir="ltr">
+                <button type="button" aria-label="نسخ الـ ID" onClick={() => { navigator.clipboard.writeText(shownId(profile)); toast.success("تم نسخ الـ ID"); }} className="grid size-6 place-items-center rounded-md hover:text-foreground">
+                  <Copy className="size-3.5" />
+                </button>
                 {profile.special_id ? (
                   <SpecialIdBadge id={profile.special_id} vipLevel={vipLevel} className="w-20" />
                 ) : (
                   <span>ID:{profile.public_id}</span>
                 )}
-                <button type="button" aria-label="نسخ الـ ID" onClick={() => { navigator.clipboard.writeText(shownId(profile)); toast.success("تم نسخ الـ ID"); }} className="grid size-6 place-items-center rounded-md hover:text-foreground">
-                  <Copy className="size-3.5" />
-                </button>
                 <ProfileIdTags info={info} isSelf={isSelf} />
               </div>
             )}
