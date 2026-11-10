@@ -28,13 +28,16 @@ export function ProfileIdTags({ info, isSelf }: { info: ProfileInfo | null; isSe
   return (
     <>
       {info.gender && (
-        <span role="img" aria-label={GENDER_LABEL[info.gender]} title={GENDER_LABEL[info.gender]}
-          className={`grid size-5 shrink-0 place-items-center rounded-full ${info.gender === "male" ? "bg-gender-male/20 text-gender-male" : "bg-gender-female/20 text-gender-female"}`}>
-          {info.gender === "male" ? <Mars className="size-3.5" aria-hidden /> : <Venus className="size-3.5" aria-hidden />}
+        <span role="img"
+          aria-label={info.age != null ? `${GENDER_LABEL[info.gender]}، ${info.age} سنة` : GENDER_LABEL[info.gender]}
+          title={GENDER_LABEL[info.gender]}
+          className={`inline-flex h-[18px] shrink-0 items-center gap-0.5 rounded-full px-1.5 text-gender-foreground ${info.gender === "male" ? "bg-gender-male" : "bg-gender-female"}`}>
+          {info.gender === "male" ? <Mars className="size-3 stroke-[2.75]" aria-hidden /> : <Venus className="size-3 stroke-[2.75]" aria-hidden />}
+          {info.age != null && <span className="text-[11px] font-bold italic leading-none tabular-nums" aria-hidden>{info.age}</span>}
         </span>
       )}
       {info.country && (
-        <CountryFlag code={info.country} className={`size-5 ${isSelf && info.country_hidden ? "opacity-50" : ""}`} />
+        <CountryFlag code={info.country} className={`size-4 ${isSelf && info.country_hidden ? "opacity-50" : ""}`} />
       )}
     </>
   );

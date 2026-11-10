@@ -6,6 +6,8 @@ export type ProfileInfo = {
   gender: Gender | null; country: string | null; country_hidden: boolean;
   /** YYYY-MM-DD, only ever returned to the member themself. */
   birthday: string | null;
+  /** Age in whole years from the birthday (supabase/022), seen by everyone. */
+  age: number | null;
   /** Up to ALBUM_MAX picture addresses, in display order. */
   album: string[];
 };
@@ -60,6 +62,16 @@ export function countryOptions(): { code: string; name: string }[] {
   return [...ARAB.map((code) => ({ code, name: countryName(code) })), ...rest];
 }
 
+/** Whole years from a YYYY-MM-DD birthday to today (or the given day); null for a bad or future date. */
+export function ageFrom(birthday: string, today: Date = new Date()): number | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(birthday);
+  if (!m) return null;
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const ty = today.getFullYear(), tm = today.getMonth() + 1, td = today.getDate();
+  const age = ty - y - (tm < mo || (tm === mo && td < d) ? 1 : 0);
+  return age >= 0 && age < 150 ? age : null;
+}
+
 /** Gender and country of a member; null when the database update has not been run yet. */
 export async function loadProfileInfo(authId: string): Promise<ProfileInfo | null> {
   const { data, error } = await supabase.rpc('profile_info', { p_auth: authId });
@@ -70,6 +82,8 @@ export async function loadProfileInfo(authId: string): Promise<ProfileInfo | nul
     country: typeof d.country === 'string' ? d.country : null,
     country_hidden: !!d.country_hidden,
     birthday: typeof d.birthday === 'string' ? d.birthday.slice(0, 10) : null,
+    // Before update 022 only the member's own birthday comes back, so work their age out here.
+    age: typeof d.age === 'number' ? d.age : typeof d.birthday === 'string' ? ageFrom(d.birthday) : null,
     album: Array.isArray(d.album) ? d.album.filter((u): u is string => typeof u === 'string').slice(0, ALBUM_MAX) : [],
   };
 }

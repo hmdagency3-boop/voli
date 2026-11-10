@@ -12,7 +12,7 @@ import { useAccount } from "@/hooks/use-account";
 import { updateMyAvatar } from "@/lib/rooms";
 import {
   ALBUM_MAX, BIO_MAX, GENDER_LABEL, NAME_MAX, checkName, countryName, loadMyBio, saveMyAlbum, saveMyBio,
-  saveMyBirthday, saveMyName, saveMyProfileInfo, uploadAlbumPicture, type ProfileInfo,
+  ageFrom, saveMyBirthday, saveMyName, saveMyProfileInfo, uploadAlbumPicture, type ProfileInfo,
 } from "@/lib/profile-info";
 
 export const Route = createFileRoute("/me_/edit")({
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/me_/edit")({
 });
 
 type Field = "name" | "gender" | "birthday" | "country" | "bio" | null;
-const EMPTY: ProfileInfo = { gender: null, country: null, country_hidden: false, birthday: null, album: [] };
+const EMPTY: ProfileInfo = { gender: null, country: null, country_hidden: false, birthday: null, age: null, album: [] };
 const MAX_PICTURE = 5 * 1024 * 1024;
 const okPicture = (f: File) => f.type.startsWith("image/") && f.size <= MAX_PICTURE;
 
@@ -187,7 +187,7 @@ function EditProfilePage() {
         onSave={(c) => run(async () => { await saveMyProfileInfo(info.gender, c); setInfo({ ...info, country: c }); })} />
 
       <BirthdaySheet open={field === "birthday"} onOpenChange={(v) => setField(v ? "birthday" : null)} value={info.birthday} saving={saving}
-        onSave={(d) => run(async () => { await saveMyBirthday(d); setInfo({ ...info, birthday: d }); })} />
+        onSave={(d) => run(async () => { await saveMyBirthday(d); setInfo({ ...info, birthday: d, age: d ? ageFrom(d) : null }); })} />
     </AppScreen>
   );
 }

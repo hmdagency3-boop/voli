@@ -59,6 +59,7 @@
   --color-rank-pink: var(--rank-pink);
   --color-gender-male: var(--gender-male);
   --color-gender-female: var(--gender-female);
+  --color-gender-foreground: var(--gender-foreground);
   --color-vip-1: var(--vip-1);
   --color-vip-2: var(--vip-2);
   --color-vip-3: var(--vip-3);
@@ -126,6 +127,7 @@
   --rank-pink: oklch(0.72 0.2 340);
   --gender-male: oklch(0.72 0.14 235);
   --gender-female: oklch(0.74 0.17 350);
+  --gender-foreground: oklch(1 0 0);
   --gradient-brand: linear-gradient(135deg, oklch(0.27 0.11 310), oklch(0.39 0.16 315));
   --gradient-media: linear-gradient(to top, oklch(0.12 0.02 300 / 0.85), transparent 60%);
   --shadow-soft: 0 12px 30px -12px oklch(0.10 0.04 310 / 0.55);
