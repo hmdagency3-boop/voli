@@ -9,48 +9,56 @@ import {
   type Gender, type ProfileInfo,
 } from "@/lib/profile-info";
 
-/** Gender and country tags on a profile; the owner can edit them. */
-export function ProfileInfoRow({ userId, isSelf }: { userId: string | undefined; isSelf: boolean }) {
+/** Loads a member's gender and country; null until loaded or when the database update is missing. */
+export function useProfileInfo(userId: string | undefined) {
   const [info, setInfo] = useState<ProfileInfo | null>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [open, setOpen] = useState(false);
-
   useEffect(() => {
     if (!userId) return;
     let active = true;
-    setLoaded(false);
-    loadProfileInfo(userId).then((r) => { if (active) { setInfo(r); setLoaded(true); } });
+    setInfo(null);
+    loadProfileInfo(userId).then((r) => { if (active) setInfo(r); });
     return () => { active = false; };
   }, [userId]);
+  return [info, setInfo] as const;
+}
 
-  if (!userId || !loaded || !info) return null;
-  const empty = !info.gender && !info.country;
-  if (empty && !isSelf) return null;
-
+/** Small gender sign and country flag shown next to the ID. */
+export function ProfileIdTags({ info, isSelf }: { info: ProfileInfo | null; isSelf: boolean }) {
+  if (!info) return null;
   return (
-    <div className="mt-3 flex flex-wrap items-center gap-2 px-5">
+    <>
       {info.gender && (
-        <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${info.gender === "male" ? "bg-gender-male/15 text-gender-male" : "bg-gender-female/15 text-gender-female"}`}>
+        <span role="img" aria-label={GENDER_LABEL[info.gender]} title={GENDER_LABEL[info.gender]}
+          className={`grid size-5 shrink-0 place-items-center rounded-full ${info.gender === "male" ? "bg-gender-male/20 text-gender-male" : "bg-gender-female/20 text-gender-female"}`}>
           {info.gender === "male" ? <Mars className="size-3.5" aria-hidden /> : <Venus className="size-3.5" aria-hidden />}
-          {GENDER_LABEL[info.gender]}
         </span>
       )}
       {info.country && (
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-bold">
-          <span aria-hidden className="text-sm leading-none">{countryFlag(info.country)}</span>
-          {countryName(info.country)}
-          {isSelf && info.country_hidden && <EyeOff className="size-3.5 text-muted-foreground" aria-label="مخفية عن الآخرين" />}
+        <span role="img" aria-label={countryName(info.country)} title={countryName(info.country)}
+          className={`relative shrink-0 text-base leading-none ${isSelf && info.country_hidden ? "opacity-50" : ""}`}>
+          {countryFlag(info.country)}
         </span>
       )}
-      {isSelf && (
-        <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(true)} className="h-7 rounded-full px-3 text-xs text-primary">
-          <PenLine className="size-3.5" /> {empty ? "أضف الجنس والدولة" : "تعديل"}
-        </Button>
+    </>
+  );
+}
+
+/** The owner's button for choosing gender and country. */
+export function ProfileInfoEdit({ info, onSaved }: {
+  info: ProfileInfo | null; onSaved: (next: { gender: Gender | null; country: string | null }) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  if (!info) return null;
+  const empty = !info.gender && !info.country;
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-2 px-5">
+      <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(true)} className="h-7 rounded-full px-3 text-xs text-primary">
+        <PenLine className="size-3.5" /> {empty ? "أضف الجنس والدولة" : "تعديل الجنس والدولة"}
+      </Button>
+      {info.country_hidden && (
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><EyeOff className="size-3.5" /> دولتك مخفية عن الآخرين</span>
       )}
-      {isSelf && (
-        <ProfileInfoSheet open={open} onOpenChange={setOpen} info={info}
-          onSaved={(next) => setInfo({ ...info, ...next })} />
-      )}
+      <ProfileInfoSheet open={open} onOpenChange={setOpen} info={info} onSaved={onSaved} />
     </div>
   );
 }

@@ -14,7 +14,7 @@ import { badgeTier, charismaBadge, wealthBadge } from "@/lib/badges";
 import { shownId } from "@/lib/special-id";
 import { activeVipLevel } from "@/lib/vip";
 import { VipBadge, VipFrame } from "@/components/VipBadge";
-import { ProfileInfoRow } from "@/components/ProfileInfo";
+import { ProfileIdTags, ProfileInfoEdit, useProfileInfo } from "@/components/ProfileInfo";
 
 const tabs = ["هدية", "اطار", "مركبة", "شارة"] as const;
 
@@ -73,6 +73,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
   const avatar = profile?.avatar_url && !avatarBroken ? profile.avatar_url : null;
   const initial = (name.trim().charAt(0) || "؟").toUpperCase();
   const vipLevel = activeVipLevel(profile);
+  const [info, setInfo] = useProfileInfo(userId);
 
   return (
     <>
@@ -120,6 +121,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
                 <button type="button" aria-label="نسخ الـ ID" onClick={() => { navigator.clipboard.writeText(shownId(profile)); toast.success("تم نسخ الـ ID"); }} className="grid size-6 place-items-center rounded-md hover:text-foreground">
                   <Copy className="size-3.5" />
                 </button>
+                <ProfileIdTags info={info} isSelf={isSelf} />
               </div>
             )}
             {profile && (
@@ -144,7 +146,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back,
           </p>
 
           {/* الجنس والدولة */}
-          <ProfileInfoRow userId={userId} isSelf={isSelf} />
+          {isSelf && <ProfileInfoEdit info={info} onSaved={(next) => setInfo((cur) => (cur ? { ...cur, ...next } : cur))} />}
 
           {/* الإحصائيات */}
           <section className="mx-4 mt-5 grid grid-cols-3 rounded-2xl border border-primary/40 bg-card py-4 shadow-soft">
