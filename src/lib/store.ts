@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import { svgaFileProblem } from '@/lib/svga/proto';
 import { cloudinaryUpload, giftArtProblem, giftVideoProblem, giftVideoUrlOk, isMissingFunction, normalizeGiftVideoUrl, type UploadProgress, type UploadStatus } from '@/lib/admin';
 
 /**
@@ -21,10 +22,11 @@ export const STORE_STYLES: { value: StoreStyle; label: string }[] = [
 export const STORE_DAYS_MAX = 3650;
 export const STORE_ART_FOLDER = 'voli/store';
 export const STORE_VIDEO_FOLDER = 'voli/store-videos';
+export const STORE_SVGA_FOLDER = 'voli/store-svga';
 
 export type StoreItem = {
   id: string; kind: StoreKind; style: StoreStyle; name: string; price: number; days: number;
-  art_url: string; video_url: string | null; sort: number; active: boolean; created_at: string;
+  art_url: string; video_url: string | null; svga_url: string | null; sort: number; active: boolean; created_at: string;
   sold_count: number; sold_value: number; owners_now: number;
 };
 export type BackpackItem = { item_id: string; kind: StoreKind; name: string; art_url: string; expires_at: string; equipped: boolean };
@@ -41,7 +43,7 @@ async function call<T>(fn: string, args: Record<string, unknown> = {}): Promise<
 export async function getStoreItems(): Promise<StoreItem[]> {
   const rows = await call<StoreItem[]>('admin_store_items');
   return (rows ?? []).map((r) => ({
-    ...r, price: Number(r.price), days: Number(r.days), sort: Number(r.sort), video_url: r.video_url ?? null,
+    ...r, price: Number(r.price), days: Number(r.days), sort: Number(r.sort), video_url: r.video_url ?? null, svga_url: r.svga_url ?? null,
     sold_count: Number(r.sold_count), sold_value: Number(r.sold_value), owners_now: Number(r.owners_now),
   }));
 }
@@ -108,3 +110,46 @@ export const grantStoreItem = (authId: string, itemId: string, days: number | nu
   call<string>('admin_grant_store_item', { p_auth: authId, p_item: itemId, p_days: days });
 export const revokeStoreItem = (authId: string, itemId: string) =>
   call<void>('admin_revoke_store_item', { p_auth: authId, p_item: itemId });
+
+// ---------- SVGA animations (owner-run sql/024_store_svga.sql) ----------
+/** Same rule as store_svga_ok in sql/024: a .svga file in Voli's Cloudinary cloud. */
+// eslint-disable-next-line no-control-regex
+const SVGA_URL = /^https:\/\/res\.cloudinary\.com\/zsxxjkqg\/raw\/upload\/[^\u0000-\u001f\u007f"'<>\\]+\.svga$/;
+export const svgaUrlOk = (url: string) => SVGA_URL.test(url);
+
+async function svgaCall<T>(fn: string, args: Record<string, unknown> = {}): Promise<T> {
+  const { data, error } = await supabase.rpc(fn, args);
+  if (error) {
+    if (isMissingFunction(error, fn)) throw Object.assign(new Error('svga_missing'), { hint: 'svga_missing', cause: error });
+    throw error;
+  }
+  return data as T;
+}
+/** Fails with svga_missing before anything is uploaded when update 024 has not been run. */
+export const svgaReady = () => svgaCall<boolean>('admin_store_svga_ready');
+
+export async function uploadSvga(file: File, onProgress?: UploadProgress): Promise<string> {
+  const problem = svgaFileProblem(file.name, new Uint8Array(await file.arrayBuffer()));
+  if (problem) throw Object.assign(new Error(problem), { hint: 'bad_svga_file' });
+  return normalizeGiftVideoUrl(await cloudinaryUpload(file, 'raw', STORE_SVGA_FOLDER, onProgress, 'store-svga'));
+}
+
+/** New store item whose animation is an SVGA file (made in the frame studio or ready-made). */
+export async function createSvgaItem(v: {
+  kind: StoreKind; style: StoreStyle; name: string; price: number; days: number; sort?: number | null; art: File; svga: File;
+}, onProgress?: UploadProgress): Promise<string> {
+  await svgaReady();
+  const svga = await uploadSvga(v.svga, onProgress);
+  const art = await uploadArt(v.art, onProgress);
+  onProgress?.({ stage: 'saving' });
+  return svgaCall<string>('admin_create_store_svga_item', {
+    p_kind: v.kind, p_style: v.style, p_name: v.name.trim(), p_price: v.price, p_days: v.days, p_sort: v.sort ?? null, p_art_url: art, p_svga_url: svga,
+  });
+}
+export async function changeStoreSvga(id: string, file: File, onProgress?: UploadProgress) {
+  await svgaReady();
+  const url = await uploadSvga(file, onProgress);
+  onProgress?.({ stage: 'saving' });
+  return svgaCall<void>('admin_set_store_item_svga', { p_id: id, p_svga_url: url });
+}
+export const removeStoreSvga = (id: string) => svgaCall<void>('admin_set_store_item_svga', { p_id: id, p_svga_url: null });

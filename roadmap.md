@@ -25,3 +25,10 @@
 - [x] Entrance pictures: always square (crop middle / whole picture) with soft edges, PNG; 4 rule tests; browser run verified.
 - [ ] Transparent edges on iPhone: the Voli app plays WebM transparency only where the device supports it (separate app).
 - [x] Picture from a video frame (gifts and entrances, new and existing), then adjust square/soft edges; browser run verified with a chosen file and an uploaded Cloudinary link.
+# SVGA frame studio
+- [x] Studio page: pieces as layers, order, drag, pivot, mirror copy, ready-made moves and recipes, glow, moving shine, sparkles, seamless loop, undo, autosave, project file.
+- [x] Real SVGA 2.0 export, real-player preview, publish to store (SVGA + picture); 7 rule tests passed.
+- [ ] Activate on Voli database: requires owner to run sql/024_store_svga.sql.
+- [ ] Play SVGA frames in the Voli app: separate project; request in sql/024_README.md.
+- [ ] Store page: SVGA column and ready-made .svga upload for existing items (functions ready in src/lib/store.ts).
+- [ ] End-to-end check of the studio and publish while signed in as a real admin.

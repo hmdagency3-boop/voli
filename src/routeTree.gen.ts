@@ -15,6 +15,7 @@ import { Route as PanelIndexRouteImport } from './routes/_panel/index'
 import { Route as PanelAgenciesRouteImport } from './routes/_panel/agencies'
 import { Route as PanelBansRouteImport } from './routes/_panel/bans'
 import { Route as PanelDevicesRouteImport } from './routes/_panel/devices'
+import { Route as PanelFrameStudioRouteImport } from './routes/_panel/frame-studio'
 import { Route as PanelGiftsRouteImport } from './routes/_panel/gifts'
 import { Route as PanelLogRouteImport } from './routes/_panel/log'
 import { Route as PanelRoomsRouteImport } from './routes/_panel/rooms'
@@ -50,6 +51,11 @@ const PanelBansRoute = PanelBansRouteImport.update({
 const PanelDevicesRoute = PanelDevicesRouteImport.update({
   id: '/devices',
   path: '/devices',
+  getParentRoute: () => PanelRoute,
+} as any)
+const PanelFrameStudioRoute = PanelFrameStudioRouteImport.update({
+  id: '/frame-studio',
+  path: '/frame-studio',
   getParentRoute: () => PanelRoute,
 } as any)
 const PanelGiftsRoute = PanelGiftsRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/agencies': typeof PanelAgenciesRoute
   '/bans': typeof PanelBansRoute
   '/devices': typeof PanelDevicesRoute
+  '/frame-studio': typeof PanelFrameStudioRoute
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
   '/rooms': typeof PanelRoomsRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/agencies': typeof PanelAgenciesRoute
   '/bans': typeof PanelBansRoute
   '/devices': typeof PanelDevicesRoute
+  '/frame-studio': typeof PanelFrameStudioRoute
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
   '/rooms': typeof PanelRoomsRoute
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/_panel/agencies': typeof PanelAgenciesRoute
   '/_panel/bans': typeof PanelBansRoute
   '/_panel/devices': typeof PanelDevicesRoute
+  '/_panel/frame-studio': typeof PanelFrameStudioRoute
   '/_panel/gifts': typeof PanelGiftsRoute
   '/_panel/log': typeof PanelLogRoute
   '/_panel/rooms': typeof PanelRoomsRoute
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/agencies'
     | '/bans'
     | '/devices'
+    | '/frame-studio'
     | '/gifts'
     | '/log'
     | '/rooms'
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/agencies'
     | '/bans'
     | '/devices'
+    | '/frame-studio'
     | '/gifts'
     | '/log'
     | '/rooms'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/_panel/agencies'
     | '/_panel/bans'
     | '/_panel/devices'
+    | '/_panel/frame-studio'
     | '/_panel/gifts'
     | '/_panel/log'
     | '/_panel/rooms'
@@ -227,6 +239,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelDevicesRouteImport
       parentRoute: typeof PanelRoute
     }
+    '/_panel/frame-studio': {
+      id: '/_panel/frame-studio'
+      path: '/frame-studio'
+      fullPath: '/frame-studio'
+      preLoaderRoute: typeof PanelFrameStudioRouteImport
+      parentRoute: typeof PanelRoute
+    }
     '/_panel/gifts': {
       id: '/_panel/gifts'
       path: '/gifts'
@@ -283,6 +302,7 @@ interface PanelRouteChildren {
   PanelAgenciesRoute: typeof PanelAgenciesRoute
   PanelBansRoute: typeof PanelBansRoute
   PanelDevicesRoute: typeof PanelDevicesRoute
+  PanelFrameStudioRoute: typeof PanelFrameStudioRoute
   PanelGiftsRoute: typeof PanelGiftsRoute
   PanelLogRoute: typeof PanelLogRoute
   PanelRoomsRoute: typeof PanelRoomsRoute
@@ -297,6 +317,7 @@ const PanelRouteChildren: PanelRouteChildren = {
   PanelAgenciesRoute: PanelAgenciesRoute,
   PanelBansRoute: PanelBansRoute,
   PanelDevicesRoute: PanelDevicesRoute,
+  PanelFrameStudioRoute: PanelFrameStudioRoute,
   PanelGiftsRoute: PanelGiftsRoute,
   PanelLogRoute: PanelLogRoute,
   PanelRoomsRoute: PanelRoomsRoute,

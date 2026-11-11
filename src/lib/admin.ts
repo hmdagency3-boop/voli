@@ -233,8 +233,8 @@ export function uploadStatusText(s: UploadStatus): string {
 }
 
 /** Unsigned upload to Cloudinary with progress; returns the https link. */
-export function cloudinaryUpload(file: File, kind: 'image' | 'video', folder: string, onProgress?: UploadProgress, prefix?: string): Promise<string> {
-  const what = kind === 'video' ? 'الفيديو' : 'الصورة';
+export function cloudinaryUpload(file: File, kind: 'image' | 'video' | 'raw', folder: string, onProgress?: UploadProgress, prefix?: string): Promise<string> {
+  const what = kind === 'video' ? 'الفيديو' : kind === 'raw' ? 'ملف SVGA' : 'الصورة';
   return new Promise((resolve, reject) => {
     const form = new FormData();
     form.append('file', file, cloudFileName(file.name, prefix ?? (kind === 'video' ? 'gift-video' : 'gift')));
@@ -488,7 +488,7 @@ export const ACTION_LABELS: Record<string, string> = {
   agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة', notice: 'إشعار رسمي',
   profile_violation: 'إزالة مخالفة', profile_lock: 'منع تغيير الاسم/الصورة',
   device_ban: 'حظر جهاز/شبكة', device_unban: 'فك حظر جهاز/شبكة',
-  store_create: 'إضافة للمتجر', store_update: 'تعديل منتج', store_art: 'صورة منتج', store_video: 'فيديو منتج',
+  store_create: 'إضافة للمتجر', store_update: 'تعديل منتج', store_art: 'صورة منتج', store_video: 'فيديو منتج', store_svga: 'حركة SVGA لمنتج',
   store_grant: 'منح من المتجر', store_revoke: 'سحب من الحقيبة',
 };
 
@@ -515,6 +515,7 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
     case 'store_create': case 'store_update': return `${d['kind'] === 'ride' ? 'دخولية' : 'إطار'} ${d['name'] ?? ''}: ${n('price')} / ${d['days']} يوم${d['active'] === false ? ' (مخفي)' : ''}`;
     case 'store_art': return String(d['name'] ?? '');
     case 'store_video': return `${d['name'] ?? ''}${d['removed'] ? ' — حُذف الفيديو' : ''}`;
+    case 'store_svga': return `${d['name'] ?? ''}${d['removed'] ? ' — حُذفت حركة SVGA' : ''}`;
     case 'store_grant': return `${d['kind'] === 'ride' ? 'دخولية' : 'إطار'} ${d['name'] ?? ''} — ${d['days']} يوم`;
     case 'store_revoke': return `${d['kind'] === 'ride' ? 'دخولية' : 'إطار'} ${d['name'] ?? ''}`;
     case 'device_ban': case 'device_unban': return `${BAN_KIND_LABELS[String(d['kind']) as BanKind] ?? ''}: ${d['value'] ?? ''}`;
@@ -528,12 +529,15 @@ export const adminErrorMessage = (e: unknown) => {
   if (err?.hint === 'devices_missing') return 'يجب تشغيل ملف الأجهزة 015 في قاعدة البيانات أولاً';
   if (err?.hint === 'moderation_missing') return 'يجب تشغيل ملف المخالفات 017 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'store_missing') return 'يجب تشغيل ملف المتجر 023 في قاعدة بيانات فولي أولاً';
+  if (err?.hint === 'svga_missing') return 'يجب تشغيل ملف إطارات SVGA رقم 024 في قاعدة بيانات فولي أولاً';
+  if (err?.hint === 'bad_svga_file') return err.message ?? 'ملف SVGA غير صالح';
   if (err?.hint === 'notice_missing') return 'يجب تشغيل ملف الإشعارات 014 في قاعدة البيانات أولاً';
   if (err?.hint === 'video_missing') return 'دوال هدايا الفيديو غير ظاهرة في قاعدة بيانات فولي: شغّل ملف 019 (المحدّث) مرة أخرى في محرر SQL، فهو يحدّث كاش الدوال فوراً';
   if (err?.hint === 'video_link_failed') return `أُضيفت الهدية والفيديو اترفع على Cloudinary، لكن تعذّر ربطه بالهدية (${(err as { reason?: string }).reason ?? 'خطأ غير معروف'}). استخدم «ربط فيديو موجود برابط» في سطر الهدية`;
   if (missing(err?.code)) return 'يجب تشغيل ملف الإدارة 009 في قاعدة البيانات أولاً';
   if (err?.hint === 'bad_art_file' || err?.hint === 'bad_video_file') return err.message ?? 'الملف غير صالح';
   if (err?.hint === 'upload_failed') {
+    if ((err as { kind?: string }).kind === 'raw') return 'تعذّر رفع ملف SVGA، تحقق من الإنترنت وحاول مجدداً';
     if ((err as { kind?: string }).kind === 'video') return /size|large/i.test(err.message ?? '')
       ? 'الفيديو أكبر من المسموح في حساب Cloudinary' : 'تعذّر رفع الفيديو، تحقق من الإنترنت وحاول مجدداً';
     return /bucket/i.test(err.message ?? '') ? 'يجب تشغيل ملف الهدايا 013 في قاعدة البيانات أولاً' : 'تعذّر رفع الصورة، حاول مجدداً';
@@ -562,6 +566,7 @@ export const adminErrorMessage = (e: unknown) => {
     bad_item_kind: 'نوع المنتج غير صحيح (إطار أو دخولية)',
     bad_style: 'تصنيف المنتج غير صحيح',
     bad_item_art: 'صورة المنتج غير صحيحة، ارفع الصورة من اللوحة',
+    bad_svga: 'رابط SVGA غير مقبول — لازم يكون ملف .svga مرفوع على Cloudinary الخاص بفولي',
     not_for_sale: 'هذا المنتج غير معروض للبيع',
     not_owned: 'المنتج غير موجود في حقيبة العضو أو انتهت مدته',
     not_enough_coins: 'الرصيد غير كافٍ',
