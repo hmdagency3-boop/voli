@@ -30,5 +30,6 @@
 - [x] Real SVGA 2.0 export, real-player preview, publish to store (SVGA + picture); 7 rule tests passed.
 - [ ] Activate on Voli database: requires owner to run sql/024_store_svga.sql.
 - [ ] Play SVGA frames in the Voli app: separate project; request in sql/024_README.md.
-- [ ] Store page: SVGA column and ready-made .svga upload for existing items (functions ready in src/lib/store.ts).
+- [x] Store page: الحركة column with an SVGA badge and a play link that opens a modal running the real .svga file; the product picture carries an SVGA badge. Verified in a browser run with sample products.
+- [ ] Store page: ready-made .svga upload/change/remove for existing items (functions ready in src/lib/store.ts).
 - [ ] End-to-end check of the studio and publish while signed in as a real admin.

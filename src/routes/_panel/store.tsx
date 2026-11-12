@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { EditableProTable, ModalForm, PageContainer, ProForm, ProFormDigit, ProFormSelect, ProFormText, StatisticCard } from "@ant-design/pro-components";
-import { DeleteOutlined, LinkOutlined, PictureOutlined, PlayCircleOutlined, PlusOutlined, UploadOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { DeleteOutlined, LinkOutlined, PictureOutlined, PlayCircleOutlined, PlusOutlined, ThunderboltOutlined, UploadOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import { Alert, App, Button, Card, Col, Dropdown, Image, Modal, Row, Segmented, Space, Tabs, Tag, Upload, type UploadFile } from "antd";
 import { useMemo, useState } from "react";
 import { pageHead } from "@/components/meta";
@@ -8,6 +8,7 @@ import { VideoEdgeEditor } from "@/components/VideoEdgeEditor";
 import { ImageEdgeEditor } from "@/components/ImageEdgeEditor";
 import { ArtField } from "@/components/ArtField";
 import { FrameToArt } from "@/components/VideoFramePicker";
+import { SvgaPlayer } from "@/components/SvgaPlayer";
 import { useAction, useLoad } from "@/components/hooks";
 import { fmt, GIFT_ART_TYPES, GIFT_VIDEO_TYPES, giftArtProblem, giftVideoProblem, giftVideoUrlOk, normalizeGiftVideoUrl, type UploadStatus } from "@/lib/admin";
 import {
@@ -166,8 +167,8 @@ function VideoActions({ item, onDone }: { item: StoreItem; onDone: () => void })
 
 type StyleFilter = "all" | StoreStyle;
 
-function KindTable({ kind, items, loading, reload, onPlay }: {
-  kind: StoreKind; items: StoreItem[]; loading: boolean; reload: () => void; onPlay: (i: StoreItem) => void;
+function KindTable({ kind, items, loading, reload, onPlay, onPlaySvga }: {
+  kind: StoreKind; items: StoreItem[]; loading: boolean; reload: () => void; onPlay: (i: StoreItem) => void; onPlaySvga: (i: StoreItem) => void;
 }) {
   const act = useAction();
   const [style, setStyle] = useState<StyleFilter>("all");
@@ -185,8 +186,13 @@ function KindTable({ kind, items, loading, reload, onPlay }: {
       ]}
       editable={{ type: "single", onSave: async (_k, r) => { await act(() => updateStoreItem(r), "حُفظ المنتج", reload); } }}
       columns={[
-        { title: "الصورة", dataIndex: "art_url", editable: false, width: 84,
-          render: (_, r) => <Image src={r.art_url} width={56} height={56} style={{ objectFit: "contain", background: "#1b1c22", borderRadius: 8 }} /> },
+        { title: "الصورة", dataIndex: "art_url", editable: false, width: 96,
+          render: (_, r) => (
+            <div style={{ position: "relative", width: 56, height: 56 }}>
+              <Image src={r.art_url} width={56} height={56} style={{ objectFit: "contain", background: "#1b1c22", borderRadius: 8 }} />
+              {r.svga_url && <Tag color="gold" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", bottom: -8, margin: 0, fontSize: 10, lineHeight: "16px", padding: "0 4px" }}>SVGA</Tag>}
+            </div>
+          ) },
         { title: "الاسم", dataIndex: "name", formItemProps: { rules: [{ required: true }, { max: 40 }] } },
         { title: "التصنيف", dataIndex: "style", valueType: "select", fieldProps: { options: STORE_STYLES }, render: (_, r) => <Tag>{styleLabel(r.style)}</Tag> },
         { title: "السعر", dataIndex: "price", valueType: "digit", render: (_, r) => fmt(r.price) },
@@ -195,6 +201,12 @@ function KindTable({ kind, items, loading, reload, onPlay }: {
         { title: "معروض للبيع", dataIndex: "active", valueType: "switch" },
         { title: "الفيديو", dataIndex: "video_url", editable: false, width: 90, render: (_, r) => r.video_url
           ? <Tag color="purple" icon={<PlayCircleOutlined />} style={{ cursor: "pointer" }} onClick={() => onPlay(r)}>تشغيل</Tag>
+          : <span style={{ color: "#999" }}>—</span> },
+        { title: "الحركة", dataIndex: "svga_url", editable: false, width: 130, render: (_, r) => r.svga_url
+          ? <Space size={6}>
+              <Tag color="gold" icon={<ThunderboltOutlined />}>SVGA</Tag>
+              <a onClick={() => onPlaySvga(r)}><PlayCircleOutlined /> تشغيل</a>
+            </Space>
           : <span style={{ color: "#999" }}>—</span> },
         { title: "مرات البيع", dataIndex: "sold_count", editable: false, render: (_, r) => fmt(r.sold_count) },
         { title: "قيمة المبيعات", dataIndex: "sold_value", editable: false, render: (_, r) => fmt(r.sold_value) },
@@ -211,6 +223,7 @@ function KindTable({ kind, items, loading, reload, onPlay }: {
 function Store() {
   const { data, loading, error, reload } = useLoad(getStoreItems, []);
   const [play, setPlay] = useState<StoreItem | null>(null);
+  const [playSvga, setPlaySvga] = useState<StoreItem | null>(null);
   const items = data ?? [];
   const sum = (f: (i: StoreItem) => number) => items.reduce((t, i) => t + f(i), 0);
   return (
@@ -225,11 +238,21 @@ function Store() {
       <Card>
         <Tabs items={STORE_KINDS.map((k) => ({
           key: k.value, label: `${k.label} (${items.filter((i) => i.kind === k.value).length})`,
-          children: <KindTable kind={k.value} items={items} loading={loading} reload={reload} onPlay={setPlay} />,
+          children: <KindTable kind={k.value} items={items} loading={loading} reload={reload} onPlay={setPlay} onPlaySvga={setPlaySvga} />,
         }))} />
       </Card>
       <Modal open={!!play} title={play?.name} footer={null} onCancel={() => setPlay(null)} destroyOnHidden width={420} centered>
         {play?.video_url && <video src={play.video_url} controls autoPlay playsInline style={{ width: "100%", maxHeight: "70vh", background: "#000", borderRadius: 8 }} />}
+      </Modal>
+      <Modal open={!!playSvga} title={playSvga ? `حركة ${playSvga.name}` : ""} footer={null} onCancel={() => setPlaySvga(null)} destroyOnHidden width={400} centered>
+        {playSvga?.svga_url && (
+          <>
+            <SvgaPlayer src={playSvga.svga_url} size={320} avatar={0.5} />
+            <div style={{ textAlign: "center", color: "#999", fontSize: 12, marginTop: 10 }}>
+              الصورة الثابتة هي اللي بتظهر في المتجر والحقيبة، والحركة دي هي اللي بتشتغل حوالين العضو في التطبيق.
+            </div>
+          </>
+        )}
       </Modal>
     </PageContainer>
   );
