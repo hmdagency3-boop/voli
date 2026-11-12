@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { apply, layerMatrix, mirrorMat, mul, newAnim, newLayer, plan, pose, type Design } from '@/lib/svga/motion';
-import { decodeSvga, encodeSvga } from '@/lib/svga/proto';
+import { decodeSvga, encodeSvga, nativeSize } from '@/lib/svga/proto';
 
 const design = (layers: Design['layers']): Design => ({ version: 1, name: 't', size: 300, fps: 24, seconds: 2, avatar: 0.6, layers });
 const wing = () => ({ ...newLayer({ name: 'wing', src: 'data:image/png;base64,x', w: 80, h: 60, x: 230, y: 150 }), pivotX: 0.1, pivotY: 0.6, mirror: true, anims: [newAnim('flap')] });
@@ -50,5 +50,14 @@ describe('frame studio motion', () => {
     expect(mv.version).toBe('2.0.0');
     expect([mv.width, mv.fps, mv.frames, mv.sprites.length]).toEqual([300, 24, 48, 2]);
     expect(mv.sprites[1]!.frames[5]!.m[4]).toBeCloseTo(p.sprites[1]!.frames[5]!.m[4], 3);
+  });
+  it('a big picture is stored at its pixel size and shrunk by its movement, so it lands where the preview shows it', () => {
+    const p = plan(design([{ ...wing(), mirror: false }]));
+    const s = p.sprites[0]!;
+    const out = nativeSize({ imageKey: s.key, w: s.w, h: s.h, frames: s.frames }, 320, 240);
+    expect([out.w, out.h]).toEqual([320, 240]);
+    // the far corner of the picture (in its own pixels) ends where the 80×60 piece's corner is in the preview
+    const [px, py] = apply(out.frames[0]!.m, 320, 240), [ex, ey] = apply(s.frames[0]!.m, 80, 60);
+    expect(px).toBeCloseTo(ex, 6); expect(py).toBeCloseTo(ey, 6);
   });
 });
