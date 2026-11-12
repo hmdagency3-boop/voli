@@ -1,5 +1,5 @@
 /** Browser side of the frame studio: builds the pictures (pieces, glow, shine, stars), draws the preview, writes the .svga file. */
-import { encodeSvga, type Movie } from './proto';
+import { encodeSvga, nativeSize, type Movie } from './proto';
 import { plan, type Design, type ImageReq, type Layer, type Plan } from './motion';
 
 export type Drawable = HTMLCanvasElement | HTMLImageElement;
@@ -137,10 +137,17 @@ async function pngBytes(img: Drawable): Promise<Uint8Array> {
 export async function toMovie(d: Design): Promise<Movie> {
   const b = await build(d);
   const images: Record<string, Uint8Array> = {};
-  for (const [k, img] of b.images) images[k] = await pngBytes(img);
+  const px = new Map<string, [number, number]>();
+  for (const [k, img] of b.images) {
+    images[k] = await pngBytes(img);
+    px.set(k, img instanceof HTMLCanvasElement ? [img.width, img.height] : [img.naturalWidth, img.naturalHeight]);
+  }
   return {
     width: d.size, height: d.size, fps: d.fps, frames: b.plan.frames, images,
-    sprites: b.plan.sprites.map((s) => ({ imageKey: s.key, w: s.w, h: s.h, frames: s.frames })),
+    sprites: b.plan.sprites.map((s) => {
+      const [pw, ph] = px.get(s.key) ?? [s.w, s.h];
+      return nativeSize({ imageKey: s.key, w: s.w, h: s.h, frames: s.frames }, pw, ph);
+    }),
   };
 }
 
