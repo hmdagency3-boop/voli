@@ -142,7 +142,7 @@ function MePage() {
                 </span>
               </VipFrame>
             </HeadwearFrame>
-            <div className="min-w-0 flex-1 pt-1">
+            <div className={`min-w-0 flex-1 pt-1 ${frame?.art_url || frame?.svga_url ? "ms-2" : ""}`}>
               {session ? (
                 <>
                   <h1 className="truncate font-display text-xl font-extrabold">
