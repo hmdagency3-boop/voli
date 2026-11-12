@@ -23,10 +23,10 @@ export const STORE_CATEGORIES: { key: StoreCategory; label: string }[] = [
 /** category = the database's style, duration_days = its days. id is the item's UUID. */
 export type StoreItem = {
   id: string; kind: StoreKind; category: StoreCategory; name: string; price: number; duration_days: number;
-  art_url: string; video_url: string | null;
+  art_url: string; video_url: string | null; svga_url: string | null;
 };
 export type BackpackItem = Omit<StoreItem, 'price' | 'duration_days'> & { expires_at: string; equipped: boolean };
-export type WornItem = { item_id: string; name: string; art_url: string; video_url: string | null };
+export type WornItem = { item_id: string; name: string; art_url: string; video_url: string | null; svga_url: string | null };
 export type Worn = Partial<Record<StoreKind, WornItem>>;
 
 /** Whole days left, rounded up (an item ending later today still shows 1 day). */
@@ -39,20 +39,38 @@ export const storeMissing = (e: unknown) => {
   return code === '42P01' || code === 'PGRST205' || code === 'PGRST202' || code === '42883';
 };
 
-type ItemRow = { id: string; kind: StoreKind; style: StoreCategory; name: string; price: number | string; days: number; art_url: string; video_url: string | null };
-type Joined = Pick<ItemRow, 'name' | 'style' | 'art_url' | 'video_url'>;
+type ItemRow = { id: string; kind: StoreKind; style: StoreCategory; name: string; price: number | string; days: number; art_url: string; video_url: string | null; svga_url?: string | null };
+type Joined = Pick<ItemRow, 'name' | 'style' | 'art_url' | 'video_url' | 'svga_url'>;
+
+/**
+ * svga_url (an item's SVGA animation) comes from a later panel update; until that runs, store_items has no such
+ * column, so reads ask for it and, on "no such column", remember that and read without it (items stay still).
+ */
+let svgaColumn = true;
+export const isMissingSvgaColumn = (e: unknown) => {
+  const x = e as { code?: string; message?: string } | null;
+  return !!x && (x.code === '42703' || x.code === 'PGRST204') && /svga_url/.test(x.message ?? '');
+};
+async function withSvga<T>(run: (svga: string) => PromiseLike<{ data: T | null; error: unknown }>) {
+  if (svgaColumn) {
+    const r = await run(', svga_url');
+    if (!r.error || !isMissingSvgaColumn(r.error)) return r;
+    svgaColumn = false;
+  }
+  return run('');
+}
 /** PostgREST returns the joined item as an object (or a one-row list on some setups). */
 const joined = (x: Joined | Joined[] | null | undefined) => (Array.isArray(x) ? x[0] : x) ?? null;
 
 /** Items on sale, in shelf order. */
 export async function getStoreItems(): Promise<StoreItem[]> {
-  const { data, error } = await supabase.from('store_items')
-    .select('id, kind, style, name, price, days, art_url, video_url')
-    .eq('active', true).order('sort').order('created_at');
+  const { data, error } = await withSvga((svga) => supabase.from('store_items')
+    .select(`id, kind, style, name, price, days, art_url, video_url${svga}`)
+    .eq('active', true).order('sort').order('created_at'));
   if (error) throw error;
-  return ((data ?? []) as ItemRow[]).map((r) => ({
+  return ((data ?? []) as unknown as ItemRow[]).map((r) => ({
     id: String(r.id), kind: r.kind, category: r.style, name: r.name, price: Number(r.price), duration_days: Number(r.days),
-    art_url: r.art_url, video_url: r.video_url ?? null,
+    art_url: r.art_url, video_url: r.video_url ?? null, svga_url: r.svga_url || null,
   }));
 }
 
@@ -73,15 +91,15 @@ export async function getBackpack(): Promise<BackpackItem[]> {
   const { data: auth } = await supabase.auth.getSession();
   const me = auth.session?.user.id;
   if (!me) return [];
-  const { data, error } = await supabase.from('member_items')
-    .select('item_id, kind, expires_at, equipped, store_items(name, style, art_url, video_url)')
-    .eq('auth_id', me).gt('expires_at', new Date().toISOString()).order('expires_at', { ascending: false });
+  const { data, error } = await withSvga((svga) => supabase.from('member_items')
+    .select(`item_id, kind, expires_at, equipped, store_items(name, style, art_url, video_url${svga})`)
+    .eq('auth_id', me).gt('expires_at', new Date().toISOString()).order('expires_at', { ascending: false }));
   if (error) throw error;
   type Row = { item_id: string; kind: StoreKind; expires_at: string; equipped: boolean; store_items: Joined | Joined[] | null };
   return ((data ?? []) as unknown as Row[]).flatMap((r) => {
     const it = joined(r.store_items);
     return it ? [{
-      id: String(r.item_id), kind: r.kind, category: it.style, name: it.name, art_url: it.art_url, video_url: it.video_url ?? null,
+      id: String(r.item_id), kind: r.kind, category: it.style, name: it.name, art_url: it.art_url, video_url: it.video_url ?? null, svga_url: it.svga_url || null,
       expires_at: r.expires_at, equipped: !!r.equipped,
     }] : [];
   });
@@ -91,15 +109,15 @@ export async function getBackpack(): Promise<BackpackItem[]> {
 export async function getWorn(ids: string[]): Promise<Record<string, Worn>> {
   const unique = [...new Set(ids.filter(Boolean))].slice(0, 100);
   if (!unique.length) return {};
-  const { data, error } = await supabase.from('member_items')
-    .select('auth_id, item_id, kind, store_items(name, style, art_url, video_url)')
-    .in('auth_id', unique).eq('equipped', true).gt('expires_at', new Date().toISOString());
+  const { data, error } = await withSvga((svga) => supabase.from('member_items')
+    .select(`auth_id, item_id, kind, store_items(name, style, art_url, video_url${svga})`)
+    .in('auth_id', unique).eq('equipped', true).gt('expires_at', new Date().toISOString()));
   if (error) return {};
   const out: Record<string, Worn> = Object.fromEntries(unique.map((id) => [id, {}]));
   type Row = { auth_id: string; item_id: string; kind: StoreKind; store_items: Joined | Joined[] | null };
   for (const r of (data ?? []) as unknown as Row[]) {
     const it = joined(r.store_items);
-    if (it) (out[r.auth_id] ??= {})[r.kind] = { item_id: String(r.item_id), name: it.name, art_url: it.art_url, video_url: it.video_url ?? null };
+    if (it) (out[r.auth_id] ??= {})[r.kind] = { item_id: String(r.item_id), name: it.name, art_url: it.art_url, video_url: it.video_url ?? null, svga_url: it.svga_url || null };
   }
   return out;
 }

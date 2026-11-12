@@ -111,7 +111,7 @@ function MePage() {
   const navigate = useNavigate();
   const thresholds = useThresholds();
   const myId = session?.user.id;
-  const frame = useWorn([myId])[myId ?? ""]?.frame?.art_url;
+  const frame = useWorn([myId])[myId ?? ""]?.frame;
   return (
     <AppScreen background={meBackground}>
         {/* ── الغلاف ── */}
@@ -135,7 +135,7 @@ function MePage() {
         >
           {session && <ChevronLeft className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />}
           <div className="flex items-start gap-4">
-            <HeadwearFrame art={frame}>
+            <HeadwearFrame art={frame?.art_url} svga={frame?.svga_url}>
               <VipFrame level={activeVipLevel(profile)}>
                 <span className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full bg-secondary text-muted-foreground">
                   <MeAvatar url={profile?.avatar_url ?? null} />

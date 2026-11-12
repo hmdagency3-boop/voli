@@ -4,7 +4,7 @@ import { ArrowRight, Backpack, Loader2, Play, ShoppingCart } from "lucide-react"
 import { toast } from "sonner";
 import coinIcon from "@/assets/coin.webp";
 import { AppScreen } from "@/components/AppScreen";
-import { CategoryPills, FramePreview, ItemTile, KindTabs, Price, VideoPreview } from "@/components/StoreParts";
+import { CategoryPills, FramePreview, ItemTile, RidePicture, KindTabs, Price, VideoPreview } from "@/components/StoreParts";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -96,10 +96,10 @@ function StorePage() {
         </div>
         <div className="mt-5"><KindTabs value={kind} onChange={setKind} /></div>
         {kind === "frame" ? (
-          <FramePreview avatar={profile?.avatar_url} art={selected?.art_url ?? worn?.frame?.art_url} name={profile?.display_name ?? ""} />
+          <FramePreview avatar={profile?.avatar_url} art={selected ? selected.art_url : worn?.frame?.art_url} svga={selected ? selected.svga_url : worn?.frame?.svga_url} name={profile?.display_name ?? ""} />
         ) : (
           <div className="relative grid h-44 place-items-center">
-            {selected && <img src={selected.art_url} alt={selected.name} className="h-36 max-w-[70%] object-contain drop-shadow-2xl" />}
+            {selected && <RidePicture item={selected} />}
             {selected?.video_url && (
               <Button type="button" size="sm" variant="ghost" onClick={() => setVideo(selected)} className="absolute bottom-3 rounded-full bg-overlay text-on-media">
                 <Play className="size-4 fill-current" /> شوف الدخولية

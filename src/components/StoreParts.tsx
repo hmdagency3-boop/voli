@@ -2,6 +2,7 @@ import { Clock, Play, Sparkles, User } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import coinIcon from "@/assets/coin.webp";
 import { HeadwearFrame } from "@/components/HeadwearFrame";
+import { SvgaPlayer } from "@/components/SvgaPlayer";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { STORE_CATEGORIES, STORE_KINDS, type StoreCategory, type StoreKind } from "@/lib/store";
 
@@ -75,12 +76,12 @@ export function DaysRibbon({ days }: { days: number }) {
 }
 
 /** The member's picture in a big circle, wearing the given frame. */
-export function FramePreview({ avatar, art, name }: { avatar: string | null | undefined; art: string | null | undefined; name: string }) {
+export function FramePreview({ avatar, art, svga, name }: { avatar: string | null | undefined; art: string | null | undefined; svga?: string | null | undefined; name: string }) {
   const [broken, setBroken] = useState(false);
   useEffect(() => setBroken(false), [avatar]);
   return (
     <div className="grid place-items-center py-8">
-      <HeadwearFrame art={art}>
+      <HeadwearFrame art={art} svga={svga}>
         <span className="grid size-24 place-items-center overflow-hidden rounded-full bg-secondary text-muted-foreground ring-2 ring-on-media/70">
           {avatar && !broken
             ? <img src={avatar} alt={`صورة ${name}`} onError={() => setBroken(true)} className="size-full object-cover" draggable={false} />
@@ -88,6 +89,16 @@ export function FramePreview({ avatar, art, name }: { avatar: string | null | un
         </span>
       </HeadwearFrame>
     </div>
+  );
+}
+
+/** Big ride picture in the store / backpack preview; plays its SVGA animation on a loop when it has one. */
+export function RidePicture({ item }: { item: { name: string; art_url: string; svga_url: string | null } }) {
+  const still = <img src={item.art_url} alt={item.name} className="h-36 max-w-[70%] object-contain drop-shadow-2xl" />;
+  if (!item.svga_url) return still;
+  return (
+    <SvgaPlayer url={item.svga_url} className="relative h-36 w-[70%]"
+      fallback={<span className="grid size-full place-items-center">{still}</span>} />
   );
 }
 

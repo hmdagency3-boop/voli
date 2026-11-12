@@ -63,7 +63,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back 
   const counts = useCounts(userId);
   const thresholds = useThresholds();
   const bio = useBio(userId);
-  const frame = useWorn([userId])[userId ?? ""]?.frame?.art_url;
+  const frame = useWorn([userId])[userId ?? ""]?.frame;
   const [tab, setTab] = useState<(typeof tabs)[number]>("هدية");
   const name = profile?.display_name ?? (session?.user.user_metadata?.["display_name"] as string | undefined) ?? (isSelf ? "حسابي" : "مستخدم");
   const wl = levelProgress(Number(profile?.wealth_points ?? 0), thresholds.wealth).level;
@@ -91,7 +91,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back 
         </div>
 
         <div className="absolute inset-x-0 bottom-3 flex items-end gap-3 px-5">
-          <HeadwearFrame art={frame}>
+          <HeadwearFrame art={frame?.art_url} svga={frame?.svga_url}>
             <VipFrame level={vipLevel}>
               <span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-full border-4 border-background bg-secondary text-muted-foreground">
                 {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="size-full object-cover" /> : <User className="size-10" />}
