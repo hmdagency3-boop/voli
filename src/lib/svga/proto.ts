@@ -35,6 +35,20 @@ class Writer {
   string(field: number, s: string) { return this.bytes(field, new TextEncoder().encode(s)); }
   done() { return this.buf.slice(0, this.len); }
 }
+/**
+ * SVGA players disagree on picture size: the web player draws a picture at its pixel size (layout ignored),
+ * Android/iOS stretch it to the layout. Writing layout = pixel size and folding the pixel→frame scale into
+ * every transform makes all of them draw it the same, matching the preview.
+ */
+export function nativeSize(s: MovieSprite, pw: number, ph: number): MovieSprite {
+  if (!(pw > 0 && ph > 0)) return s;
+  const sx = s.w / pw, sy = s.h / ph;
+  return {
+    ...s, w: pw, h: ph,
+    frames: s.frames.map((f) => (f ? { alpha: f.alpha, m: [f.m[0] * sx, f.m[1] * sx, f.m[2] * sy, f.m[3] * sy, f.m[4], f.m[5]] as Mat } : null)),
+  };
+}
+
 const msg = (fill: (w: Writer) => void) => { const w = new Writer(); fill(w); return w.done(); };
 
 function frameBytes(f: SpriteFrame, w: number, h: number): Uint8Array {
