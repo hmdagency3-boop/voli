@@ -98,7 +98,7 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back 
               </span>
             </VipFrame>
           </HeadwearFrame>
-          <div className="min-w-0 flex-1 pb-1">
+          <div className={`min-w-0 flex-1 pb-1 ${frame?.art_url || frame?.svga_url ? "ms-3" : ""}`}>
             <h1 className="truncate font-display text-2xl font-extrabold">{session && (profile || isSelf) ? name : ready ? (isSelf ? "لم يتم تسجيل الدخول" : "المستخدم غير موجود") : "…"}</h1>
             {profile && (
               <div className="mt-0.5 flex items-center justify-end gap-1.5 text-sm text-muted-foreground" dir="ltr">
