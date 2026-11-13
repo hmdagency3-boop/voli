@@ -152,7 +152,7 @@
 
 # Android app (Capacitor)
 - [x] Add Capacitor, the Android project, and microphone permission for voice rooms.
-- [ ] Publish the site and switch server.url in capacitor.config.ts to the published address (needs the user to publish).
+- [x] Publish the site and switch server.url in capacitor.config.ts to the published address (https://voli-bright-journey.lovable.app).
 - [x] App icon, round icon, splash screens and website icon from the Voli dragon logo.
 - [x] GitHub workflow that builds the APK.
 - [x] Push the update to GitHub main; the APK build on GitHub passes.

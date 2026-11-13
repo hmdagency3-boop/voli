@@ -5,7 +5,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 // CAP_SERVER_URL (set as a GitHub repository variable for the APK build) overrides
 // the address; put the published site address there before releasing.
 const serverUrl =
-  process.env.CAP_SERVER_URL || "https://f4a4f8ff-9519-4c3f-a81d-2b3852474c21.lovableproject.com?forceHideBadge=true";
+  process.env.CAP_SERVER_URL || "https://voli-bright-journey.lovable.app?forceHideBadge=true";
 
 const config: CapacitorConfig = {
   appId: "app.voli.android",
