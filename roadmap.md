@@ -25,6 +25,16 @@
 - [x] Entrance pictures: always square (crop middle / whole picture) with soft edges, PNG; 4 rule tests; browser run verified.
 - [ ] Transparent edges on iPhone: the Voli app plays WebM transparency only where the device supports it (separate app).
 - [x] Picture from a video frame (gifts and entrances, new and existing), then adjust square/soft edges; browser run verified with a chosen file and an uploaded Cloudinary link.
+# Animated frames from green-screen video (store frames)
+- [x] Chroma key with key-colour pick, softness, green halo/spill removal, edge choke and feather.
+- [x] Square crop: drag/size the exact frame area on the video, output size.
+- [x] Seamless infinite motion: circular loop (with cross-fade) and ping-pong.
+- [x] Effects: sparkles, shimmer, glow, pulse; live preview over an avatar.
+- [x] Export light animated WebP with real transparency; preview the final file before approval.
+- [x] Available when adding a frame and when changing an existing frame's picture.
+- [x] Browser run with a sample green-screen video: 88-frame endless ping-pong WebP, transparent background, glow and sparkles; 11 rule tests.
+- [ ] Show animated frames in the Voli app: the app must display animated WebP pictures (separate project).
+
 # SVGA frame studio
 - [x] Studio page: pieces as layers, order, drag, pivot, mirror copy, ready-made moves and recipes, glow, moving shine, sparkles, seamless loop, undo, autosave, project file.
 - [x] Real SVGA 2.0 export, real-player preview, publish to store (SVGA + picture); 7 rule tests passed.

@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { EditableProTable, ModalForm, PageContainer, ProForm, ProFormDigit, ProFormSelect, ProFormText, StatisticCard } from "@ant-design/pro-components";
-import { DeleteOutlined, LinkOutlined, PictureOutlined, PlayCircleOutlined, PlusOutlined, ThunderboltOutlined, UploadOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { DeleteOutlined, LinkOutlined, ThunderboltOutlined, PictureOutlined, PlayCircleOutlined, PlusOutlined, UploadOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import { Alert, App, Button, Card, Col, Dropdown, Image, Modal, Row, Segmented, Space, Tabs, Tag, Upload, type UploadFile } from "antd";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { pageHead } from "@/components/meta";
 import { VideoEdgeEditor } from "@/components/VideoEdgeEditor";
 import { ImageEdgeEditor } from "@/components/ImageEdgeEditor";
 import { ArtField } from "@/components/ArtField";
 import { FrameToArt } from "@/components/VideoFramePicker";
+import { AnimatedFrameEditor } from "@/components/AnimatedFrameEditor";
 import { SvgaPlayer } from "@/components/SvgaPlayer";
 import { useAction, useLoad } from "@/components/hooks";
 import { fmt, GIFT_ART_TYPES, GIFT_VIDEO_TYPES, giftArtProblem, giftVideoProblem, giftVideoUrlOk, normalizeGiftVideoUrl, type UploadStatus } from "@/lib/admin";
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/_panel/store")({
 const ACCEPT = GIFT_ART_TYPES.join(",");
 const VIDEO_ACCEPT = GIFT_VIDEO_TYPES.join(",");
 const ART_HELP: Record<StoreKind, string> = {
-  frame: "PNG أو WebP أو GIF متحرك بخلفية شفافة، مربع، والوسط فاضي لصورة العضو. حتى 5 ميجا.",
+  frame: "PNG أو WebP أو GIF متحرك بخلفية شفافة، مربع، والوسط فاضي لصورة العضو. حتى 5 ميجا. أو اصنع إطار متحرك من فيديو بشاشة خضراء.",
   ride: "صورة مصغّرة للدخولية تظهر في المتجر والحقيبة: تتحوّل مربعة بأطراف ناعمة قبل الرفع. PNG أو WebP أو JPG، حتى 5 ميجا.",
 };
 const VIDEO_HELP = "MP4 أو WebM أو MOV حتى 50 ميجا. للدخوليات: يشتغل عند دخول الغرفة وعند الضغط ▶ في المتجر.";
@@ -37,7 +38,6 @@ const fileRule = (check: (f: File) => string | null) => ({
     if (problem) throw new Error(problem);
   },
 });
-const lastFile = (e: { fileList: UploadFile[] }) => e.fileList.slice(-1);
 
 /** Video picker for the add form: every chosen video goes through the soft-edge editor first. */
 function EdgeVideoField({ value, onChange }: { value?: UploadFile[]; onChange?: (v: UploadFile[]) => void }) {
@@ -52,6 +52,33 @@ function EdgeVideoField({ value, onChange }: { value?: UploadFile[]; onChange?: 
         setPending(null);
         onChange?.([{ uid: `${Date.now()}`, name: f.name, size: f.size, type: f.type, status: "done", originFileObj: f as NonNullable<UploadFile["originFileObj"]> }]);
       }} />
+    </>
+  );
+}
+
+const asUpload = (f: File): UploadFile => ({
+  uid: `${Date.now()}`, name: f.name, size: f.size, type: f.type, status: "done", thumbUrl: URL.createObjectURL(f),
+  originFileObj: f as NonNullable<UploadFile["originFileObj"]>,
+});
+
+/** Frame picture for the add form: a ready picture, or an animated frame made from a green-screen video. */
+function FrameArtField({ value, onChange }: { value?: UploadFile[]; onChange?: (v: UploadFile[]) => void }) {
+  const [video, setVideo] = useState<File | null>(null);
+  const { message } = App.useApp();
+  return (
+    <>
+      <Upload accept={ACCEPT} listType="picture-card" maxCount={1} fileList={value ?? []}
+        beforeUpload={(f) => { onChange?.([asUpload(f)]); return Upload.LIST_IGNORE; }} onRemove={() => onChange?.([])}>
+        {!value?.length && <div><PlusOutlined /><div style={{ marginTop: 6 }}>اختر صورة</div></div>}
+      </Upload>
+      <Upload accept={VIDEO_ACCEPT} showUploadList={false} beforeUpload={(f) => {
+        const problem = giftVideoProblem(f);
+        if (problem) message.error(problem); else setVideo(f);
+        return Upload.LIST_IGNORE;
+      }}>
+        <Button size="small" icon={<ThunderboltOutlined />}>إطار متحرك من فيديو (شاشة خضراء)</Button>
+      </Upload>
+      <AnimatedFrameEditor source={video} onCancel={() => setVideo(null)} onDone={(f) => { setVideo(null); onChange?.([asUpload(f)]); }} />
     </>
   );
 }
@@ -93,11 +120,8 @@ function AddItem({ kind, onDone }: { kind: StoreKind; onDone: () => void }) {
           <ArtField alwaysEdit editorTitle="صورة الدخولية: مربعة بأطراف ناعمة" />
         </ProForm.Item>
       ) : (
-        <ProForm.Item name="art" label="الصورة" valuePropName="fileList" getValueFromEvent={lastFile} extra={ART_HELP[kind]}
-          rules={[{ required: true, message: "اختر صورة" }, fileRule(giftArtProblem)]}>
-          <Upload accept={ACCEPT} listType="picture-card" maxCount={1} beforeUpload={() => false}>
-            <div><PlusOutlined /><div style={{ marginTop: 6 }}>اختر صورة</div></div>
-          </Upload>
+        <ProForm.Item name="art" label="الصورة" extra={ART_HELP[kind]} rules={[{ required: true, message: "اختر صورة" }, fileRule(giftArtProblem)]}>
+          <FrameArtField />
         </ProForm.Item>
       )}
       <ProForm.Item name="video" label={kind === "ride" ? "فيديو الدخولية (يفضّل)" : "فيديو (اختياري)"}
@@ -112,6 +136,9 @@ function ChangeArt({ item, onDone }: { item: StoreItem; onDone: () => void }) {
   const act = useAction();
   const [pending, setPending] = useState<File | null>(null);
   const [frameFrom, setFrameFrom] = useState<string | null>(null);
+  const [animFrom, setAnimFrom] = useState<File | string | null>(null);
+  const videoInput = useRef<HTMLInputElement | null>(null);
+  const { message } = App.useApp();
   const save = (file: File) => act(() => changeStoreArt(item.id, file), "تغيّرت الصورة", onDone);
   return (
     <>
@@ -120,6 +147,20 @@ function ChangeArt({ item, onDone }: { item: StoreItem; onDone: () => void }) {
         <a><UploadOutlined /> الصورة</a>
       </Upload>
       {item.kind === "ride" && item.video_url && <a onClick={() => setFrameFrom(item.video_url)} style={{ marginInlineStart: 8 }}><PictureOutlined /> من الفيديو</a>}
+      {item.kind === "frame" && <>
+        <Dropdown trigger={["click"]} menu={{ items: [
+          { key: "file", icon: <VideoCameraOutlined />, label: "من فيديو على جهازك", onClick: () => videoInput.current?.click() },
+          ...(item.video_url ? [{ key: "item", icon: <PlayCircleOutlined />, label: "من فيديو المنتج", onClick: () => setAnimFrom(item.video_url) }] : []),
+        ] }}>
+          <a style={{ marginInlineStart: 8 }}><ThunderboltOutlined /> متحرك</a>
+        </Dropdown>
+        <input ref={videoInput} type="file" accept={VIDEO_ACCEPT} hidden onChange={(e) => {
+          const f = e.target.files?.[0]; e.target.value = "";
+          const problem = f ? giftVideoProblem(f) : null;
+          if (problem) message.error(problem); else if (f) setAnimFrom(f);
+        }} />
+        <AnimatedFrameEditor source={animFrom} onCancel={() => setAnimFrom(null)} onDone={(f) => { setAnimFrom(null); save(f); }} />
+      </>}
       <ImageEdgeEditor file={pending} onCancel={() => setPending(null)} onDone={(f) => { setPending(null); save(f); }} />
       <FrameToArt source={frameFrom} title="صورة الدخولية: مربعة بأطراف ناعمة" onCancel={() => setFrameFrom(null)}
         onDone={(f) => { setFrameFrom(null); save(f); }} />
