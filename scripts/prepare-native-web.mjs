@@ -2,10 +2,11 @@
 // the shell page becomes index.html, and hosting-only files are left out.
 import { cpSync, existsSync, renameSync, rmSync } from "node:fs";
 
-const from = "dist/client";
+// The build writes to dist/client here and to .output/public on other machines (GitHub).
+const from = ["dist/client", ".output/public"].find((dir) => existsSync(`${dir}/_shell.html`));
 const to = "dist/native";
-if (!existsSync(`${from}/_shell.html`)) {
-  console.error("dist/client/_shell.html is missing: run `VITE_NATIVE_APP=1 vite build` first.");
+if (!from) {
+  console.error("No _shell.html found: run `VITE_NATIVE_APP=1 vite build` first.");
   process.exit(1);
 }
 rmSync(to, { recursive: true, force: true });
