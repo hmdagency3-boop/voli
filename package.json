@@ -11,12 +11,17 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "cap:sync": "cap sync android",
+    "cap:open": "cap open android",
+    "cap:run": "cap run android"
   },
   "overrides": {
     "rolldown": "1.2.1"
   },
   "dependencies": {
+    "@capacitor/android": "^7",
+    "@capacitor/core": "^7",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -57,6 +62,7 @@
     "embla-carousel-react": "^8.6.0",
     "flag-icons": "^7.6.0",
     "input-otp": "^1.4.2",
+    "jose": "^6.2.15",
     "livekit-client": "^2.23.0",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
@@ -76,6 +82,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7",
     "@electric-sql/pglite": "^0.5.15",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.26.5",

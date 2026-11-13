@@ -149,3 +149,10 @@
 - [ ] Push app to main on GitHub (waits on the GitHub connection).
 - [ ] Run supabase/023_store.sql in the SQL Editor (needs the user).
 - [x] Match the app's store and backpack to the panel's own sql/023_store.sql (frame/ride kinds, style, days, UUID ids, store_buy / store_equip).
+
+# Android app (Capacitor)
+- [x] Add Capacitor, the Android project, and microphone permission for voice rooms.
+- [ ] Publish the site and switch server.url in capacitor.config.ts to the published address (needs the user to publish).
+- [x] App icon, round icon, splash screens and website icon from the Voli dragon logo.
+- [x] GitHub workflow that builds the APK.
+- [ ] Push the update to GitHub main (waits on the GitHub connection).

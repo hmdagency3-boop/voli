@@ -12,7 +12,7 @@ import { levelProgress, type LevelKind, type Threshold } from "@/lib/levels";
 import { badgeTier, charismaBadge, wealthBadge } from "@/lib/badges";
 import { shownId } from "@/lib/special-id";
 import { activeVipLevel } from "@/lib/vip";
-import { VipBadge, VipFrame } from "@/components/VipBadge";
+import { VipBadge } from "@/components/VipBadge";
 import { HeadwearFrame } from "@/components/HeadwearFrame";
 import { useWorn } from "@/lib/store";
 import { ProfileCover, ProfileIdTags, useProfileInfo } from "@/components/ProfileInfo";
@@ -92,11 +92,9 @@ export function ProfileDetails({ profile, userId, ready, signedIn, isSelf, back 
 
         <div className="absolute inset-x-0 bottom-3 flex items-end gap-3 px-5">
           <HeadwearFrame art={frame?.art_url} svga={frame?.svga_url}>
-            <VipFrame level={vipLevel}>
-              <span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-full border-4 border-background bg-secondary text-muted-foreground">
-                {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="size-full object-cover" /> : <User className="size-10" />}
-              </span>
-            </VipFrame>
+            <span className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full bg-secondary text-muted-foreground">
+              {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="size-full object-cover" /> : <User className="size-9" />}
+            </span>
           </HeadwearFrame>
           <div className={`min-w-0 flex-1 pb-1 ${frame?.art_url || frame?.svga_url ? "ms-3" : ""}`}>
             <h1 className="truncate font-display text-2xl font-extrabold">{session && (profile || isSelf) ? name : ready ? (isSelf ? "لم يتم تسجيل الدخول" : "المستخدم غير موجود") : "…"}</h1>

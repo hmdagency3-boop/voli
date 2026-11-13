@@ -3,6 +3,7 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AppScreen } from '@/components/AppScreen';
+import { VoliLogo } from '@/components/VoliLogo';
 import { accountSchema, loginSchema } from '@/lib/account-validation';
 import { supabase } from '@/lib/supabase';
 import { authErrorMessage, signupOutcome } from '@/lib/auth-messages';
@@ -50,7 +51,7 @@ export function AccountForm({ signup = false }: { signup?: boolean }) {
   return (
     <AppScreen navigation={false}>
       <div className="relative h-56 bg-brand">
-        <div className="absolute bottom-14 right-6 text-on-media"><h1 className="font-display text-4xl font-extrabold">voli.</h1></div>
+        <div className="absolute bottom-12 right-6 flex items-center gap-3 text-on-media"><VoliLogo className="size-20 drop-shadow-lg" /><h1 className="font-display text-4xl font-extrabold">voli.</h1></div>
       </div>
       <section className="relative -mt-8 rounded-t-[2rem] bg-background px-6 pt-8 pb-10">
         <h2 className="text-2xl font-bold">{signup ? 'إنشاء حساب' : 'أهلاً بعودتك'}</h2>
