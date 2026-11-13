@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { AppScreen } from '@/components/AppScreen';
 import { VoliLogo } from '@/components/VoliLogo';
 import { accountSchema, loginSchema } from '@/lib/account-validation';
+import { publicOrigin } from '@/lib/native-app';
 import { supabase } from '@/lib/supabase';
 import { authErrorMessage, signupOutcome } from '@/lib/auth-messages';
 
@@ -28,7 +29,7 @@ export function AccountForm({ signup = false }: { signup?: boolean }) {
         const values = result.data as { displayName: string; email: string; password: string };
         const { data: res, error: err } = await supabase.auth.signUp({
           email: values.email, password: values.password,
-          options: { data: { display_name: values.displayName }, emailRedirectTo: `${window.location.origin}/me` },
+          options: { data: { display_name: values.displayName }, emailRedirectTo: `${publicOrigin()}/me` },
         });
         if (err) { setError(authErrorMessage(err)); return; }
         if (signupOutcome(res.session) === 'confirm-email') {

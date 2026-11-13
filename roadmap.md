@@ -156,3 +156,6 @@
 - [x] App icon, round icon, splash screens and website icon from the Voli dragon logo.
 - [x] GitHub workflow that builds the APK.
 - [x] Push the update to GitHub main; the APK build on GitHub passes.
+- [x] Ship the whole interface inside the APK (single-page build packed into dist/native), talking to the database directly with no server.url.
+- [x] GitHub workflow builds the interface and packs it before building the APK.
+- [ ] Publish the site once so voice and device checks accept calls from the app (needs the user to publish).

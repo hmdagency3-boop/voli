@@ -1,8 +1,10 @@
 name: Android APK
 
 # Builds the Voli Android app on every push to main, or by hand from the Actions tab.
+# The web interface is built first and packed inside the APK, so the app runs from the phone.
 # Optional repository settings (Settings -> Secrets and variables -> Actions):
-#   Variable CAP_SERVER_URL          site address the app opens (use the published address)
+#   Variable VITE_SITE_URL           published site used for voice tickets, device checks and shared links
+#                                    (defaults to https://voli-bright-journey.lovable.app)
 #   Secret   ANDROID_KEYSTORE_BASE64 base64 of your .jks keystore, to also produce a signed release APK/AAB
 #   Secret   ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD
 
@@ -19,7 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CAP_SERVER_URL: ${{ vars.CAP_SERVER_URL }}
+      VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
       VERSION_CODE: ${{ github.run_number }}
       VERSION_NAME: 1.0.${{ github.run_number }}
       HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
@@ -40,6 +42,9 @@ jobs:
 
       - name: Install packages
         run: bun install --frozen-lockfile || bun install
+
+      - name: Build the interface for the app
+        run: bun run build:native
 
       - name: Sync Capacitor
         run: npx cap sync android

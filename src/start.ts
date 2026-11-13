@@ -1,6 +1,7 @@
 import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
+import { NATIVE_APP_ORIGINS, serverFnUrl } from "./lib/native-app";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
@@ -20,8 +21,12 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
 // Start installs this automatically when src/start.ts is absent; defining the
 // file opts out, so re-add it explicitly to keep server functions protected
 // from cross-site requests.
+// The Android app (bundled interface on https://localhost) is the one cross-site caller allowed.
 const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
+  secFetchSite: (value, ctx) =>
+    value === "same-origin" || NATIVE_APP_ORIGINS.includes(ctx.request.headers.get("Origin") ?? ""),
+  origin: (value, ctx) => NATIVE_APP_ORIGINS.includes(value) || value === new URL(ctx.request.url).origin,
 });
 
 // requestMiddleware runs on every request; functionMiddleware only on server functions, where
@@ -32,4 +37,6 @@ const csrfMiddleware = createCsrfMiddleware({
 // project did not intentionally replace it.
 export const startInstance = createStart(() => ({
   requestMiddleware: [errorMiddleware, csrfMiddleware],
+  // Inside the APK the interface runs from the phone, so server features go to the published site.
+  serverFns: { fetch: (url, init) => fetch(serverFnUrl(String(url)), init) },
 }));

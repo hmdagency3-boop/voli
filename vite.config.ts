@@ -9,10 +9,14 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// VITE_NATIVE_APP=1 (the Android build) produces a single-page shell that ships inside the APK.
+const nativeApp = process.env["VITE_NATIVE_APP"] === "1";
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    ...(nativeApp ? { spa: { enabled: true } } : {}),
   },
 });

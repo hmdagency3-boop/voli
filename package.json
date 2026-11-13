@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "build:native": "VITE_NATIVE_APP=1 vite build && node scripts/prepare-native-web.mjs",
     "cap:sync": "cap sync android",
     "cap:open": "cap open android",
     "cap:run": "cap run android"

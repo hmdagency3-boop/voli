@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { nativeCorsHeaders } from "./lib/native-app";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -49,10 +50,16 @@ function isH3SwallowedErrorBody(body: string): boolean {
 // twice and renders garbled.
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    // The Android app calls server features from its own origin; answer its preflight and tag replies.
+    const cors = nativeCorsHeaders(request);
+    if (cors && request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     try {
       const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const response = await normalizeCatastrophicSsrResponse(await handler.fetch(request, env, ctx));
+      if (!cors) return response;
+      const tagged = new Response(response.body, response);
+      for (const [k, v] of Object.entries(cors)) tagged.headers.set(k, v);
+      return tagged;
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {

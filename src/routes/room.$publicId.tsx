@@ -1,6 +1,7 @@
 import { RoomTools, SeatMenu } from '@/components/RoomTools';
 import { emptyRoomTools, getRoomTools, manageRoom, type RoomToolsState } from '@/lib/room-tools';
 import { syncRoomVoice } from '@/lib/voice.functions';
+import { publicOrigin } from '@/lib/native-app';
 import { vipChatBubbleArt, vipProfileCardArt } from "@/lib/vip-art";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -338,7 +339,7 @@ function RoomPage() {
   }
 
   async function onShare() {
-    const url = window.location.href;
+    const url = `${publicOrigin()}${window.location.pathname}${window.location.search}`;
     try {
       if (navigator.share) await navigator.share({ title: room?.name ?? "voli", url });
       else { await navigator.clipboard.writeText(url); toast.success("اتنسخ لينك الروم"); }
