@@ -159,3 +159,7 @@
 - [x] Ship the whole interface inside the APK (single-page build packed into dist/native), talking to the database directly with no server.url.
 - [x] GitHub workflow builds the interface and packs it before building the APK.
 - [ ] Publish the site once so voice and device checks accept calls from the app (needs the user to publish).
+
+# Room entrances and video gifts
+- [x] Stop entrances replaying back to back after the app comes back from the background, and end videos instead of freezing on the last frame.
+- [x] Hide the phone's grey play-button picture that shows before an entrance or gift video starts.

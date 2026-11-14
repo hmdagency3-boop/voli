@@ -1,2 +1,3 @@
 - Country flags are flag-icons' 1x1 SVGs bundled via import.meta.glob in profile-info.ts (emoji only as fallback), so they render round everywhere without a CDN.
-- Room arrivals come from freshArrivals (room-arrivals.ts) with a re-announce gap, and the room page never overlaps refreshes or cuts off a playing ride/entrance bar, because heartbeat presence flickers and interrupted entrances replayed.
+- Room arrivals come from watchArrivals (room-arrivals.ts) with a re-announce gap, and a refresh after the viewer stopped watching (app in background) only remembers who is here; the room page never overlaps refreshes or cuts off a playing ride/entrance bar, and drops queued entrances/videos when hidden, because heartbeat presence flickers and paused phone videos froze and replayed.
+- Room videos use the transparent NO_POSTER and stay invisible until playing, because Android WebView paints a grey play-button placeholder before the first frame.

@@ -23,7 +23,7 @@ import { VipBadge } from "@/components/VipBadge";
 import { VipEntrance } from "@/components/VipEntrance";
 import { HeadwearFrame } from "@/components/HeadwearFrame";
 import { RideEntrance } from "@/components/RideEntrance";
-import { freshArrivals } from "@/lib/room-arrivals";
+import { newArrivalWatch, watchArrivals, type ArrivalWatch } from "@/lib/room-arrivals";
 import { getWorn, useWorn, type WornItem } from "@/lib/store";
 import { useAccount } from "@/hooks/use-account";
 import { useRoomVoice } from "@/hooks/use-room-voice";
@@ -103,8 +103,8 @@ function RoomPage() {
   const endRef = useRef<HTMLDivElement>(null);
   const peopleRef = useRef(people);
   peopleRef.current = people;
-  /** Member id -> last time they were in the room list; decides who really just came in. */
-  const presentRef = useRef<Map<string, number> | null>(null);
+  /** Who was in the room list when, and when this viewer last looked; decides who really just came in. */
+  const presentRef = useRef<ArrivalWatch>(newArrivalWatch());
   /** The ride on screen right now; a gift video waits for it instead of cutting it off. */
   const [rideOn, setRideOn] = useState<string | null>(null);
 
@@ -166,7 +166,7 @@ function RoomPage() {
     if (!inside || !roomId) return;
     let active = true;
     let busy = false;
-    presentRef.current = null;
+    presentRef.current = newArrivalWatch();
     const load = async () => {
       // A slow refresh must never overlap the next one: answers arriving out of order made members look new again.
       if (busy) return;
@@ -196,9 +196,7 @@ function RoomPage() {
         }
       }
       // Announce members who just came in (the first load only remembers who is already here).
-      const first = !presentRef.current;
-      if (!presentRef.current) presentRef.current = new Map();
-      const arrived = freshArrivals(presentRef.current, s.members, me, Date.now(), first);
+      const arrived = watchArrivals(presentRef.current, s.members, me, Date.now());
       {
         const now = new Date().toISOString();
         const fresh = arrived.map((id) => ({ key: `${id}-${now}`, auth_id: id, at: now }));
@@ -267,6 +265,12 @@ function RoomPage() {
     const myName = profile?.display_name ?? "";
     void getWorn([me]).then((w) => { const ride = w[me]?.ride; if (ride) setRides((q) => (q.some((y) => y.auth_id === me) ? q : [...q, { key: j.key, auth_id: me, name: myName, ride }])); });
   }, [entrance, me, profile]);
+  // Sent to the background: the phone pauses videos mid-way, so drop what was showing or waiting instead of freezing on it.
+  useEffect(() => {
+    const onHide = () => { if (document.hidden) { setRides([]); setRideOn(null); setEntrances([]); setVideoQueue([]); } };
+    document.addEventListener("visibilitychange", onHide);
+    return () => document.removeEventListener("visibilitychange", onHide);
+  }, []);
   const shownRide = rides[0];
   // A ride starts only when no gift video is playing, then plays to its end (never unmounted and restarted).
   useEffect(() => {

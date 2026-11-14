@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { freshArrivals, REANNOUNCE_GAP_MS } from "@/lib/room-arrivals";
+import { freshArrivals, newArrivalWatch, REANNOUNCE_GAP_MS, WATCH_GAP_MS, watchArrivals } from "@/lib/room-arrivals";
 
 describe("room entrances", () => {
   it("the first load announces nobody", () => {
@@ -34,5 +34,19 @@ describe("room entrances", () => {
     const m = new Map<string, number>();
     freshArrivals(m, [], "me", 0, true);
     expect(freshArrivals(m, ["me", "c", "c"], "me", 3000, false)).toEqual(["c"]);
+  });
+
+  it("coming back to the app after a long background break replays nobody's entrance", () => {
+    const w = newArrivalWatch();
+    watchArrivals(w, ["a", "b"], "me", 0);
+    const back = 10 * 60 * 1000;
+    expect(watchArrivals(w, ["a", "b", "c"], "me", back)).toEqual([]);
+    expect(watchArrivals(w, ["a", "b", "c"], "me", back + 3000)).toEqual([]);
+  });
+
+  it("while watching, a member who walks in is still announced", () => {
+    const w = newArrivalWatch();
+    watchArrivals(w, ["a"], "me", 0);
+    expect(watchArrivals(w, ["a", "d"], "me", WATCH_GAP_MS)).toEqual(["d"]);
   });
 });

@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { NO_POSTER } from "@/lib/video-poster";
 import type { WornItem } from "@/lib/store";
 
 /** Safety net while a ride video loads; once its length is known the ride gets its full length plus a margin. */
@@ -9,6 +10,8 @@ const PICTURE_MS = 4500;
 /** A member's store ride coming into the room: its video (muted when the browser refuses sound) or its picture. */
 export function RideEntrance({ ride, name, onDone }: { ride: WornItem; name: string; onDone: () => void }) {
   const ref = useRef<HTMLVideoElement>(null);
+  /** Hidden until the first frame plays, so the phone's grey play-button placeholder never shows. */
+  const [playing, setPlaying] = useState(false);
   const done = useRef(onDone);
   done.current = onDone;
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -38,11 +41,13 @@ export function RideEntrance({ ride, name, onDone }: { ride: WornItem; name: str
   return (
     <div className="pointer-events-none absolute inset-0 z-40 grid place-items-center overflow-hidden" aria-live="polite">
       {ride.video_url ? (
-        <video ref={ref} src={ride.video_url} playsInline preload="auto"
-          onLoadedMetadata={(e) => { const d = e.currentTarget.duration; if (Number.isFinite(d) && d > 0) finishIn(Math.min(d * 1000 + 3000, LONGEST_MS)); }}
-          onWaiting={() => { const v = ref.current; if (v && Number.isFinite(v.duration)) finishIn(Math.min((v.duration - v.currentTime) * 1000 + 8000, LONGEST_MS)); }}
+        <video ref={ref} src={ride.video_url} poster={NO_POSTER} playsInline preload="auto"
+          onPlaying={() => setPlaying(true)}
+          onLoadedMetadata={(e) => { const d = e.currentTarget.duration; if (Number.isFinite(d) && d > 0) finishIn(Math.min(d * 1000 + 1500, LONGEST_MS)); }}
+          onWaiting={() => { const v = ref.current; if (v && Number.isFinite(v.duration)) finishIn(Math.min((v.duration - v.currentTime) * 1000 + 5000, LONGEST_MS)); }}
+          onTimeUpdate={(e) => { const v = e.currentTarget; if (Number.isFinite(v.duration) && v.duration > 0 && v.currentTime >= v.duration - 0.1) finish(); }}
           onEnded={finish} onError={finish}
-          className="h-full w-full object-contain" />
+          className={`h-full w-full object-contain transition-opacity duration-200 ${playing ? "opacity-100" : "opacity-0"}`} />
       ) : (
         <img src={ride.art_url} alt="" className="w-3/4 max-w-xs object-contain drop-shadow-2xl animate-in slide-in-from-right-full fade-in duration-700" />
       )}
