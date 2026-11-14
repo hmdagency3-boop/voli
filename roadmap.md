@@ -163,3 +163,9 @@
 # Room entrances and video gifts
 - [x] Stop entrances replaying back to back after the app comes back from the background, and end videos instead of freezing on the last frame.
 - [x] Hide the phone's grey play-button picture that shows before an entrance or gift video starts.
+
+# Keep room (احتفاظ بالروم) and Android back button
+- [x] Minimize a room: stay inside, on the mic and hearing voice while using the rest of the app; floating bubble to return or leave.
+- [x] Android back button goes to the previous page instead of closing the app; inside a room it minimizes the room.
+- [x] Ask for microphone permission in the Android app.
+- [x] Push to GitHub main and confirm the APK build.

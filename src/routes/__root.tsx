@@ -14,6 +14,8 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthGate } from "@/components/AuthGate";
+import { KeptRoom } from "@/components/KeptRoom";
+import { NativeAppBridge } from "@/components/NativeAppBridge";
 
 function NotFoundComponent() {
   return (
@@ -123,7 +125,10 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthGate>
         <Outlet />
+        {/* The room the member is in stays connected here while they use other pages. */}
+        <KeptRoom />
       </AuthGate>
+      <NativeAppBridge />
       <Toaster position="top-center" />
     </QueryClientProvider>
   );

@@ -85,7 +85,7 @@ function RoomSetup() {
     setStarting(true);
     try {
       await startParty({ name: n, coverUrl: cover, mode, seatCount: seats, theme, announcement: announcement.trim(), password });
-      navigate({ to: "/room/$publicId", params: { publicId: String(profile.public_id) } });
+      navigate({ to: "/room/$publicId", params: { publicId: String(profile.public_id) }, replace: true });
     } catch {
       toast.error("الحفلة مابدأتش. اتأكد إن ملف supabase/004_rooms.sql اتشغّل في قاعدة البيانات");
       setStarting(false);
