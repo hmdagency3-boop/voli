@@ -175,5 +175,5 @@
 - [x] Android app reads real hardware details, Device.getId / Device.getInfo (@capacitor/device), Widevine ID, VPN, emulator/root hints; device ID and fingerprint recorded from the app itself, not as "Chrome".
 - [x] Database update file for the new device details, IP history and hardware-based device bans.
 - [x] Management panel (لوحة-الادارة branch): show the new device details and IP history in devices and accounts.
-- [ ] Push app to GitHub main and confirm the APK build.
+- [x] Push app to GitHub main and confirm the APK build.
 - [ ] Run the new device SQL in the SQL Editor (needs the user).
