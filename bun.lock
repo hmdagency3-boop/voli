@@ -8,6 +8,8 @@
         "@capacitor/android": "^7",
         "@capacitor/app": "^7",
         "@capacitor/core": "^7",
+        "@capacitor/device": "^7",
+        "@capacitor/network": "^7",
         "@hookform/resolvers": "^5.2.2",
         "@radix-ui/react-accordion": "^1.2.12",
         "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -149,6 +151,10 @@
     "@capacitor/cli": ["@capacitor/cli@7.6.10", "", { "dependencies": { "@ionic/cli-framework-output": "^2.2.8", "@ionic/utils-subprocess": "^3.0.1", "@ionic/utils-terminal": "^2.3.5", "commander": "^12.1.0", "debug": "^4.4.0", "env-paths": "^2.2.0", "fs-extra": "^11.2.0", "kleur": "^4.1.5", "native-run": "^2.0.3", "open": "^8.4.0", "plist": "^3.1.0", "prompts": "^2.4.2", "rimraf": "^6.0.1", "semver": "^7.6.3", "tar": "^7.5.3", "tslib": "^2.8.1", "xml2js": "^0.6.2" }, "bin": { "cap": "bin/capacitor", "capacitor": "bin/capacitor" } }, "sha512-8S0h44+339hCJyDw0EWqKz4ivR08tzSY35WzSs49pQ4gNOrGiyKpBUaZc08zlJgvN8yfzMY1pi8QfKDsSn1eHg=="],
 
     "@capacitor/core": ["@capacitor/core@7.6.10", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-foYHd//t6E3RTELVG8wdkp5jVnmLcHKUurAa9BA8EUSNd2eY0SijCHpfO0bFwYBP5DrCeXwgSFYi3NJw413gtQ=="],
+
+    "@capacitor/device": ["@capacitor/device@7.0.5", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-tf6BYeQMBARNLKELQq2RGsvG3z03oM/ga+aqVhvE8M4IM8+h/516eeSz07Eqm4+yySGaQFT+2rIkpJrvA7gaAA=="],
+
+    "@capacitor/network": ["@capacitor/network@7.0.4", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-fNhN3968AQWMnzasPJ0B8e+nyk7+R6V9PWIBQWSQRHrKndDgWRHpxkjEzJPgnJr3EjnKLjbwO+UYy+EwBlGs3A=="],
 
     "@date-fns/tz": ["@date-fns/tz@1.5.0", "", {}, "sha512-lwYN/vDPeNRULcepoE/LO2Pgx+7/RV+S9ARfbc9lr2DtGkOD7pAiruHvbR1RX3Qyf6ja47EWJDMsNK5vK08DJg=="],
 

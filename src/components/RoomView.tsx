@@ -25,6 +25,7 @@ import { VipEntrance } from "@/components/VipEntrance";
 import { HeadwearFrame } from "@/components/HeadwearFrame";
 import { RideEntrance } from "@/components/RideEntrance";
 import { newArrivalWatch, watchArrivals, type ArrivalWatch } from "@/lib/room-arrivals";
+import { claimEntrance, claimGiftShow } from "@/lib/room-video-ledger";
 import { getWorn, useWorn, type WornItem } from "@/lib/store";
 import { useAccount } from "@/hooks/use-account";
 import { useRoomVoice } from "@/hooks/use-room-voice";
@@ -197,10 +198,12 @@ export function RoomView({ publicId, minimized }: { publicId: string; minimized:
         const fresh = arrived.map((id) => ({ key: `${id}-${now}`, auth_id: id, at: now }));
         if (fresh.length) {
           setJoins((j) => [...j, ...fresh].slice(-50));
-          if (!minimizedRef.current) setEntrances((q) => [...q, ...fresh.filter((x) => activeVipLevel(peopleRef.current[x.auth_id]) > 0 && !q.some((y) => y.auth_id === x.auth_id))]);
-          if (!minimizedRef.current) void getWorn(fresh.map((x) => x.auth_id)).then((w) => {
+          // Each member's entrance plays once: the app-wide ledger refuses a repeat for the same person in this room.
+          const show = minimizedRef.current ? [] : fresh.filter((x) => claimEntrance(roomId, x.auth_id));
+          if (show.length) setEntrances((q) => [...q, ...show.filter((x) => activeVipLevel(peopleRef.current[x.auth_id]) > 0 && !q.some((y) => y.auth_id === x.auth_id))]);
+          if (show.length) void getWorn(show.map((x) => x.auth_id)).then((w) => {
             if (!active || minimizedRef.current) return;
-            const add = fresh.flatMap((x) => { const ride = w[x.auth_id]?.ride; return ride ? [{ key: x.key, auth_id: x.auth_id, name: peopleRef.current[x.auth_id]?.display_name ?? "", ride }] : []; });
+            const add = show.flatMap((x) => { const ride = w[x.auth_id]?.ride; return ride ? [{ key: x.key, auth_id: x.auth_id, name: peopleRef.current[x.auth_id]?.display_name ?? "", ride }] : []; });
             if (add.length) setRides((q) => { const next = [...q, ...add.filter((x) => !q.some((y) => y.auth_id === x.auth_id))]; return next.length > 10 ? [next[0]!, ...next.slice(-9)] : next; });
           });
         }
@@ -233,7 +236,8 @@ export function RoomView({ publicId, minimized }: { publicId: string; minimized:
         if (!active) return;
         const { cursor, play } = nextGiftShows(showsCursor.current, rows);
         showsCursor.current = cursor;
-        if (play.length && !minimizedRef.current) setVideoQueue((q) => [...q, ...play].slice(-10));
+        const fresh = play.filter((x) => claimGiftShow(roomId, x.id));
+        if (fresh.length && !minimizedRef.current) setVideoQueue((q) => [...q, ...fresh.filter((x) => !q.some((y) => y.id === x.id))].slice(-10));
       } finally { busy = false; }
     };
     pollShows.current = () => { void check(); };
@@ -253,13 +257,16 @@ export function RoomView({ publicId, minimized }: { publicId: string; minimized:
   useEffect(() => {
     if (!entrance || !me) return;
     setEntrance(false);
+    if (!roomId) return;
     const j = { key: `${me}-${Date.now()}`, auth_id: me, at: new Date().toISOString() };
     setJoins((x) => [...x, j]);
     // Added at the end of the line, so an entrance already playing is never cut off and replayed.
+    // My own entrance also plays once: reconnecting or reopening the room never replays it.
+    if (!claimEntrance(roomId, me)) return;
     if (activeVipLevel(profile) > 0) setEntrances((q) => (q.some((y) => y.auth_id === me) ? q : [...q, j]));
     const myName = profile?.display_name ?? "";
     void getWorn([me]).then((w) => { const ride = w[me]?.ride; if (ride) setRides((q) => (q.some((y) => y.auth_id === me) ? q : [...q, { key: j.key, auth_id: me, name: myName, ride }])); });
-  }, [entrance, me, profile]);
+  }, [entrance, me, profile, roomId]);
   // Minimized: close every open sheet (they would float over other pages) and drop pending entrances and videos.
   useEffect(() => {
     if (!minimized) return;

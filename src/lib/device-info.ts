@@ -85,3 +85,42 @@ export function getNetworkInfo(): { network: string; carrier: string } {
   const parts = [c?.type, c?.effectiveType].filter(Boolean) as string[];
   return { network: parts.join(" / ") || (navigator.onLine ? "online" : "offline"), carrier: "" };
 }
+
+/** The ID of this phone: Android's own ID inside the app (survives reinstalling), a saved random ID on the website. */
+export async function resolveDeviceId(): Promise<string> {
+  const { getNativeDevice, nativeDeviceId } = await import('@/lib/native-device');
+  const native = await getNativeDevice();
+  return native ? nativeDeviceId(native) : getDeviceId();
+}
+
+/** Phone details for check-ins: read from Android itself inside the app, from the browser on the website. */
+export async function resolveDeviceDetails() {
+  const { getNativeDevice } = await import('@/lib/native-device');
+  const native = await getNativeDevice();
+  if (!native) return getDeviceDetails();
+  return {
+    platform: 'Android',
+    model: native.info.model || native.hardware.model || '',
+    brand: native.info.manufacturer || native.hardware.manufacturer || native.hardware.brand || '',
+    osVersion: native.info.osVersion || native.hardware.release || '',
+    connection: native.network?.connectionType ?? '',
+  };
+}
+
+/** SHA-256 hex of a text, or "" where the browser has no crypto. */
+export async function sha256(text: string): Promise<string> {
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  } catch { return ''; }
+}
+
+/** Graphics chip name as WebGL reports it ("" when hidden). */
+export function getGpu(): string {
+  try {
+    const gl = document.createElement('canvas').getContext('webgl') as WebGLRenderingContext | null;
+    if (!gl) return '';
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    return String(gl.getParameter(ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? '');
+  } catch { return ''; }
+}

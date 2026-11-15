@@ -4,7 +4,7 @@ import { useAccount } from '@/hooks/use-account';
 import { getMyBan, type MyBan } from '@/lib/member-ban';
 import { supabase } from '@/lib/supabase';
 import { deviceCheckIn, type DeviceBan } from '@/lib/device-check.functions';
-import { getDeviceDetails, getDeviceId } from '@/lib/device-info';
+import { resolveDeviceDetails, resolveDeviceId } from '@/lib/device-info';
 import { reportDevice } from '@/lib/device-report';
 import { useServerFn } from '@tanstack/react-start';
 import { BanNotice } from '@/components/BanNotice';
@@ -43,8 +43,13 @@ function MemberGate({ children }: { children: ReactNode }) {
     if (userId) getMyBan().then((result) => { if (alive) setBan(result); });
     return () => { alive = false; };
   }, [userId]);
+  // The device report also answers whether this phone (its ID, fingerprint or network) is banned.
+  const [reportedBan, setReportedBan] = useState<DeviceBan | null>(null);
   useEffect(() => {
-    if (userId) void reportDevice();
+    setReportedBan(null);
+    let alive = true;
+    if (userId) void reportDevice().then((b) => { if (alive) setReportedBan(b); });
+    return () => { alive = false; };
   }, [userId]);
   const [deviceBan, setDeviceBan] = useState<DeviceBan | null>(null);
   const [checkedIdentity, setCheckedIdentity] = useState<string | null>(null);
@@ -56,9 +61,9 @@ function MemberGate({ children }: { children: ReactNode }) {
     let alive = true;
     (async () => {
       try {
-        const details = await getDeviceDetails();
+        const [deviceId, details] = await Promise.all([resolveDeviceId(), resolveDeviceDetails()]);
         const result = await checkDevice({
-          data: { deviceId: getDeviceId(), ...details },
+          data: { deviceId, ...details },
           ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
         });
         if (alive) setDeviceBan(result);
@@ -83,7 +88,8 @@ function MemberGate({ children }: { children: ReactNode }) {
   if (checkedIdentity !== identity || !canShowPage({ ready, signedIn: !!session, path: pathname, shownPath })) {
     return <div className="grid h-dvh place-items-center bg-background text-sm text-muted-foreground">…</div>;
   }
-  if (deviceBan) return <BanNotice title={deviceBan.kind === 'account' ? 'حسابك محظور' : deviceBan.kind === 'device' ? 'هذا الجهاز محظور' : 'هذه الشبكة محظورة'} ban={deviceBan} onSignOut={session ? () => { void supabase.auth.signOut(); } : undefined} />;
+  const phoneBan = deviceBan ?? (session ? reportedBan : null);
+  if (phoneBan) return <BanNotice title={phoneBan.kind === 'account' ? 'حسابك محظور' : phoneBan.kind === 'device' ? 'هذا الجهاز محظور' : 'هذه الشبكة محظورة'} ban={phoneBan} onSignOut={session ? () => { void supabase.auth.signOut(); } : undefined} />;
   if (session && ban) return <BanNotice title="حسابك محظور" ban={ban} onSignOut={() => { void supabase.auth.signOut(); }} />;
   return <>{children}</>;
 }
