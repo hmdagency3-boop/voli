@@ -43,3 +43,7 @@
 - [x] Store page: الحركة column with an SVGA badge and a play link that opens a modal running the real .svga file; the product picture carries an SVGA badge. Verified in a browser run with sample products.
 - [ ] Store page: ready-made .svga upload/change/remove for existing items (functions ready in src/lib/store.ts).
 - [ ] End-to-end check of the studio and publish while signed in as a real admin.
+
+# Phone fingerprint (Nov 15)
+- [x] Devices page: fingerprint and source columns; expanded row shows full phone details, IP history and other accounts on the same phone (sql/025_device_fingerprint.sql).
+- [ ] Run sql/025_device_fingerprint.sql in Voli's SQL Editor (needs the owner).

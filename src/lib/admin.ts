@@ -431,7 +431,37 @@ export type DeviceRow = {
   id: string; auth_id: string; device_id: string; ip: string | null; brand: string | null; model: string | null;
   os: string | null; network: string | null; carrier: string | null; first_seen: string; last_seen: string;
   display_name: string | null; public_id: number | null; ban: { kind: BanKind | 'account'; value: string; reason: string | null; code?: number } | null;
+  /** From sql/025_device_fingerprint.sql (missing on older databases). */
+  fingerprint?: string | null; android_id?: string | null; widevine_id?: string | null; source?: string | null;
+  hardware?: Record<string, unknown> | null; first_ip?: string | null;
 };
+export type DeviceIp = {
+  ip: string; from_header: boolean; network: string | null; carrier: string | null; country: string | null;
+  vpn: boolean; seen_count: number; first_seen: string; last_seen: string;
+};
+export type DeviceDetails = {
+  device_id: string; fingerprint: string | null; android_id: string | null; widevine_id: string | null; source: string | null;
+  hardware: Record<string, unknown>; first_ip: string | null; ips: DeviceIp[];
+  same_phone: { auth_id: string; display_name: string | null; public_id: number | null; device_id: string }[];
+};
+/** Full phone details and IP history of one device (sql/025_device_fingerprint.sql). */
+export async function getDeviceDetails(authId: string, deviceId: string): Promise<DeviceDetails | null> {
+  const { data, error } = await supabase.rpc('admin_device_details', { p_auth: authId, p_device: deviceId });
+  if (error) throw missing(error.code) ? { hint: 'fingerprint_missing' } : error;
+  return data as DeviceDetails | null;
+}
+/** Arabic labels for the hardware details the Voli app reports, in display order. */
+export const HARDWARE_LABELS: [string, string][] = [
+  ['manufacturer', 'الشركة المصنعة'], ['brand', 'العلامة'], ['model', 'الطراز'], ['device_name', 'اسم الجهاز'],
+  ['device', 'كود الجهاز'], ['product', 'المنتج'], ['board', 'اللوحة الأم'], ['hardware', 'العتاد'], ['soc', 'المعالج'],
+  ['abis', 'معمارية المعالج'], ['cpu_cores', 'أنوية المعالج'], ['memory_mb', 'الرام (ميجا)'], ['disk_total_mb', 'التخزين الكلي (ميجا)'],
+  ['disk_free_mb', 'التخزين المتاح (ميجا)'], ['screen', 'الشاشة'], ['density_dpi', 'كثافة الشاشة'], ['gpu', 'كارت الشاشة'],
+  ['os', 'النظام'], ['os_version', 'إصدار أندرويد'], ['sdk', 'SDK'], ['security_patch', 'تحديث الأمان'],
+  ['build_fingerprint', 'بصمة النظام'], ['bootloader', 'Bootloader'], ['webview', 'WebView'], ['app_version', 'إصدار التطبيق'],
+  ['browser', 'المتصفح'], ['network', 'نوع الشبكة'], ['carrier', 'شركة الاتصالات'], ['sim_country', 'دولة الشريحة'],
+  ['network_country', 'دولة الشبكة'], ['mcc_mnc', 'كود الشبكة'], ['vpn', 'VPN شغال'], ['emulator', 'محاكي'], ['rooted', 'روت'],
+  ['battery', 'البطارية %'], ['language', 'اللغة'], ['timezone', 'المنطقة الزمنية'],
+];
 export type DeviceBanRow = { id: string; kind: BanKind; value: string; reason: string | null; created_at: string; by_name: string | null };
 export const DEVICES_PAGE = 50;
 /** Device functions come from sql/015_device_bans.sql. */
@@ -526,6 +556,7 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
 export const adminErrorMessage = (e: unknown) => {
   const err = e as { hint?: string; code?: string; message?: string } | null;
   if (err?.hint === 'bans_missing') return 'يجب تشغيل تحديث الحظر الموحد 016 في قاعدة بيانات فولي أولاً';
+  if (err?.hint === 'fingerprint_missing') return 'يجب تشغيل ملف بصمة الجهاز 025 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'devices_missing') return 'يجب تشغيل ملف الأجهزة 015 في قاعدة البيانات أولاً';
   if (err?.hint === 'moderation_missing') return 'يجب تشغيل ملف المخالفات 017 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'store_missing') return 'يجب تشغيل ملف المتجر 023 في قاعدة بيانات فولي أولاً';
