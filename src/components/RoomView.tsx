@@ -820,6 +820,11 @@ function ChatBubble({ level, body }: { level: number; body: string }) {
       style={{
         borderStyle: "solid",
         borderWidth: `${b.top}px ${b.right}px ${b.bottom}px ${b.left}px`,
-        b
-
-... [truncated — file is 51469 bytes, showing first 51200]
+        borderImage: `url(${art.url}) ${s.top} ${s.right} ${s.bottom} ${s.left} fill / ${b.top}px ${b.right}px ${b.bottom}px ${b.left}px stretch`,
+        padding: `${b.top}px ${b.right}px ${b.bottom}px ${b.left}px`,
+      }}
+    >
+      {body}
+    </p>
+  );
+}
