@@ -829,5 +829,3 @@ function ChatBubble({ level, body }: { level: number; body: string }) {
     </p>
   );
 }
-
-... [truncated — file is 51469 bytes, showing first 51200]
