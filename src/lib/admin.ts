@@ -427,41 +427,30 @@ export type LogRow = {
 export const LOG_PAGE = 50;
 export type BanKind = 'ip' | 'network' | 'device';
 export const BAN_KIND_LABELS: Record<BanKind, string> = { ip: 'IP', network: 'شبكة', device: 'جهاز' };
-export type DeviceRow = {
+/** Where the member signed in from (sql/025): the Voli Android app or a web browser; null = unknown. */
+export type DeviceClient = 'android_app' | 'web';
+export const DEVICE_CLIENT_LABELS: Record<DeviceClient, string> = { android_app: 'تطبيق Voli أندرويد', web: 'متصفح ويب' };
+/** Real phone details reported by the Voli Android app (sql/025); absent until the owner runs that file. */
+export type DeviceDetails = {
+  android_id?: string | null; fingerprint?: string | null; os_version?: string | null; app_version?: string | null;
+  client?: DeviceClient | null; user_agent?: string | null;
+};
+export type DeviceRow = DeviceDetails & {
   id: string; auth_id: string; device_id: string; ip: string | null; brand: string | null; model: string | null;
   os: string | null; network: string | null; carrier: string | null; first_seen: string; last_seen: string;
   display_name: string | null; public_id: number | null; ban: { kind: BanKind | 'account'; value: string; reason: string | null; code?: number } | null;
-  /** From sql/025_device_fingerprint.sql (missing on older databases). */
-  fingerprint?: string | null; android_id?: string | null; widevine_id?: string | null; source?: string | null;
-  hardware?: Record<string, unknown> | null; first_ip?: string | null;
 };
-export type DeviceIp = {
-  ip: string; from_header: boolean; network: string | null; carrier: string | null; country: string | null;
-  vpn: boolean; seen_count: number; first_seen: string; last_seen: string;
-};
-export type DeviceDetails = {
-  device_id: string; fingerprint: string | null; android_id: string | null; widevine_id: string | null; source: string | null;
-  hardware: Record<string, unknown>; first_ip: string | null; ips: DeviceIp[];
-  same_phone: { auth_id: string; display_name: string | null; public_id: number | null; device_id: string }[];
-};
-/** Full phone details and IP history of one device (sql/025_device_fingerprint.sql). */
-export async function getDeviceDetails(authId: string, deviceId: string): Promise<DeviceDetails | null> {
-  const { data, error } = await supabase.rpc('admin_device_details', { p_auth: authId, p_device: deviceId });
-  if (error) throw missing(error.code) ? { hint: 'fingerprint_missing' } : error;
-  return data as DeviceDetails | null;
+/** True when the rows come from a database where sql/025 (device details) has not been run yet. */
+export const deviceDetailsMissing = (rows: object[]) => rows.length > 0 && rows.every((r) => !('client' in r));
+/** "Android 13" from os + os_version, without repeating a version the os text already contains. */
+export function osLabel(os?: string | null, version?: string | null): string {
+  const o = (os ?? '').trim(), v = (version ?? '').trim();
+  if (!v || o.split(/\s+/).includes(v)) return o || v || '—';
+  return o ? `${o} ${v}` : v;
 }
-/** Arabic labels for the hardware details the Voli app reports, in display order. */
-export const HARDWARE_LABELS: [string, string][] = [
-  ['manufacturer', 'الشركة المصنعة'], ['brand', 'العلامة'], ['model', 'الطراز'], ['device_name', 'اسم الجهاز'],
-  ['device', 'كود الجهاز'], ['product', 'المنتج'], ['board', 'اللوحة الأم'], ['hardware', 'العتاد'], ['soc', 'المعالج'],
-  ['abis', 'معمارية المعالج'], ['cpu_cores', 'أنوية المعالج'], ['memory_mb', 'الرام (ميجا)'], ['disk_total_mb', 'التخزين الكلي (ميجا)'],
-  ['disk_free_mb', 'التخزين المتاح (ميجا)'], ['screen', 'الشاشة'], ['density_dpi', 'كثافة الشاشة'], ['gpu', 'كارت الشاشة'],
-  ['os', 'النظام'], ['os_version', 'إصدار أندرويد'], ['sdk', 'SDK'], ['security_patch', 'تحديث الأمان'],
-  ['build_fingerprint', 'بصمة النظام'], ['bootloader', 'Bootloader'], ['webview', 'WebView'], ['app_version', 'إصدار التطبيق'],
-  ['browser', 'المتصفح'], ['network', 'نوع الشبكة'], ['carrier', 'شركة الاتصالات'], ['sim_country', 'دولة الشريحة'],
-  ['network_country', 'دولة الشبكة'], ['mcc_mnc', 'كود الشبكة'], ['vpn', 'VPN شغال'], ['emulator', 'محاكي'], ['rooted', 'روت'],
-  ['battery', 'البطارية %'], ['language', 'اللغة'], ['timezone', 'المنطقة الزمنية'],
-];
+/** Phone brand and model, e.g. "samsung SM-A515F". */
+export const phoneLabel = (brand?: string | null, model?: string | null) =>
+  [brand, model].map((x) => (x ?? '').trim()).filter(Boolean).join(' ') || '—';
 export type DeviceBanRow = { id: string; kind: BanKind; value: string; reason: string | null; created_at: string; by_name: string | null };
 export const DEVICES_PAGE = 50;
 /** Device functions come from sql/015_device_bans.sql. */
@@ -482,6 +471,8 @@ export type UnifiedBan = {
   id: string; code: number; kind: UnifiedBanKind; value: string; reason: string | null;
   created_at: string; until: string | null; revoked_at: string | null; active: boolean;
   by_name: string | null; affected_accounts: number;
+  /** Latest phone seen with this device ID (device bans, sql/025). */
+  device?: (DeviceDetails & { brand: string | null; model: string | null; os: string | null; ip: string | null; last_seen: string }) | null;
 };
 export type LinkedAccount = {
   auth_id: string; public_id: number; special_id: string | null; display_name: string | null;
@@ -514,7 +505,7 @@ export const getLog = (page: number) => rpc<LogRow[]>('admin_actions_log', { p_l
 export const ACTION_LABELS: Record<string, string> = {
   coins: 'عملات', vip_grant: 'منح VIP', vip_revoke: 'سحب VIP', special_id: 'ID مميز', role: 'صلاحية',
   profile: 'تعديل بيانات', ban: 'حظر', unban: 'فك حظر', room_close: 'إغلاق غرفة', room_chat_clear: 'مسح محادثة غرفة',
-  gift_update: 'تعديل هدية', gift_create: 'إضافة هدية', gift_art: 'صورة هدية', gift_video: 'فيديو هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
+  lucky_settings: 'إعدادات هدايا الحظ', lucky_gift: 'نوع هدية حظ', gift_update: 'تعديل هدية', gift_create: 'إضافة هدية', gift_art: 'صورة هدية', gift_video: 'فيديو هدية', vip_tier_update: 'سعر VIP', agency_update: 'تعديل وكالة', agency_remove_host: 'إزالة مضيف من وكالة',
   agency_approve: 'قبول وكالة', agency_reject: 'رفض وكالة', notice: 'إشعار رسمي',
   profile_violation: 'إزالة مخالفة', profile_lock: 'منع تغيير الاسم/الصورة',
   device_ban: 'حظر جهاز/شبكة', device_unban: 'فك حظر جهاز/شبكة',
@@ -532,6 +523,8 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
     case 'special_id': return d['to'] ? `أصبح ${d['to']}` : 'أُزيل';
     case 'role': return `${d['role'] === 'admin' ? 'إدارة عليا' : 'مشرف'}: ${d['enabled'] ? 'أُضيف' : 'أُزيل'}`;
     case 'ban': return `${d['days'] ? `${d['days']} يوم` : 'نهائي'}${d['reason'] ? ` — ${d['reason']}` : ''}`;
+    case 'lucky_settings': return `المايك ${d['mic']}% / الصندوق ${d['pool']}% / المنصة ${d['platform']}%${d['enabled'] === false ? ' — موقوفة' : ''}`;
+    case 'lucky_gift': return `${d['key']}: ${d['kind']}`;
     case 'gift_update': return `${d['key']}: ${n('price')}${d['active'] === false ? ' (مخفية)' : ''}`;
     case 'gift_create': return `${d['name']}: ${n('price')}${d['video'] ? ' (هدية فيديو)' : ''}`;
     case 'gift_art': return String(d['key'] ?? '');
@@ -555,8 +548,10 @@ export function describeAction(action: string, d: Record<string, unknown>): stri
 
 export const adminErrorMessage = (e: unknown) => {
   const err = e as { hint?: string; code?: string; message?: string } | null;
+  if (err?.hint === 'lucky_missing') return 'يجب تشغيل ملف هدايا الحظ 026 في قاعدة بيانات فولي أولاً';
+  if (err?.hint === 'bad_split') return 'مجموع النسب يجب أن يساوي 100% بالضبط';
+  if (err?.hint === 'bad_lucky_setting') return 'إعداد غير صالح لهدايا الحظ';
   if (err?.hint === 'bans_missing') return 'يجب تشغيل تحديث الحظر الموحد 016 في قاعدة بيانات فولي أولاً';
-  if (err?.hint === 'fingerprint_missing') return 'يجب تشغيل ملف بصمة الجهاز 025 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'devices_missing') return 'يجب تشغيل ملف الأجهزة 015 في قاعدة البيانات أولاً';
   if (err?.hint === 'moderation_missing') return 'يجب تشغيل ملف المخالفات 017 في قاعدة بيانات فولي أولاً';
   if (err?.hint === 'store_missing') return 'يجب تشغيل ملف المتجر 023 في قاعدة بيانات فولي أولاً';

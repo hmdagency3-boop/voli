@@ -18,6 +18,7 @@ import { Route as PanelDevicesRouteImport } from './routes/_panel/devices'
 import { Route as PanelFrameStudioRouteImport } from './routes/_panel/frame-studio'
 import { Route as PanelGiftsRouteImport } from './routes/_panel/gifts'
 import { Route as PanelLogRouteImport } from './routes/_panel/log'
+import { Route as PanelLuckyGiftsRouteImport } from './routes/_panel/lucky-gifts'
 import { Route as PanelRoomsRouteImport } from './routes/_panel/rooms'
 import { Route as PanelStoreRouteImport } from './routes/_panel/store'
 import { Route as PanelVipRouteImport } from './routes/_panel/vip'
@@ -68,6 +69,11 @@ const PanelLogRoute = PanelLogRouteImport.update({
   path: '/log',
   getParentRoute: () => PanelRoute,
 } as any)
+const PanelLuckyGiftsRoute = PanelLuckyGiftsRouteImport.update({
+  id: '/lucky-gifts',
+  path: '/lucky-gifts',
+  getParentRoute: () => PanelRoute,
+} as any)
 const PanelRoomsRoute = PanelRoomsRouteImport.update({
   id: '/rooms',
   path: '/rooms',
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/frame-studio': typeof PanelFrameStudioRoute
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
+  '/lucky-gifts': typeof PanelLuckyGiftsRoute
   '/rooms': typeof PanelRoomsRoute
   '/store': typeof PanelStoreRoute
   '/vip': typeof PanelVipRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/frame-studio': typeof PanelFrameStudioRoute
   '/gifts': typeof PanelGiftsRoute
   '/log': typeof PanelLogRoute
+  '/lucky-gifts': typeof PanelLuckyGiftsRoute
   '/rooms': typeof PanelRoomsRoute
   '/store': typeof PanelStoreRoute
   '/vip': typeof PanelVipRoute
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/_panel/frame-studio': typeof PanelFrameStudioRoute
   '/_panel/gifts': typeof PanelGiftsRoute
   '/_panel/log': typeof PanelLogRoute
+  '/_panel/lucky-gifts': typeof PanelLuckyGiftsRoute
   '/_panel/rooms': typeof PanelRoomsRoute
   '/_panel/store': typeof PanelStoreRoute
   '/_panel/vip': typeof PanelVipRoute
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
     | '/frame-studio'
     | '/gifts'
     | '/log'
+    | '/lucky-gifts'
     | '/rooms'
     | '/store'
     | '/vip'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/frame-studio'
     | '/gifts'
     | '/log'
+    | '/lucky-gifts'
     | '/rooms'
     | '/store'
     | '/vip'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/_panel/frame-studio'
     | '/_panel/gifts'
     | '/_panel/log'
+    | '/_panel/lucky-gifts'
     | '/_panel/rooms'
     | '/_panel/store'
     | '/_panel/vip'
@@ -260,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelLogRouteImport
       parentRoute: typeof PanelRoute
     }
+    '/_panel/lucky-gifts': {
+      id: '/_panel/lucky-gifts'
+      path: '/lucky-gifts'
+      fullPath: '/lucky-gifts'
+      preLoaderRoute: typeof PanelLuckyGiftsRouteImport
+      parentRoute: typeof PanelRoute
+    }
     '/_panel/rooms': {
       id: '/_panel/rooms'
       path: '/rooms'
@@ -305,6 +324,7 @@ interface PanelRouteChildren {
   PanelFrameStudioRoute: typeof PanelFrameStudioRoute
   PanelGiftsRoute: typeof PanelGiftsRoute
   PanelLogRoute: typeof PanelLogRoute
+  PanelLuckyGiftsRoute: typeof PanelLuckyGiftsRoute
   PanelRoomsRoute: typeof PanelRoomsRoute
   PanelStoreRoute: typeof PanelStoreRoute
   PanelVipRoute: typeof PanelVipRoute
@@ -320,6 +340,7 @@ const PanelRouteChildren: PanelRouteChildren = {
   PanelFrameStudioRoute: PanelFrameStudioRoute,
   PanelGiftsRoute: PanelGiftsRoute,
   PanelLogRoute: PanelLogRoute,
+  PanelLuckyGiftsRoute: PanelLuckyGiftsRoute,
   PanelRoomsRoute: PanelRoomsRoute,
   PanelStoreRoute: PanelStoreRoute,
   PanelVipRoute: PanelVipRoute,
