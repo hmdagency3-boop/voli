@@ -12,7 +12,8 @@ import { RoomViewers } from "@/components/RoomViewers";
 import trophyButton from "@/assets/rank/trophy-button.webp";
 import coinIcon from "@/assets/coin.webp";
 import diamondIcon from "@/assets/diamond.webp";
-import { GiftSheet, type GiftSent, type GiftTarget } from "@/components/GiftSheet";
+import { GiftSheet, type GiftSent, type GiftTarget, type LuckySent } from "@/components/GiftSheet";
+import { LuckyMarquee } from "@/components/LuckyMarquee";
 import { getGiftShows, getGiftsReceived, nextGiftShows, type GiftShow } from "@/lib/gifts";
 import { GiftVideo } from "@/components/GiftVideo";
 import { RoomGames } from "@/components/RoomGames";
@@ -95,7 +96,10 @@ export function RoomView({ publicId, minimized }: { publicId: string; minimized:
   const [videoQueue, setVideoQueue] = useState<GiftShow[]>([]);
   const showsCursor = useRef<number | null>(null);
   const pollShows = useRef<() => void>(() => {});
-  const balance = Number(profile?.coins ?? 0);
+  // A lucky throw returns the new balance at once; it wins over the profile until the profile reloads.
+  const [luckyCoins, setLuckyCoins] = useState<{ from: number; coins: number } | null>(null);
+  const profileCoins = Number(profile?.coins ?? 0);
+  const balance = luckyCoins && luckyCoins.from === profileCoins ? luckyCoins.coins : profileCoins;
   const endRef = useRef<HTMLDivElement>(null);
   const peopleRef = useRef(people);
   peopleRef.current = people;
@@ -384,6 +388,14 @@ export function RoomView({ publicId, minimized }: { publicId: string; minimized:
     setGiftFor(forIds);
     setPicked(null);
     setGiftOpen(true);
+  }
+
+  function onLuckySent(sent: LuckySent) {
+    setCoins(sent.result.total);
+    setLuckyCoins({ from: profileCoins, coins: sent.result.coins });
+    setFlying({ gift: sent.gift, quantity: sent.quantity, to: sent.to, total: sent.result.total, key: Date.now() });
+    if (sent.result.multiplier >= 10) toast.success(`كسبت x${sent.result.multiplier} = ${sent.result.prize.toLocaleString("en")} كوينز`);
+    if (roomId) getGiftsReceived(roomId).then(setReceived);
   }
 
   function onGiftSent(sent: GiftSent) {
@@ -716,8 +728,9 @@ export function RoomView({ publicId, minimized }: { publicId: string; minimized:
 
       {roomId && (
         <GiftSheet open={giftOpen} onOpenChange={setGiftOpen} roomId={roomId} targets={giftTargets} preselect={giftFor}
-          balance={balance} wealthPoints={Number(profile?.wealth_points ?? 0)} onSent={onGiftSent} />
+          balance={balance} wealthPoints={Number(profile?.wealth_points ?? 0)} onSent={onGiftSent} onLucky={onLuckySent} />
       )}
+      <LuckyMarquee active={inside && !minimized} />
 
       {roomId && (
         <RoomGames open={gamesOpen} onOpenChange={setGamesOpen} roomId={roomId}
@@ -807,12 +820,6 @@ function ChatBubble({ level, body }: { level: number; body: string }) {
       style={{
         borderStyle: "solid",
         borderWidth: `${b.top}px ${b.right}px ${b.bottom}px ${b.left}px`,
-        borderImage: `url(${art.url}) ${s.top} ${s.right} ${s.bottom} ${s.left} fill / ${b.top}px ${b.right}px ${b.bottom}px ${b.left}px stretch`,
-        padding: "4px 10px",
-        textShadow: "0 1px 2px var(--vip-bubble-shadow)",
-      }}
-    >
-      {body}
-    </p>
-  );
-}
+        b
+
+... [truncated — file is 51469 bytes, showing first 51200]

@@ -9,10 +9,17 @@ import lion from '@/assets/gifts/lion.webp';
 import dragon from '@/assets/gifts/dragon.webp';
 
 /** Built-in gift pictures by catalog key (supabase/006_room_gifts.sql); a catalog art_url overrides them. A gift with neither is not shown. */
-export const GIFT_ART: Record<string, string> = { rose, star, bouquet, ring, wolf, diamond, lion, dragon };
+export const GIFT_ART: Record<string, string> = {
+  rose, star, bouquet, ring, wolf, diamond, lion, dragon,
+  // Lucky / crazy gifts (supabase/026_lucky_gifts.sql) reuse the built-in pictures until they get their own art_url.
+  lucky_clover: bouquet, lucky_star: star, lucky_rose: rose, crazy_ring: ring, crazy_lion: lion, crazy_dragon: dragon,
+};
+
+/** Tab a gift sits in: normal, lucky (هدايا الحظ) or crazy (هدايا المجنون). */
+export type GiftKind = 'normal' | 'lucky' | 'crazy';
 
 /** video: plays in the room for everyone after it is sent (catalog video_url, update 019); null = picture only. */
-export type Gift = { key: string; name: string; price: number; art: string; video: string | null };
+export type Gift = { key: string; name: string; price: number; art: string; video: string | null; kind: GiftKind };
 
 /** Counts offered in the picker; the database accepts 1–9999. */
 export const GIFT_QUANTITIES = [1, 10, 66, 99, 188, 520] as const;
@@ -20,7 +27,9 @@ export const GIFT_QUANTITIES = [1, 10, 66, 99, 188, 520] as const;
 /** Whole cost of one send: price x count x number of people. */
 export const giftCost = (price: number, quantity: number, people: number) => price * quantity * people;
 
-type CatalogRow = { key: string; name: string; price: number; art_url?: string | null; video_url?: string | null };
+type CatalogRow = { key: string; name: string; price: number; art_url?: string | null; video_url?: string | null; kind?: string | null };
+
+const asKind = (k: string | null | undefined): GiftKind => (k === 'lucky' || k === 'crazy' ? k : 'normal');
 
 /** Picture for a gift: the catalog's art_url when set, otherwise the built-in picture. */
 export const giftArt = (row: Pick<CatalogRow, 'key' | 'art_url'>): string | undefined =>
@@ -30,17 +39,18 @@ export const giftArt = (row: Pick<CatalogRow, 'key' | 'art_url'>): string | unde
 export const toGifts = (rows: CatalogRow[]): Gift[] =>
   rows.flatMap((g) => {
     const art = giftArt(g);
-    return art ? [{ key: g.key, name: g.name, price: Number(g.price), art, video: g.video_url?.trim() || null }] : [];
+    return art ? [{ key: g.key, name: g.name, price: Number(g.price), art, video: g.video_url?.trim() || null, kind: asKind(g.kind) }] : [];
   });
 
 /** True when the database has no such column yet (update 013 / 019 not run). */
 const missingColumn = (error: { code?: string; message?: string }) =>
-  error.code === '42703' || error.code === 'PGRST204' || /art_url|video_url/.test(error.message ?? '');
+  error.code === '42703' || error.code === 'PGRST204' || /art_url|video_url|kind/.test(error.message ?? '');
 
 /** Active gifts with a picture, cheapest first. Prices come from the database. */
 export async function getGiftCatalog(): Promise<Gift[]> {
   const catalog = (columns: string) => supabase.from('room_gift_catalog').select(columns).eq('active', true).order('sort');
-  let { data, error } = await catalog('key, name, price, sort, art_url, video_url');
+  let { data, error } = await catalog('key, name, price, sort, art_url, video_url, kind');
+  if (error && missingColumn(error)) ({ data, error } = await catalog('key, name, price, sort, art_url, video_url'));
   if (error && missingColumn(error)) ({ data, error } = await catalog('key, name, price, sort, art_url'));
   if (error && missingColumn(error)) ({ data, error } = await catalog('key, name, price, sort'));
   if (error) throw error;

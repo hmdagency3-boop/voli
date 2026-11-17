@@ -339,3 +339,8 @@
   color: var(--background);
 }
 @media (prefers-reduced-motion: reduce) { .viewer-vip::after { animation: none; opacity: 0; } }
+
+/* Lucky gifts: banner flying across the room top, and the win multiplier pop. */
+@keyframes lucky-marquee { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
+@keyframes lucky-pop { 0% { transform: scale(.4); opacity: 0; } 25% { transform: scale(1.25); opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { transform: scale(1) translateY(-24px); opacity: 0; } }
+@keyframes lucky-shine { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.35); } }

@@ -15,7 +15,7 @@ describe('gift pictures', () => {
 
   it('keeps a gift with art_url even without a built-in picture', () => {
     expect(toGifts([{ key: 'castle', name: 'قلعة', price: 500, art_url: 'https://cdn.example/castle.webp' }]))
-      .toEqual([{ key: 'castle', name: 'قلعة', price: 500, art: 'https://cdn.example/castle.webp', video: null }]);
+      .toEqual([{ key: 'castle', name: 'قلعة', price: 500, art: 'https://cdn.example/castle.webp', video: null, kind: 'normal' }]);
   });
 
   it('keeps the video link of a video gift', () => {
