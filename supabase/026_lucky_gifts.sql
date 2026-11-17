@@ -331,7 +331,7 @@ as $$
     g.name as gift_name,
     s.multiplier,
     s.prize,
-    coalesce(r.title, 'غرفة فولي') as room_name
+    coalesce(r.name, 'غرفة فولي') as room_name
   from public.lucky_spins s
   join public.room_gift_catalog g on g.key = s.gift_key
   left join public.profiles p on p.auth_id = s.sender_id
