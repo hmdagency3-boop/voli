@@ -122,6 +122,17 @@ alter table public.lucky_pools enable row level security;
 alter table public.lucky_gifts enable row level security;
 alter table public.lucky_spins enable row level security;
 
+-- Drop incompatible RPC signatures from earlier 026 versions before recreation.
+-- PostgreSQL cannot CREATE OR REPLACE a table-returning function with changed OUT columns.
+drop function if exists public.send_room_lucky_gift(uuid, text, integer, uuid[]);
+drop function if exists public.lucky_latest_spin();
+drop function if exists public.lucky_big_wins_since(bigint);
+drop function if exists public.admin_lucky_overview();
+drop function if exists public.admin_lucky_settings_set(numeric, numeric, bigint, integer, integer, boolean);
+drop function if exists public.admin_lucky_gifts();
+drop function if exists public.admin_lucky_gift_set(text, text, integer[]);
+drop function if exists public.admin_lucky_spins(integer, boolean);
+
 -- 6. APP RPC: send_room_lucky_gift
 create or replace function public.send_room_lucky_gift(
   p_room uuid,
@@ -343,6 +354,13 @@ as $$
   limit 10;
 $$;
 
+-- These admin RPCs already exist in older 026 revisions with different OUT column types.
+-- PostgreSQL cannot change a TABLE/OUT row type with CREATE OR REPLACE; drop the exact
+-- signatures first, then recreate and restore authenticated execution below.
+drop function if exists public.admin_lucky_overview();
+drop function if exists public.admin_lucky_gifts();
+drop function if exists public.admin_lucky_spins(integer, boolean);
+
 -- 9. ADMIN RPC: admin_lucky_overview
 create or replace function public.admin_lucky_overview()
 returns table(
@@ -407,6 +425,8 @@ begin
   return next;
 end;
 $$;
+revoke all on function public.admin_lucky_overview() from public, anon;
+grant execute on function public.admin_lucky_overview() to authenticated;
 
 -- 10. ADMIN RPC: admin_lucky_settings_set
 create or replace function public.admin_lucky_settings_set(
@@ -486,6 +506,8 @@ begin
   order by g.sort asc, g.price asc;
 end;
 $$;
+revoke all on function public.admin_lucky_gifts() from public, anon;
+grant execute on function public.admin_lucky_gifts() to authenticated;
 
 -- 12. ADMIN RPC: admin_lucky_gift_set
 create or replace function public.admin_lucky_gift_set(
@@ -567,5 +589,7 @@ begin
   limit coalesce(p_limit, 100);
 end;
 $$;
+revoke all on function public.admin_lucky_spins(integer, boolean) from public, anon;
+grant execute on function public.admin_lucky_spins(integer, boolean) to authenticated;
 
 notify pgrst, 'reload schema';
