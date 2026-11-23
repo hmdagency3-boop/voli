@@ -1,5 +1,5 @@
 -- 026_lucky_gifts.sql — Unified Lucky & Crazy Gifts System (Voli App & Voli Admin)
--- Version 4: Full backward compatibility for existing tables, columns, and spins history.
+-- Version 5: Resolved ambiguous column references (mic_pct), fixed settings set fallback, and full backward compatibility.
 
 -- 1. Catalog schema adjustments for kind
 alter table public.room_gift_catalog add column if not exists kind text not null default 'normal';
@@ -508,17 +508,17 @@ begin
   from public.lucky_pools;
 
   select
-    coalesce(mic_pct, receiver_pct, 9.2),
-    coalesce(pool_pct, 75.0),
-    coalesce(platform_pct, 15.8),
-    coalesce(safety_floor, 10000),
-    coalesce(big_from, 100),
-    coalesce(banner_from, 500),
-    coalesce(enabled, true)
+    coalesce(cfg.mic_pct, cfg.receiver_pct, 9.2),
+    coalesce(cfg.pool_pct, 75.0),
+    coalesce(cfg.platform_pct, 15.8),
+    coalesce(cfg.safety_floor, 10000),
+    coalesce(cfg.big_from, 100),
+    coalesce(cfg.banner_from, 500),
+    coalesce(cfg.enabled, true)
   into
     v_mic_pct, v_pool_pct, v_platform_pct, v_safety_floor, v_big_from, v_banner_from, v_enabled
-  from public.lucky_settings
-  order by (case when kind = 'global' then 0 else 1 end)
+  from public.lucky_settings cfg
+  order by (case when cfg.kind = 'global' then 0 else 1 end)
   limit 1;
 
   total_spent := v_spent;
@@ -563,7 +563,7 @@ begin
 
   v_plat := round((100.0 - p_mic - p_pool)::numeric, 2);
   if p_mic < 0 or p_pool < 0 or v_plat < 0 then
-    raise exception 'bad_split';
+    raise exception 'bad_split' using errcode = 'P0001', hint = 'bad_split';
   end if;
 
   update public.lucky_settings
@@ -576,6 +576,13 @@ begin
          banner_from = p_banner_from,
          enabled = p_enabled,
          updated_at = now();
+
+  if not found then
+    insert into public.lucky_settings (kind, mic_pct, receiver_pct, pool_pct, platform_pct, safety_floor, big_from, banner_from, enabled, multipliers, weights, announce_from)
+    values
+      ('lucky', p_mic, p_mic, p_pool, v_plat, p_safety_floor, p_big_from, p_banner_from, p_enabled, '{2,5,10,20,50}', '{1000,400,100,20,5}', 20),
+      ('crazy', p_mic, p_mic, p_pool, v_plat, p_safety_floor, p_big_from, p_banner_from, p_enabled, '{2,10,100,500,1000}', '{1000,200,30,5,1}', 100);
+  end if;
 end;
 $$;
 
